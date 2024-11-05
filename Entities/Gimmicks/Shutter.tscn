@@ -5,7 +5,7 @@
 
 [sub_resource type="RectangleShape2D" id="1"]
 resource_local_to_scene = true
-size = Vector2(8, 32)
+size = Vector2(16, 64)
 
 [node name="Shutter" type="CharacterBody2D"]
 collision_layer = 8207

@@ -262,13 +262,16 @@ func _physics_process(delta):
 			if move_and_collide(rayHitVec-(normHitVec*($HitBox.shape.size.y/2))-Vector2(0,yGroundDiff).rotated(rotation),true,true,true):
 				var _col = move_and_collide(rayHitVec-(normHitVec*($HitBox.shape.size.y/2))-Vector2(0,yGroundDiff).rotated(rotation))
 			else:
+				
+				#I'm not really sure what this does but commenting it out seems to imrpove collision slightly
+				
 				# Do a check that we're not in the middle of a rotation, otherwise the player can get caught on outter curves (more noticable on higher physics frame rates)
-				if snap_angle(angle) == snap_angle(rotation):
-					position += (rayHitVec-(normHitVec*(($HitBox.shape.size.y/2)+0.25))-Vector2(0,yGroundDiff).rotated(rotation))
-				else:
+		#		if snap_angle(angle) == snap_angle(rotation):
+				position += (rayHitVec-(normHitVec*(($HitBox.shape.size.y/2)+0.25))-Vector2(0,yGroundDiff).rotated(rotation))
+		#		else:
 					# if the angle doesn't match the current rotation, move toward the slope angle unsnapped instead of following the raycast
-					normHitVec = -Vector2.LEFT.rotated(rayHitVec.normalized().angle())
-					position += (normHitVec-Vector2(0,yGroundDiff).rotated(rotation))
+		#			normHitVec = -Vector2.LEFT.rotated(rayHitVec.normalized().angle())
+		#			position += (normHitVec-Vector2(0,yGroundDiff).rotated(rotation))
 		
 		# set rotation
 		

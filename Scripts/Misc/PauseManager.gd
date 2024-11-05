@@ -19,6 +19,7 @@ var menusText = [
 "scale x1",
 "full screen off",
 "controls",
+#"V-sync",
 "back",],
 # menu 2 (restart menu confirm)
 [
@@ -38,34 +39,51 @@ var onOff = ["off","on"]
 var clampSounds = [-40.0,6.0]
 # how much to iterate through (take the total sum then divide it by how many steps we want)
 @onready var soundStep = (abs(clampSounds[0])+abs(clampSounds[1]))/100.0
+@onready var inputTimer = $InputTimer
 # button delay
 var soundStepDelay = 0
-var subSoundStep = 1.0
+var subSoundStep = 0.2
 # screen size limit
 var zoomClamp = [1,6]
 
 var menu = 0 # current menu option
 enum MENUS {MAIN, OPTIONS, RESTART, QUIT}
 var option = 0
-# Used to avoid repeated detection of inputs with analog stick
-var lastInput = Vector2.ZERO
+var stop_inputs = false
 
 func _ready():
+	update_text()
 	set_menu(menu)
-
-func _process(delta):
-	# check if paused and visible, otherwise cancel it out
-	if !get_tree().paused or !visible:
-		return null
-	do_lateral_input()
 
 func _input(event):
 	# check if paused and visible, otherwise cancel it out
 	if !get_tree().paused or !visible:
 		return null
-
-	# menu button activate
-	if event.is_action_pressed("gm_pause") or event.is_action_pressed("gm_action"):
+	
+	if Input.is_action_just_pressed("gm_left") or Input.is_action_just_pressed("gm_right"):
+		subSoundStep = 0.2
+		soundStepDelay = 0
+	
+	# change menu options
+	if Input.is_action_just_pressed("gm_down") and stop_inputs == false:
+		choose_option(option+1)
+		stop_inputs = true
+		inputTimer.start()
+	elif Input.is_action_just_pressed("gm_up") and stop_inputs == false:
+		choose_option(option-1)
+		stop_inputs = true
+		inputTimer.start()
+	
+	# Volume controls
+	elif Input.is_action_just_pressed("gm_left") and menu == MENUS.OPTIONS and stop_inputs == false:
+		var inputDir = -int(Input.is_action_just_pressed("gm_left"))
+		set_audio_busses(inputDir)
+	elif Input.is_action_just_pressed("gm_right") and menu == MENUS.OPTIONS and stop_inputs == false:
+		var inputDir = int(Input.is_action_just_pressed("gm_right"))
+		set_audio_busses(inputDir)
+		
+# menu button activate
+	elif event.is_action_pressed("gm_pause") or event.is_action_pressed("gm_action"):
 		match(menu): # menu handles
 			MENUS.MAIN: # main menu
 				match(option): # Options
@@ -83,6 +101,12 @@ func _input(event):
 					3: # full screen
 						get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN if (!((get_window().mode == Window.MODE_EXCLUSIVE_FULLSCREEN) or (get_window().mode == Window.MODE_FULLSCREEN))) else Window.MODE_WINDOWED
 						$PauseMenu/VBoxContainer.get_child(option+1).get_child(0).text = update_text(option+1)
+						if get_window().mode == Window.MODE_WINDOWED: #and Global.zoomSize == 1:
+							get_window().set_size(get_viewport().get_visible_rect().size*Global.zoomSize)
+						else:
+							Global.zoomSize = 2
+							print(Global.zoomSize)
+						update_text()
 					4: # control menu
 						Global.save_settings()
 						set_menu(0)
@@ -90,74 +114,74 @@ func _input(event):
 						visible = false
 						Global.main.wasPaused = false
 						get_tree().paused = true
+					#5: #V-sync
+						#if Global.vsync_mode == "Disabled":
+							#Global.vsync_mode = "Enabled"
+							#DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ENABLED)
+						#elif Global.vsync_mode == "Enabled":
+							#Global.vsync_mode = "Adaptive"
+							#DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_ADAPTIVE)
+						#elif Global.vsync_mode == "Adaptive":
+							#Global.vsync_mode = "Disabled"
+							#DisplayServer.window_set_vsync_mode(DisplayServer.VSYNC_DISABLED)
+						#$PauseMenu/VBoxContainer.get_child(option+1).get_child(0).text = update_text(option+1)
 					5: # back
 						Global.save_settings()
 						set_menu(0)
 			MENUS.RESTART: # reset level
-				match(option): # Options
-					0: # cancel
-						set_menu(0)
-					1: # ok
-						set_menu(0)
-						Global.main.wasPaused = false
-						visible = false
-						Global.checkPointTime = 0
-						Global.currentCheckPoint = -1
-						Global.main.change_scene_to_file(null,"FadeOut")
-						#await Global.main.scene_faded
-						Global.effectTheme.stop()
-						Global.bossMusic.stop()
-						Global.main.set_volume(0)
+					match(option): # Options
+						0: # cancel
+							set_menu(0)
+						1: # ok
+							set_menu(0)
+							Global.main.wasPaused = false
+							visible = false
+							Global.checkPointTime = 0
+							Global.currentCheckPoint = -1
+							Global.reset_values()
+							Global.main.change_scene_to_file(null,"FadeOut")
+							await Global.main.scene_faded
+							Global.effectTheme.stop()
+							#Global.bossMusic.stop()
+							Global.main.set_volume(0)
+							Global.music.pitch_scale = 1
 			MENUS.QUIT: # quit option
-				match(option): # Options
-					0: # cancel
-						set_menu(0)
-					1: # ok
-						await get_tree().process_frame
-						Global.main.reset_game()
+					match(option): # Options
+						0: # cancel
+							set_menu(0)
+						1: # ok
+							await get_tree().process_frame
+							Global.timerActive = false
+							Global.music.pitch_scale = 1
+							Global.main.reset_game()
 
-func do_lateral_input():
 
-	var inputCue = Input.get_vector("gm_left","gm_right","gm_up","ui_down")
-	inputCue.x = round(inputCue.x)
-	inputCue.y = round(inputCue.y)
+func set_audio_busses(inputDir):
+	stop_inputs = true	
+	inputTimer.start()
+	# set audio busses
+	var getBus = "SFX"
+	if option > 0:
+		getBus = "Music"
+	var soundExample = [$MenuVert,$MenuMusicVolume]
 	
-	if inputCue.x != 0 and subSoundStep == 0:
-		subSoundStep = 5.0
-		soundStepDelay = 0
-	
-	# change menu options
-	if inputCue.y != lastInput.y:
-		if inputCue.y > 0:
-			choose_option(option+1)
-		elif inputCue.y < 0:
-			choose_option(option-1)
-	
-	# Volume controls
-	elif inputCue.x != 0 and menu == MENUS.OPTIONS:
-		var inputDir = inputCue.x
-		
-		# set audio busses
-		var getBus = "SFX"
-		if option > 0:
-			getBus = "Music"
-		var soundExample = [$MenuVert,$MenuMusicVolume]
-		
-		match(option):
-			0, 1: # Volume
-				if soundStepDelay <= 0:
-					soundExample[option].play()
-					AudioServer.set_bus_volume_db(AudioServer.get_bus_index(getBus),clamp(AudioServer.get_bus_volume_db(AudioServer.get_bus_index(getBus))+inputDir*soundStep,clampSounds[0],clampSounds[1]))
-					AudioServer.set_bus_mute(AudioServer.get_bus_index(getBus),AudioServer.get_bus_volume_db(AudioServer.get_bus_index(getBus)) <= clampSounds[0])
-					soundStepDelay = subSoundStep
-				else:
+	match(option):
+		0, 1: # Volume
+			if soundStepDelay <= 0:
+				soundExample[option].play()
+				AudioServer.set_bus_volume_db(AudioServer.get_bus_index(getBus),clamp(AudioServer.get_bus_volume_db(AudioServer.get_bus_index(getBus))+inputDir*soundStep,clampSounds[0],clampSounds[1]))
+				AudioServer.set_bus_mute(AudioServer.get_bus_index(getBus),AudioServer.get_bus_volume_db(AudioServer.get_bus_index(getBus)) <= clampSounds[0])
+				soundStepDelay = subSoundStep
+				if subSoundStep > 0:
 					soundStepDelay -= 0.1
-			2: # Scale
-				if inputCue.x != 0 and inputCue != lastInput:
-					Global.zoomSize = clamp(Global.zoomSize+inputDir,zoomClamp[0],zoomClamp[1])
-					get_window().set_size(get_viewport().get_visible_rect().size*Global.zoomSize)
-		$PauseMenu/VBoxContainer.get_child(option+1).get_child(0).text = update_text(option+1)
-	lastInput = inputCue
+			else:
+				soundStepDelay -= 0.1
+		2: # Scale
+			if Input.is_action_just_pressed("gm_left") or Input.is_action_just_pressed("gm_right"):
+				Global.zoomSize = clamp(Global.zoomSize+inputDir,zoomClamp[0],zoomClamp[1])
+				get_window().set_size(get_viewport().get_visible_rect().size*Global.zoomSize)
+	$PauseMenu/VBoxContainer.get_child(option+1).get_child(0).text = update_text(option+1)
+
 
 func choose_option(optionSet = option+1, playSound = true):
 	# reset curren option colour to white
@@ -204,5 +228,11 @@ func update_text(textRow = 0):
 			return "scale x"+str(Global.zoomSize)
 		4: # Full screen
 			return "full screen "+onOff[int(((get_window().mode == Window.MODE_EXCLUSIVE_FULLSCREEN) or (get_window().mode == Window.MODE_FULLSCREEN)))]
+	#	6: #Vsync
+	#		return "V-sync "+Global.vsync_mode
 		_: # Default
 			return menusText[menu][textRow]
+
+
+func _on_input_timer_timeout():
+	stop_inputs = false

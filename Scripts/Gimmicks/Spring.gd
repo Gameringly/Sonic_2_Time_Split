@@ -83,7 +83,8 @@ func physics_collision(body, hitVector):
 			body.animator.queue(curAnim)
 			# set vertical speed
 			body.movement.y = setMove.y
-			body.set_state(body.STATES.AIR)
+			if setMove.y < 0:
+				body.set_state(body.STATES.AIR)
 			body.disconect_from_floor()
 		# horizontal movement
 		else:

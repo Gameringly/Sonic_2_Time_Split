@@ -923,6 +923,7 @@ position = Vector2(5312, 992)
 
 [node name="Switch" parent="Entity" instance=ExtResource("37_y7my3")]
 position = Vector2(5712, 1848)
+animator = NodePath("")
 
 [node name="Shutter2" parent="Entity/Switch" instance=ExtResource("36_0g2sp")]
 position = Vector2(-160, -56)

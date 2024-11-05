@@ -42,3 +42,8 @@ bus = &"SFX"
 stream = ExtResource("1")
 volume_db = -10.0
 bus = &"Music"
+
+[node name="InputTimer" type="Timer" parent="."]
+wait_time = 0.01
+
+[connection signal="timeout" from="InputTimer" to="." method="_on_input_timer_timeout"]

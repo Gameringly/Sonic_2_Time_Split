@@ -1265,7 +1265,15 @@ func cam_update(forceMove = false):
 	var getPos = (global_position+Vector2(0,camLookOff)+camAdjust).round()
 	if camLockTime <= 0 and (forceMove or camera.global_position.distance_to(getPos) <= 16):
 		# limit_length speed camera
-		camera.global_position.x = move_toward(camera.global_position.x,getPos.x,16*60*get_physics_process_delta_time())
+		#Sonic CD camera extension
+		if abs(movement.x) > (10*60) and sign(movement.x) == 1 and animator.current_animation != "topKick":
+			camera.global_position.x = move_toward(camera.global_position.x,getPos.x+128,32*60*get_physics_process_delta_time())
+			camera.global_position.y = move_toward(camera.global_position.y,getPos.y,32*60*get_physics_process_delta_time())
+		elif abs(movement.x) > (10*60) and sign(movement.x) == -1 and animator.current_animation != "topKick":
+			camera.global_position.x = move_toward(camera.global_position.x,getPos.x-128,32*60*get_physics_process_delta_time())
+			camera.global_position.y = move_toward(camera.global_position.y,getPos.y,32*60*get_physics_process_delta_time())
+		else:
+			camera.global_position.x = move_toward(camera.global_position.x,getPos.x,16*60*get_physics_process_delta_time())
 		camera.global_position.y = move_toward(camera.global_position.y,getPos.y,16*60*get_physics_process_delta_time())
 		# clamp to region
 		camera.global_position.x = clamp(camera.global_position.x,limitLeft,limitRight)
