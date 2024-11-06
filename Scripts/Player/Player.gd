@@ -226,6 +226,8 @@ var cameraMargin = 16
 # Gimmick related
 var poleGrabID = null
 
+var wall_jump = false
+
 # Enemy related
 signal enemy_bounced
 
@@ -1352,9 +1354,16 @@ func action_move(delta):
 
 func action_jump(animation = "roll", airJumpControl = true, playSound=true):
 	if forceRoll <= 0: # check to prevent jumping in roll tubes
-		animator.play(animation)
-		animator.advance(0)
-		movement.y = -jmp
+		if wall_jump == true:
+			animator.play("wallJump")
+			animator.queue("roll")
+			movement.y = -5*60
+			movement.x = sign(movement.x) * (5*60)
+			wall_jump = false
+		else:
+			animator.play(animation)
+			animator.advance(0)
+			movement.y = -jmp
 		if playSound:
 			sfx[0].play()
 		airControl = airJumpControl

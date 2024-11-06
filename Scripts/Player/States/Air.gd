@@ -25,8 +25,12 @@ func _process(_delta):
 				parent.set_state(parent.STATES.SUPER)
 		# Shield actions
 		elif ((parent.inputs[parent.INPUTS.ACTION] == 1 or parent.inputs[parent.INPUTS.ACTION2] == 1 or parent.inputs[parent.INPUTS.ACTION3] == 1) and !parent.abilityUsed and isJump):
+			#wall jump
+			if parent.animator.current_animation == "wallCling":
+				parent.wall_jump = true
+				parent.action_jump()
 			# Super actions
-			if parent.isSuper and (parent.character == Global.CHARACTERS.SONIC or parent.character == Global.CHARACTERS.AMY):
+			elif parent.isSuper and (parent.character == Global.CHARACTERS.SONIC or parent.character == Global.CHARACTERS.AMY):
 				parent.abilityUsed = true # has to be set to true for drop dash (Sonic and amy only)
 			# Normal actions
 			else:
@@ -224,6 +228,12 @@ func _physics_process(delta):
 	elif parent.movement.y < 0:
 		parent.bounceReaction = 0
 	
+	#wall jump
+	if parent.horizontalSensor.is_colliding() and parent.animator.current_animation == "roll" or parent.animator.current_animation == "wallJump":
+		var getDir = sign(parent.horizontalSensor.target_position.x)
+		if sign(parent.movement.x) == -sign(parent.horizontalSensor.target_position.x):
+			parent.animator.play("wallCling")
+			parent.animator.queue("roll")
 	
 
 # Shield timer timeouts (used to reset animations)
