@@ -31,7 +31,9 @@ func _process(delta):
 		# move shutter
 		$Shutter.position = $Shutter.position.move_toward(Vector2(0,-texture.get_height()*int(open)),delta*512)
 		# disable mask if opened
-		$Mask.disabled = open
+		#$Mask.disabled = open
+		#Move mask when opned
+		$Mask.position = $Mask.position.move_toward(Vector2(0,-texture.get_height()*int(open)),delta*512)
 	else:
 		$Mask.shape.size = Vector2(texture.get_width(),texture.get_height())
 		$OpenShutter/Mask.shape = $Mask.shape
