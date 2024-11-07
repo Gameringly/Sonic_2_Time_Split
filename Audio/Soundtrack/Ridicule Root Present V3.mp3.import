@@ -2,13 +2,12 @@
 
 importer="mp3"
 type="AudioStreamMP3"
-uid="uid://dmcps4aiulh1l"
-path="res://.godot/imported/Ridicule Root Present V3.mp3-f4ceaab648a42e9921ca3aa2a5aaee70.mp3str"
+uid="uid://c2q8fbqyix03h"
+valid=false
 
 [deps]
 
 source_file="res://Audio/Soundtrack/Ridicule Root Present V3.mp3"
-dest_files=["res://.godot/imported/Ridicule Root Present V3.mp3-f4ceaab648a42e9921ca3aa2a5aaee70.mp3str"]
 
 [params]
 

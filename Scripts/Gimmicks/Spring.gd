@@ -47,14 +47,14 @@ func set_spring():
 			animID = 3
 			scale = Vector2(1,1-(springDirection-4))
 			# place super.normalized() at the end for CD physics
-			hitDirection = scale*Vector2(1,-1)
+			hitDirection = scale*Vector2(1,-1,).normalized()
 		5, 7: #diagonal left
 			$HitBox.disabled = true
 			$DiagonalHitBox/AreaShape.disabled = false
 			animID = 2
 			scale = Vector2(1,1-(springDirection-5))
 			# place super.normalized() at the end for CD physics
-			hitDirection = -scale
+			hitDirection = -scale.normalized()
 			
 	$SpringAnimator.play(animList[animID])
 	$SpringAnimator.advance($SpringAnimator.get_animation(animList[animID]).length)
