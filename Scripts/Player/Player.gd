@@ -1381,6 +1381,7 @@ func action_water_run_handle():
 	var colCheck = move_and_collide(Vector2.DOWN.rotated(rotation),true)
 	if colCheck:
 		touchWater = colCheck.get_collider().get_collision_layer_value(23)
+		angle = 0 #fix issue where you cant jump if you enter water run from a slope
 	
 
 	# enable dash dust if touching water

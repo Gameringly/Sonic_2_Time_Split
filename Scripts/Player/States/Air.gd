@@ -26,7 +26,7 @@ func _process(_delta):
 		# Shield actions
 		elif ((parent.inputs[parent.INPUTS.ACTION] == 1 or parent.inputs[parent.INPUTS.ACTION2] == 1 or parent.inputs[parent.INPUTS.ACTION3] == 1) and !parent.abilityUsed and isJump):
 			#wall jump
-			if parent.animator.current_animation == "wallCling":
+			if parent.character == Global.CHARACTERS.SONIC and parent.animator.current_animation == "wallCling":
 				parent.wall_jump = true
 				parent.action_jump()
 			# Super actions
@@ -229,7 +229,7 @@ func _physics_process(delta):
 		parent.bounceReaction = 0
 	
 	#wall jump
-	if parent.horizontalSensor.is_colliding() and parent.animator.current_animation == "roll" or parent.animator.current_animation == "wallJump":
+	if parent.character == Global.CHARACTERS.SONIC and parent.horizontalSensor.is_colliding() and parent.animator.current_animation == "roll" or parent.animator.current_animation == "wallJump":
 		var getDir = sign(parent.horizontalSensor.target_position.x)
 		if sign(parent.movement.x) == -sign(parent.horizontalSensor.target_position.x):
 			parent.animator.play("wallCling")
