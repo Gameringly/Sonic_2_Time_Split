@@ -1,4 +1,4 @@
-[gd_scene load_steps=25 format=4 uid="uid://bs3hspm6s6dya"]
+[gd_scene load_steps=32 format=4 uid="uid://bs3hspm6s6dya"]
 
 [ext_resource type="Script" path="res://Scripts/Level/Level.gd" id="1_ani82"]
 [ext_resource type="PackedScene" uid="uid://bjavywoj00j1j" path="res://Scene/Zones/BaseZoneAct2.tscn" id="2_8jej2"]
@@ -8,13 +8,15 @@
 [ext_resource type="TileSet" uid="uid://q67wloh1juj7" path="res://Tileset/Worlds/TestLevel.tres" id="6_ka826"]
 [ext_resource type="PackedScene" uid="uid://dggjdwwkl527b" path="res://Entities/Items/Ring.tscn" id="7_htqts"]
 [ext_resource type="PackedScene" uid="uid://gklj3ebdwveu" path="res://Entities/Items/Monitor.tscn" id="8_uaknl"]
+[ext_resource type="PackedScene" uid="uid://dasp221fqgrno" path="res://Entities/Obstacles/Platform.tscn" id="11_vnfip"]
 [ext_resource type="Script" path="res://Scripts/Objects/CollapsePlatform.gd" id="12_7ft3n"]
 [ext_resource type="TileSet" uid="uid://dn42tsjf760q0" path="res://Graphics/Tiles/MCZPlatform.tres" id="13_po2ad"]
 [ext_resource type="PackedScene" uid="uid://dkn7hhll7o4or" path="res://Entities/MainObjects/LayerSwitcher.tscn" id="14_w4a8r"]
 [ext_resource type="PackedScene" uid="uid://4q0hpddgto2k" path="res://Entities/Gimmicks/Spring.tscn" id="15_jil2h"]
 [ext_resource type="PackedScene" uid="uid://7k14xkpjguop" path="res://Entities/Obstacles/SwingingPlatform.tscn" id="15_w0x5l"]
-[ext_resource type="PackedScene" uid="uid://bnn5io8fk2i4h" path="res://Entities/Gimmicks/WaterLevel.tscn" id="16_vnd45"]
+[ext_resource type="PackedScene" path="res://Entities/Gimmicks/WaterBody.tscn" id="18_7q4qf"]
 [ext_resource type="PackedScene" uid="uid://cejf7f3r45h0c" path="res://Entities/Gimmicks/BubbleGenerator.tscn" id="18_xhojg"]
+[ext_resource type="PackedScene" path="res://Entities/Gimmicks/WaterSurface.tscn" id="19_b6fxe"]
 [ext_resource type="PackedScene" uid="uid://c1ldunfxhq0he" path="res://Entities/Obstacles/ForceAngleSides.tscn" id="35_rf2cs"]
 [ext_resource type="PackedScene" uid="uid://blwewyk2fnrew" path="res://Entities/Gimmicks/Shutter.tscn" id="36_rbenl"]
 [ext_resource type="PackedScene" uid="uid://chyrwm1qwvlyt" path="res://Entities/Gimmicks/Switch.tscn" id="37_7i736"]
@@ -63,8 +65,29 @@ size = Vector2(64, 8)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_pgfwn"]
 size = Vector2(64, 8)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_nyp2n"]
-size = Vector2(768, 16)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_65ftu"]
+resource_local_to_scene = true
+size = Vector2(1728, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_osr7y"]
+resource_local_to_scene = true
+size = Vector2(1712, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mxfob"]
+resource_local_to_scene = true
+size = Vector2(608, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_v3x85"]
+resource_local_to_scene = true
+size = Vector2(608, 16)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xreqc"]
+resource_local_to_scene = true
+size = Vector2(352, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_1ytxw"]
+resource_local_to_scene = true
+size = Vector2(352, 16)
 
 [node name="RidiculeRoot" type="Node2D"]
 script = ExtResource("1_ani82")
@@ -370,28 +393,13 @@ layer_0/tile_data = PackedInt32Array(-131076, 262144, 0, -131075, 327680, 0, -65
 position = Vector2(-32, -48)
 shape = SubResource("RectangleShape2D_pgfwn")
 
-[node name="WaterSurface" type="StaticBody2D" parent="Platforms"]
-position = Vector2(1720, 2400)
-collision_layer = 4194304
-collision_mask = 4194304
+[node name="Platform" parent="Platforms" instance=ExtResource("11_vnfip")]
+position = Vector2(2824, 2048)
+endPosition = Vector2(0, 0)
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/WaterSurface"]
-position = Vector2(136, 8)
-shape = SubResource("RectangleShape2D_nyp2n")
-one_way_collision = true
-one_way_collision_margin = 2.0
-debug_color = Color(0, 1, 1, 0.501961)
-
-[node name="WaterSurface2" type="StaticBody2D" parent="Platforms"]
-position = Vector2(3840, 2400)
-collision_layer = 4194304
-collision_mask = 4194304
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Platforms/WaterSurface2"]
-position = Vector2(80, 8)
-shape = SubResource("RectangleShape2D_nyp2n")
-one_way_collision = true
-debug_color = Color(0, 1, 1, 0.501961)
+[node name="Platform2" parent="Platforms" instance=ExtResource("11_vnfip")]
+position = Vector2(3048, 2048)
+endPosition = Vector2(0, 0)
 
 [node name="Entity" type="Node2D" parent="."]
 
@@ -583,11 +591,6 @@ size = Vector2(3, 1)
 orientation = 1
 rightLayer = 1
 
-[node name="WaterLevel" parent="Entity" instance=ExtResource("16_vnd45")]
-z_index = 100
-position = Vector2(1600, 2400)
-isStatic = true
-
 [node name="Spring13" parent="Entity" instance=ExtResource("15_jil2h")]
 position = Vector2(3024, 2968)
 
@@ -596,12 +599,15 @@ position = Vector2(3056, 2968)
 
 [node name="BubbleGenerator" parent="Entity" instance=ExtResource("18_xhojg")]
 position = Vector2(1824, 2744)
+distance = 10.0
 
 [node name="BubbleGenerator2" parent="Entity" instance=ExtResource("18_xhojg")]
 position = Vector2(2936, 2920)
+distance = 14.0
 
 [node name="BubbleGenerator3" parent="Entity" instance=ExtResource("18_xhojg")]
 position = Vector2(4096, 3048)
+distance = 18.0
 
 [node name="Spring15" parent="Entity" instance=ExtResource("15_jil2h")]
 position = Vector2(3632, 2776)
@@ -612,6 +618,64 @@ position = Vector2(4400, 2392)
 [node name="Spring17" parent="Entity" instance=ExtResource("15_jil2h")]
 position = Vector2(2944, 2216)
 type = 1
+
+[node name="Water" type="Node2D" parent="."]
+
+[node name="WaterBody" parent="Water" instance=ExtResource("18_7q4qf")]
+position = Vector2(1472, 2400)
+
+[node name="WaterShape" parent="Water/WaterBody" index="0"]
+polygon = PackedVector2Array(0, 0, 1696, 0, 2144, 5, 2752, 5, 2752, 96, 2944, 96, 2944, 992, 0, 992)
+
+[node name="WaterSurface" parent="Water" instance=ExtResource("19_b6fxe")]
+position = Vector2(1824, 2408)
+
+[node name="Detection" parent="Water/WaterSurface/Rotation" index="0"]
+position = Vector2(512, -12)
+shape = SubResource("RectangleShape2D_65ftu")
+
+[node name="CollisionShape2D" parent="Water/WaterSurface" index="1"]
+position = Vector2(504, 0)
+shape = SubResource("RectangleShape2D_osr7y")
+one_way_collision_margin = 2.0
+
+[node name="Water" parent="Water/WaterSurface" index="2"]
+position = Vector2(496, -5)
+region_rect = Rect2(0, 0, 1712, 16)
+
+[node name="WaterSurface2" parent="Water" instance=ExtResource("19_b6fxe")]
+position = Vector2(3936, 2408)
+
+[node name="Detection" parent="Water/WaterSurface2/Rotation" index="0"]
+position = Vector2(-16, -12)
+shape = SubResource("RectangleShape2D_mxfob")
+
+[node name="CollisionShape2D" parent="Water/WaterSurface2" index="1"]
+position = Vector2(-16, 0)
+shape = SubResource("RectangleShape2D_v3x85")
+one_way_collision_margin = 2.0
+
+[node name="Water" parent="Water/WaterSurface2" index="2"]
+position = Vector2(-16, -2)
+region_rect = Rect2(0, 0, 608, 16)
+
+[node name="WaterBody2" parent="Water" instance=ExtResource("18_7q4qf")]
+position = Vector2(2752, 2048)
+
+[node name="WaterShape" parent="Water/WaterBody2" index="0"]
+polygon = PackedVector2Array(0, 0, 352, 0, 352, 80, 240, 80, 240, 176, 144, 176, 144, 80, 0, 80)
+
+[node name="WaterSurface3" parent="Water" instance=ExtResource("19_b6fxe")]
+position = Vector2(2928, 2056)
+
+[node name="Detection" parent="Water/WaterSurface3/Rotation" index="0"]
+shape = SubResource("RectangleShape2D_xreqc")
+
+[node name="CollisionShape2D" parent="Water/WaterSurface3" index="1"]
+shape = SubResource("RectangleShape2D_1ytxw")
+
+[node name="Water" parent="Water/WaterSurface3" index="2"]
+region_rect = Rect2(0, 0, 352, 16)
 
 [connection signal="body_entered" from="Platforms/MCZCollapsePlatform4" to="Platforms/MCZCollapsePlatform4" method="_on_body_entered"]
 [connection signal="body_exited" from="Platforms/MCZCollapsePlatform4" to="Platforms/MCZCollapsePlatform4" method="_on_body_exited"]
@@ -632,3 +696,9 @@ type = 1
 [connection signal="pressed" from="Entity/Switch" to="Entity/Shutter" method="force_open"]
 [connection signal="pressed" from="Entity/Switch" to="Entity/Shutter3" method="force_open"]
 [connection signal="pressed" from="Entity/Switch2" to="Entity/Shutter2" method="force_open"]
+
+[editable path="Water/WaterBody"]
+[editable path="Water/WaterSurface"]
+[editable path="Water/WaterSurface2"]
+[editable path="Water/WaterBody2"]
+[editable path="Water/WaterSurface3"]

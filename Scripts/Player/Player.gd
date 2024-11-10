@@ -50,6 +50,8 @@ var pushingWall = 0
 
 var enemyCounter = 0
 
+var splash_rotation = 0 #For water bodies
+
 var character = Global.CHARACTERS.SONIC
 
 # physics list
@@ -663,7 +665,7 @@ func _physics_process(delta):
 	# damage mask bit
 	set_collision_layer_value(20,attacking)
 	# water surface running
-	set_collision_mask_value(23,ground and abs(groundSpeed) >= 7*60 and !water)
+	set_collision_mask_value(23,ground and abs(groundSpeed) >= 10*60 and !water)
 	
 	if (ground):
 		groundSpeed = movement.x
@@ -787,36 +789,36 @@ func _physics_process(delta):
 			# change to center offset if the center position is different
 			$HitBox.position = centerReference.position
 	
-	# Water
-	if Global.waterLevel != null and currentState != STATES.DIE:
-		# Enter water
-		if global_position.y > Global.waterLevel and !water:
-			water = true
-			switch_physics()
-			movement.x *= 0.5
-			movement.y *= 0.25
-			if currentState != STATES.RESPAWN:
-				sfx[17].play()
-				var splash = Particle.instantiate()
-				splash.behaviour = splash.TYPE.FOLLOW_WATER_SURFACE
-				splash.global_position = Vector2(global_position.x,Global.waterLevel-16)
-				splash.play("Splash")
-				splash.z_index = sprite.z_index+10
-				get_parent().add_child(splash)
-			
-			# Elec shield/Fire shield logic is in HUD script (related to screen flashing)
-		# Exit water
-		if global_position.y < Global.waterLevel and water:
-			water = false
-			switch_physics()
-			movement.y *= 2
-			sfx[17].play()
-			var splash = Particle.instantiate()
-			splash.behaviour = splash.TYPE.FOLLOW_WATER_SURFACE
-			splash.global_position = Vector2(global_position.x,Global.waterLevel-16)
-			splash.play("Splash")
-			splash.z_index = sprite.z_index+10
-			get_parent().add_child(splash)
+	##old Water system
+	#if Global.waterLevel != null and currentState != STATES.DIE:
+		## Enter water
+		#if global_position.y > Global.waterLevel and !water:
+			#water = true
+			#switch_physics()
+			#movement.x *= 0.5
+			#movement.y *= 0.25
+			#if currentState != STATES.RESPAWN:
+				#sfx[17].play()
+				#var splash = Particle.instantiate()
+				#splash.behaviour = splash.TYPE.FOLLOW_WATER_SURFACE
+				#splash.global_position = Vector2(global_position.x,Global.waterLevel-16)
+				#splash.play("Splash")
+				#splash.z_index = sprite.z_index+10
+				#get_parent().add_child(splash)
+			#
+			## Elec shield/Fire shield logic is in HUD script (related to screen flashing)
+		## Exit water
+		#if global_position.y < Global.waterLevel and water:
+			#water = false
+			#switch_physics()
+			#movement.y *= 2
+			#sfx[17].play()
+			#var splash = Particle.instantiate()
+			#splash.behaviour = splash.TYPE.FOLLOW_WATER_SURFACE
+			#splash.global_position = Vector2(global_position.x,Global.waterLevel-16)
+			#splash.play("Splash")
+			#splash.z_index = sprite.z_index+10
+			#get_parent().add_child(splash)
 	
 	# We don't check for crushing if the player is in an invulnerable state (note that invulernable means immune to crushing/death by falling)
 	if !stateList[currentState].get_state_invulnerable():
@@ -1323,6 +1325,8 @@ func _on_BubbleTimer_timeout():
 			bub.queue_free()
 			$BubbleTimer.start(max(randf()*3,0.5))
 		get_parent().add_child(bub)
+		bub.despawn.wait_time = 0.5
+		bub.despawn.start()
 
 # player actions
 

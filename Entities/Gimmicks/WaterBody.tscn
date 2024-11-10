@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=3 uid="uid://dx3k8lavv141w"]
+
+[ext_resource type="Script" path="res://Scripts/Gimmicks/WaterBody.gd" id="1_3gmia"]
+[ext_resource type="Material" uid="uid://dwab1f6rrtvy1" path="res://Shaders/WaterPalette.tres" id="2_b074p"]
+
+[node name="WaterBody" type="Area2D"]
+material = ExtResource("2_b074p")
+collision_layer = 0
+collision_mask = 4096
+script = ExtResource("1_3gmia")
+
+[node name="WaterShape" type="CollisionPolygon2D" parent="."]
+polygon = PackedVector2Array(0, 0, 200, 0, 200, 200, 0, 200)
+
+[node name="Polygon2D" type="Polygon2D" parent="WaterShape"]
+z_index = 100
+material = ExtResource("2_b074p")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

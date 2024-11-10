@@ -1,0 +1,39 @@
+[gd_scene load_steps=5 format=3 uid="uid://ciui5esi1fvv5"]
+
+[ext_resource type="Script" path="res://Scripts/Gimmicks/WaterSurface.gd" id="1_2tpjc"]
+[ext_resource type="Texture2D" uid="uid://bn7jec7ob5rft" path="res://Graphics/Gimmicks/WaterSurface1.png" id="1_4a308"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_cn6nv"]
+resource_local_to_scene = true
+size = Vector2(256, 50)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_uwnfg"]
+resource_local_to_scene = true
+size = Vector2(256, 16)
+
+[node name="WaterSurface" type="StaticBody2D"]
+collision_layer = 4194304
+collision_mask = 4194304
+script = ExtResource("1_2tpjc")
+
+[node name="Rotation" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4096
+
+[node name="Detection" type="CollisionShape2D" parent="Rotation"]
+position = Vector2(0, -12)
+shape = SubResource("RectangleShape2D_cn6nv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_uwnfg")
+one_way_collision = true
+debug_color = Color(0, 1, 1, 0.501961)
+
+[node name="Water" type="Sprite2D" parent="."]
+z_index = 15
+position = Vector2(0, -5)
+texture = ExtResource("1_4a308")
+region_enabled = true
+region_rect = Rect2(0, 0, 256, 16)
+
+[connection signal="body_entered" from="Rotation" to="." method="_on_rotation_body_entered"]

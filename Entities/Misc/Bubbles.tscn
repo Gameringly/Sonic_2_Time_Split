@@ -331,11 +331,15 @@ disabled = true
 [node name="Bubble" type="AnimatedSprite2D" parent="."]
 z_index = 6
 sprite_frames = SubResource("19")
-frame = 2
 
 [node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
 scale = Vector2(1.6, 12.8)
 
+[node name="DespawnTimer" type="Timer" parent="."]
+wait_time = 0.5
+one_shot = true
+
 [connection signal="body_entered" from="BubbleCollect" to="." method="_on_BubbleCollect_body_entered"]
 [connection signal="animation_finished" from="Bubble" to="." method="_on_Bubble_animation_finished"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
+[connection signal="timeout" from="DespawnTimer" to="." method="_on_despawn_timer_timeout"]

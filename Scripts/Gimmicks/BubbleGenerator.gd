@@ -2,15 +2,18 @@ extends Node2D
 
 # Note: big bubble has been adjusted and does not follow the original games behaviour
 
+@export var distance = 5.0
+
 var bubbleTimer = 0
 var bigBubbleTimer = 10
 var Bubble = preload("res://Entities/Misc/Bubbles.tscn")
 
+
 func _process(delta):
-	if Global.waterLevel != null:
-		visible = global_position.y > Global.waterLevel
-	else:
-		visible = false
+	#if Global.waterLevel != null:
+	visible = true#global_position.y > Global.waterLevel
+	#else:
+	#	visible = false
 	
 	# Since visibility is tied to water level, bubbles only generate when below water level
 	if visible:
@@ -23,6 +26,8 @@ func _process(delta):
 			# pick either 0 or 1 for the bubble type
 			bubble.bubbleType = int(round(randf()))
 			add_child(bubble)
+			bubble.despawn.wait_time = distance
+			bubble.despawn.start()
 			bubble.global_position = global_position
 		
 		# Big bubble generator
@@ -35,5 +40,7 @@ func _process(delta):
 			# set type to 2 for big bubbles
 			bubble.bubbleType = 2
 			add_child(bubble)
+			bubble.despawn.wait_time = distance
+			bubble.despawn.start()
 			bubble.global_position = global_position
 		
