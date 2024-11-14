@@ -1270,12 +1270,12 @@ func cam_update(forceMove = false):
 	if camLockTime <= 0 and (forceMove or camera.global_position.distance_to(getPos) <= 16):
 		# limit_length speed camera
 		#Sonic CD camera extension
-		if abs(movement.x) > (10*60) and sign(movement.x) == 1 and animator.current_animation != "topKick":
-			camera.global_position.x = move_toward(camera.global_position.x,getPos.x+128,32*60*get_physics_process_delta_time())
-			camera.global_position.y = move_toward(camera.global_position.y,getPos.y,32*60*get_physics_process_delta_time())
-		elif abs(movement.x) > (10*60) and sign(movement.x) == -1 and animator.current_animation != "topKick":
-			camera.global_position.x = move_toward(camera.global_position.x,getPos.x-128,32*60*get_physics_process_delta_time())
-			camera.global_position.y = move_toward(camera.global_position.y,getPos.y,32*60*get_physics_process_delta_time())
+		if abs(movement.x) > (8*60) and sign(movement.x) == 1 and animator.current_animation != "topKick":
+			camera.global_position.x = move_toward(camera.global_position.x,getPos.x+128,24*60*get_physics_process_delta_time())
+			camera.global_position.y = move_toward(camera.global_position.y,getPos.y,24*60*get_physics_process_delta_time())
+		elif abs(movement.x) > (8*60) and sign(movement.x) == -1 and animator.current_animation != "topKick":
+			camera.global_position.x = move_toward(camera.global_position.x,getPos.x-128,24*60*get_physics_process_delta_time())
+			camera.global_position.y = move_toward(camera.global_position.y,getPos.y,24*60*get_physics_process_delta_time())
 		else:
 			camera.global_position.x = move_toward(camera.global_position.x,getPos.x,16*60*get_physics_process_delta_time())
 		camera.global_position.y = move_toward(camera.global_position.y,getPos.y,16*60*get_physics_process_delta_time())

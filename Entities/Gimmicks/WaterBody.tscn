@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dx3k8lavv141w"]
 
 [ext_resource type="Script" path="res://Scripts/Gimmicks/WaterBody.gd" id="1_3gmia"]
-[ext_resource type="Material" uid="uid://dwab1f6rrtvy1" path="res://Shaders/WaterPalette.tres" id="2_b074p"]
+[ext_resource type="Material" uid="uid://uh2c8jbp8qwd" path="res://Shaders/WaterPalette.tres" id="2_b074p"]
 
 [node name="WaterBody" type="Area2D"]
 material = ExtResource("2_b074p")
