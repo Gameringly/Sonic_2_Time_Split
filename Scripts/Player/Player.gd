@@ -589,7 +589,9 @@ func _process(delta):
 		
 	# Time over
 	if Global.levelTime >= Global.maxTime:
-		kill(true)
+		#kill(true)
+		pass
+		####UNCOMMENT THIS TO RENABLE TIME OVER
 		
 	
 	# Water timer
@@ -665,7 +667,7 @@ func _physics_process(delta):
 	# damage mask bit
 	set_collision_layer_value(20,attacking)
 	# water surface running
-	set_collision_mask_value(23,ground and abs(groundSpeed) >= 10*60 and !water)
+	set_collision_mask_value(23,abs(movement.x) >= 10*60 and !water)
 	
 	if (ground):
 		groundSpeed = movement.x
@@ -1385,19 +1387,21 @@ func action_water_run_handle():
 	var colCheck = move_and_collide(Vector2.DOWN.rotated(rotation),true)
 	if colCheck:
 		touchWater = colCheck.get_collider().get_collision_layer_value(23)
-		angle = 0 #fix issue where you cant jump if you enter water run from a slope
-	
+	if waterRun and abs(movement.x) < 10*60:
+		waterRun = false
+	if waterRun or (get_collision_mask_value(23) and touchWater) and ground:
+		# enable dash dust if touching water
+		dash.visible = true
+		dash.scale.x = sign(movement.x)
+		dash.position.y = $HitBox.shape.size.y/2.0
 
-	# enable dash dust if touching water
-	dash.visible = (get_collision_mask_value(23) and touchWater and ground)
-	dash.scale.x = sign(movement.x)
-	dash.position.y = $HitBox.shape.size.y/2.0
-
-	# play water run sound
-	if get_collision_mask_value(23) and touchWater and ground:
+		# play water run sound
 		if !sfx[29].playing:
 			sfx[29].play()
+		#else:
+		#	sfx[29].stop()
 	else:
+		dash.visible = false
 		sfx[29].stop()
 
 func handle_animation_speed(gSpeed = groundSpeed):
@@ -1419,3 +1423,15 @@ func handle_animation_speed(gSpeed = groundSpeed):
 			animator.speed_scale = -movement.y/(40.0*(1.0+float(isSuper)))
 		_:
 			animator.speed_scale = 1
+
+
+func _on_check_water_surface_body_entered(body: Node2D) -> void:
+	if ground and abs(movement.x) >= 10*60 and !water:
+		waterRun = true
+	else:
+		waterRun = false
+
+
+func _on_check_ground_surface_body_entered(body: Node2D) -> void:
+	if waterRun:
+		waterRun = false

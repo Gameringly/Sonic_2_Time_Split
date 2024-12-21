@@ -124,6 +124,9 @@ func _process(_delta):
 						# play dropDash sound
 						parent.animator.play("dropDash")
 						
+	#disable water run effects
+	parent.waterRun = false
+	parent.action_water_run_handle()
 
 
 func _physics_process(delta):

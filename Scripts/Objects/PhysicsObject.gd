@@ -27,6 +27,7 @@ var groundLookDistance = 14 # how far down to look
 var movement = velocity+Vector2(0.00001,0) # this is a band aid fix, physics objects have something triggered to make them work but it only happens when moving horizontally, so the solution for now is to have it add a unnoticeable amount of x movement
 var ground = true
 var roof = false
+var waterRun = false
 var moveStepLength = 8*60
 # angle is the rotation based on the floor normal
 var angle = 0
@@ -167,6 +168,10 @@ func update_sensors():
 		i.set_collision_mask_value(2,i.target_position.rotated(rotationSnap).x > 0)
 		i.set_collision_mask_value(3,i.target_position.rotated(rotationSnap).x < 0)
 		i.set_collision_mask_value(4,i.target_position.rotated(rotationSnap).y < 0)
+		if waterRun:
+			i.set_collision_mask_value(23,i.target_position.rotated(rotationSnap).y > 0)
+		else:
+			i.set_collision_mask_value(23,false)
 		# reset layer masks
 		i.set_collision_mask_value(5,false)
 		i.set_collision_mask_value(6,false)
@@ -263,7 +268,7 @@ func _physics_process(delta):
 				var _col = move_and_collide(rayHitVec-(normHitVec*($HitBox.shape.size.y/2))-Vector2(0,yGroundDiff).rotated(rotation))
 			else:
 				
-				#I'm not really sure what this does but commenting it out seems to imrpove collision slightly
+				#I'm not really sure what this does but commenting it out seems to improve not falling off slopes
 				
 				# Do a check that we're not in the middle of a rotation, otherwise the player can get caught on outter curves (more noticable on higher physics frame rates)
 		#		if snap_angle(angle) == snap_angle(rotation):
