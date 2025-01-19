@@ -6,7 +6,7 @@
 [node name="WaterBody" type="Area2D"]
 material = ExtResource("2_b074p")
 collision_layer = 0
-collision_mask = 4096
+collision_mask = 12288
 script = ExtResource("1_3gmia")
 
 [node name="WaterShape" type="CollisionPolygon2D" parent="."]
@@ -16,5 +16,6 @@ polygon = PackedVector2Array(0, 0, 200, 0, 200, 200, 0, 200)
 z_index = 100
 material = ExtResource("2_b074p")
 
+[connection signal="area_exited" from="." to="." method="_on_area_exited"]
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="body_exited" from="." to="." method="_on_body_exited"]

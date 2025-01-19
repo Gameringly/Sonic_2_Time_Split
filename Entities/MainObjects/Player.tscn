@@ -1,4 +1,4 @@
-[gd_scene load_steps=197 format=3 uid="uid://cioq5saowvqxj"]
+[gd_scene load_steps=198 format=3 uid="uid://cioq5saowvqxj"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://d1e4muavtnun6" path="res://Graphics/Players/PlayerAnimations/Sonic.tscn" id="2"]
@@ -1197,6 +1197,9 @@ size = Vector2(50, 3)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_a64by"]
 size = Vector2(50, 3)
 
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4rbs3"]
+size = Vector2(18, 37)
+
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 4096
 collision_mask = 8192
@@ -1565,6 +1568,14 @@ collision_mask = 4095
 position = Vector2(0, 19)
 shape = SubResource("RectangleShape2D_a64by")
 
+[node name="GenerateBubbles" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4194304
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="GenerateBubbles"]
+position = Vector2(0, -0.5)
+shape = SubResource("RectangleShape2D_4rbs3")
+
 [connection signal="timeout" from="States/Fly/FlyBugStop" to="States/Fly" method="_on_FlyBugStop_timeout"]
 [connection signal="timeout" from="SkidDustTimer" to="States/Normal" method="_on_SkidDustTimer_timeout"]
 [connection signal="timeout" from="SkidDustTimer" to="States/Glide" method="_on_SkidDustTimer_timeout"]
@@ -1576,3 +1587,5 @@ shape = SubResource("RectangleShape2D_a64by")
 [connection signal="body_exited" from="TailsCarryBox" to="TailsCarryBox" method="_on_Hanger_body_exited"]
 [connection signal="body_entered" from="CheckWaterCollision/CheckWaterSurface" to="." method="_on_check_water_surface_body_entered"]
 [connection signal="body_entered" from="CheckWaterCollision/CheckGroundSurface" to="." method="_on_check_ground_surface_body_entered"]
+[connection signal="body_entered" from="GenerateBubbles" to="." method="_on_generate_bubbles_body_entered"]
+[connection signal="body_exited" from="GenerateBubbles" to="." method="_on_generate_bubbles_body_exited"]

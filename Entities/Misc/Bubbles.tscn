@@ -317,29 +317,24 @@ animations = [{
 "speed": 5.0
 }]
 
-[node name="Bubbles" type="Node2D"]
+[node name="Bubbles" type="Node2D" groups=["Bubbles"]]
 script = ExtResource("2")
 
-[node name="BubbleCollect" type="Area2D" parent="."]
-collision_layer = 0
+[node name="BubbleCollect" type="Area2D" parent="." groups=["Bubbles"]]
+collision_layer = 4202496
 collision_mask = 4096
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="BubbleCollect"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="BubbleCollect" groups=["Bubbles"]]
 shape = SubResource("1")
-disabled = true
 
-[node name="Bubble" type="AnimatedSprite2D" parent="."]
-z_index = 6
-sprite_frames = SubResource("19")
-
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="."]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="BubbleCollect" groups=["Bubbles"]]
 scale = Vector2(1.6, 12.8)
 
-[node name="DespawnTimer" type="Timer" parent="."]
-wait_time = 0.5
-one_shot = true
+[node name="Bubble" type="AnimatedSprite2D" parent="." groups=["Bubbles"]]
+z_index = 6
+sprite_frames = SubResource("19")
+animation = &"bigPop"
 
 [connection signal="body_entered" from="BubbleCollect" to="." method="_on_BubbleCollect_body_entered"]
+[connection signal="screen_exited" from="BubbleCollect/VisibleOnScreenNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
 [connection signal="animation_finished" from="Bubble" to="." method="_on_Bubble_animation_finished"]
-[connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_VisibilityNotifier2D_screen_exited"]
-[connection signal="timeout" from="DespawnTimer" to="." method="_on_despawn_timer_timeout"]

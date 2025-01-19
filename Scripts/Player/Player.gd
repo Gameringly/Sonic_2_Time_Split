@@ -230,6 +230,8 @@ var poleGrabID = null
 
 var wall_jump = false
 
+var generate_bubbles = true # for stopping air bubbles from generating when near water surface
+
 # Enemy related
 signal enemy_bounced
 
@@ -1272,10 +1274,10 @@ func cam_update(forceMove = false):
 	if camLockTime <= 0 and (forceMove or camera.global_position.distance_to(getPos) <= 16):
 		# limit_length speed camera
 		#Sonic CD camera extension
-		if abs(movement.x) > (8*60) and sign(movement.x) == 1 and animator.current_animation != "topKick":
+		if abs(movement.x) > (8*60) and sign(movement.x) == 1:
 			camera.global_position.x = move_toward(camera.global_position.x,getPos.x+128,24*60*get_physics_process_delta_time())
 			camera.global_position.y = move_toward(camera.global_position.y,getPos.y,24*60*get_physics_process_delta_time())
-		elif abs(movement.x) > (8*60) and sign(movement.x) == -1 and animator.current_animation != "topKick":
+		elif abs(movement.x) > (8*60) and sign(movement.x) == -1:
 			camera.global_position.x = move_toward(camera.global_position.x,getPos.x-128,24*60*get_physics_process_delta_time())
 			camera.global_position.y = move_toward(camera.global_position.y,getPos.y,24*60*get_physics_process_delta_time())
 		else:
@@ -1311,7 +1313,7 @@ func snap_camera_to_limits():
 
 # Water bubble timer
 func _on_BubbleTimer_timeout():
-	if water:
+	if water and generate_bubbles == true:
 		# Generate Bubble
 		var bub = Bubble.instantiate()
 		bub.z_index = z_index+3
@@ -1327,8 +1329,6 @@ func _on_BubbleTimer_timeout():
 			bub.queue_free()
 			$BubbleTimer.start(max(randf()*3,0.5))
 		get_parent().add_child(bub)
-		bub.despawn.wait_time = 0.5
-		bub.despawn.start()
 
 # player actions
 
@@ -1435,3 +1435,11 @@ func _on_check_water_surface_body_entered(body: Node2D) -> void:
 func _on_check_ground_surface_body_entered(body: Node2D) -> void:
 	if waterRun:
 		waterRun = false
+
+
+func _on_generate_bubbles_body_entered(body: Node2D) -> void:
+	generate_bubbles = false
+
+
+func _on_generate_bubbles_body_exited(body: Node2D) -> void:
+	generate_bubbles = true
