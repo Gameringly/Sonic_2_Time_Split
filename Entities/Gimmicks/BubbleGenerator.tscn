@@ -42,5 +42,5 @@ autoplay = "default"
 frame = 2
 
 [node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
-position = Vector2(0, -603)
-scale = Vector2(1, 61.3)
+position = Vector2(0, -115)
+scale = Vector2(1, 12.5)

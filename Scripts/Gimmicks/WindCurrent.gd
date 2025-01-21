@@ -74,5 +74,3 @@ func _on_WindCurrent_body_exited(body):
 		# emit signal for players exiting (can be used for giant fans)
 		if players.size() == 0:
 			emit_signal("all_players_exited")
-
-
