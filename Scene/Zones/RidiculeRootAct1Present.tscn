@@ -1,7 +1,8 @@
-[gd_scene load_steps=63 format=4 uid="uid://bs3hspm6s6dya"]
+[gd_scene load_steps=64 format=4 uid="uid://bs3hspm6s6dya"]
 
 [ext_resource type="Script" path="res://Scripts/Level/Level.gd" id="1_ani82"]
 [ext_resource type="PackedScene" uid="uid://bjavywoj00j1j" path="res://Scene/Zones/BaseZoneAct2.tscn" id="2_8jej2"]
+[ext_resource type="AudioStream" uid="uid://b0fab11y3e4tg" path="res://Audio/Soundtrack/Ridicule Root Present V3.ogg" id="2_k0cx1"]
 [ext_resource type="PackedScene" uid="uid://c30uceea18q1w" path="res://Entities/Misc/HUD.tscn" id="3_wqju6"]
 [ext_resource type="Texture2D" uid="uid://bemwlrblbgn23" path="res://Graphics/Backgrounds/WorldsBackground.png" id="4_2mvcw"]
 [ext_resource type="PackedScene" uid="uid://cioq5saowvqxj" path="res://Entities/MainObjects/Player.tscn" id="5_bfimh"]
@@ -200,9 +201,10 @@ size = Vector2(352, 16)
 
 [node name="RidiculeRoot" type="Node2D"]
 script = ExtResource("1_ani82")
+music = ExtResource("2_k0cx1")
 nextZone = ExtResource("2_8jej2")
 animal1 = 2
-animal2 = 3
+animal2 = 9
 defaultLeftBoundry = -500
 defaultTopBoundry = -635
 defaultRightBoundry = 20800
@@ -2070,6 +2072,7 @@ position = Vector2(16160, 2104)
 
 [node name="Spring74" parent="Entity" instance=ExtResource("15_jil2h")]
 position = Vector2(15776, 768)
+type = 1
 springDirection = 4
 
 [node name="GoalPost" parent="Entity" instance=ExtResource("22_cf83b")]

@@ -1,0 +1,19 @@
+[remap]
+
+importer="oggvorbisstr"
+type="AudioStreamOggVorbis"
+uid="uid://b0fab11y3e4tg"
+path="res://.godot/imported/Ridicule Root Present V3.ogg-4af960b4b0d742a36291c1307e6f5d5e.oggvorbisstr"
+
+[deps]
+
+source_file="res://Audio/Soundtrack/Ridicule Root Present V3.ogg"
+dest_files=["res://.godot/imported/Ridicule Root Present V3.ogg-4af960b4b0d742a36291c1307e6f5d5e.oggvorbisstr"]
+
+[params]
+
+loop=true
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4
