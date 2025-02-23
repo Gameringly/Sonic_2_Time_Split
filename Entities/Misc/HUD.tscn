@@ -1,8 +1,9 @@
-[gd_scene load_steps=29 format=3 uid="uid://c30uceea18q1w"]
+[gd_scene load_steps=35 format=3 uid="uid://c30uceea18q1w"]
 
 [ext_resource type="Texture2D" uid="uid://dloxtqer7p78l" path="res://Graphics/HUD/hud_lives.png" id="2_cfvjc"]
 [ext_resource type="Material" uid="uid://bveqi5m5ihsgj" path="res://Shaders/PlayerPalette.tres" id="2_xy7bp"]
 [ext_resource type="FontFile" uid="uid://cj70hn8i05uo5" path="res://Graphics/HUD/hud_lives_numerals.png" id="3_eauoj"]
+[ext_resource type="Texture2D" uid="uid://d3l5wu5u0kk4l" path="res://Graphics/HUD/time_plates.png" id="5_jc2d5"]
 [ext_resource type="Texture2D" uid="uid://c7d6313minexh" path="res://Graphics/HUD/hud_text.png" id="5_kre34"]
 [ext_resource type="Script" path="res://Scripts/Misc/HUD.gd" id="6"]
 [ext_resource type="FontFile" uid="uid://cticydrc4dda2" path="res://Graphics/HUD/hud_numerals.png" id="6_synv7"]
@@ -15,6 +16,71 @@
 [ext_resource type="Material" uid="uid://uh2c8jbp8qwd" path="res://Shaders/WaterPalette.tres" id="13_1ly2g"]
 [ext_resource type="AudioStream" uid="uid://dh4rsaka62ph4" path="res://Audio/SFX/Gimmicks/Switch.wav" id="16"]
 [ext_resource type="AudioStream" uid="uid://clgobastngtvy" path="res://Audio/SFX/Misc/Score.wav" id="17"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_644ac"]
+atlas = ExtResource("5_jc2d5")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ob5ll"]
+atlas = ExtResource("5_jc2d5")
+region = Rect2(32, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_i8m78"]
+atlas = ExtResource("5_jc2d5")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_k157t"]
+atlas = ExtResource("5_jc2d5")
+region = Rect2(0, 0, 32, 16)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6repv"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"Empty",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_644ac")
+}],
+"loop": false,
+"name": &"Future",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ob5ll")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"FutureFade",
+"speed": 60.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_i8m78")
+}],
+"loop": false,
+"name": &"Past",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_k157t")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"PastFade",
+"speed": 60.0
+}]
 
 [sub_resource type="Animation" id="5"]
 length = 0.001
@@ -701,6 +767,12 @@ offset_bottom = 8.0
 theme_override_fonts/font = ExtResource("3_eauoj")
 text = "0"
 
+[node name="TimePlate" type="AnimatedSprite2D" parent="LifeCounter"]
+position = Vector2(72, 8)
+sprite_frames = SubResource("SpriteFrames_6repv")
+animation = &"Empty"
+autoplay = "Empty"
+
 [node name="Counters" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
@@ -853,9 +925,8 @@ anchor_left = 1.0
 anchor_top = 0.003
 anchor_right = 1.0
 anchor_bottom = 0.003
-offset_left = -32.0
 offset_top = -12.352
-offset_right = 4384.0
+offset_right = 4448.0
 offset_bottom = 243.648
 grow_horizontal = 0
 grow_vertical = 2
@@ -889,9 +960,9 @@ size_flags_vertical = 2
 [node name="Passed" type="Label" parent="LevelClear"]
 layout_mode = 0
 offset_left = -256.0
-offset_top = 64.0
+offset_top = 56.0
 offset_right = -103.0
-offset_bottom = 90.0
+offset_bottom = 82.0
 theme_override_fonts/font = ExtResource("10_8dyi8")
 text = "SONIC got"
 uppercase = true
@@ -899,9 +970,9 @@ uppercase = true
 [node name="Through" type="Label" parent="LevelClear"]
 layout_mode = 0
 offset_left = -256.0
-offset_top = 108.0
+offset_top = 80.0
 offset_right = -137.0
-offset_bottom = 134.0
+offset_bottom = 106.0
 theme_override_fonts/font = ExtResource("10_8dyi8")
 text = "through"
 uppercase = true

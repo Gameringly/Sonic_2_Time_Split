@@ -4,6 +4,8 @@ extends Node2D
 # last scene is used for referencing the current scene (this is used for stage restarting)
 var lastScene = null
 
+@onready var fader = $GUI/Fader
+
 # this gets emited when the scene fades, used to load in level details and data to hide it from the player
 signal scene_faded
 # signal that emits when volume fades

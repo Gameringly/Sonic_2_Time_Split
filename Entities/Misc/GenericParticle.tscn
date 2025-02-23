@@ -1,4 +1,4 @@
-[gd_scene load_steps=88 format=3 uid="uid://dmrtm7r6hfbfr"]
+[gd_scene load_steps=94 format=3 uid="uid://dmrtm7r6hfbfr"]
 
 [ext_resource type="Texture2D" uid="uid://bihgasvpr4jyb" path="res://Graphics/Items/invincible_stars.png" id="1"]
 [ext_resource type="Script" path="res://Scripts/Misc/FreeOnAnimationCompletion.gd" id="2"]
@@ -9,6 +9,7 @@
 [ext_resource type="Texture2D" uid="uid://c3em2xm0y2fip" path="res://Graphics/Items/Rings/RingSparkle.png" id="7"]
 [ext_resource type="Texture2D" uid="uid://cciqyn4fgs3st" path="res://Graphics/Enemies/MotobugSmoke.png" id="8"]
 [ext_resource type="Texture2D" uid="uid://ckc0rilx6w0dq" path="res://Graphics/Misc/explosion3.png" id="9"]
+[ext_resource type="Texture2D" uid="uid://c1wql13bws0sc" path="res://Graphics/Items/time_warp_stars.png" id="9_30aiu"]
 
 [sub_resource type="AtlasTexture" id="189"]
 atlas = ExtResource("9")
@@ -285,6 +286,26 @@ region = Rect2(48, 0, 48, 48)
 [sub_resource type="AtlasTexture" id="59"]
 atlas = ExtResource("6")
 region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f1vbe"]
+atlas = ExtResource("9_30aiu")
+region = Rect2(0, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rcefn"]
+atlas = ExtResource("9_30aiu")
+region = Rect2(48, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_f0p4v"]
+atlas = ExtResource("9_30aiu")
+region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_rkf21"]
+atlas = ExtResource("9_30aiu")
+region = Rect2(144, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_1foq7"]
+atlas = ExtResource("9_30aiu")
+region = Rect2(192, 0, 48, 48)
 
 [sub_resource type="AtlasTexture" id="108"]
 atlas = ExtResource("1")
@@ -594,6 +615,26 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_f1vbe")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rcefn")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_f0p4v")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rkf21")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_1foq7")
+}],
+"loop": false,
+"name": &"TimeStar",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("108")
 }, {
 "duration": 1.0,
@@ -624,7 +665,7 @@ animations = [{
 
 [node name="GenericParticle" type="AnimatedSprite2D"]
 sprite_frames = SubResource("157")
-animation = &"Splash"
+animation = &"Super"
 script = ExtResource("2")
 
 [connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

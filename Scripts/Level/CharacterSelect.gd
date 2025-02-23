@@ -87,7 +87,7 @@ func _input(event):
 				0: # Base Zone Act 1
 					Global.nextZone = load("res://Scene/Zones/BaseZone.tscn") # unnecessary since it's arleady set
 				1: # Base Zone Act 2
-					Global.nextZone = load("res://Scene/Zones/RidiculeRootAct1Present.tscn") # Replace me! I don't exist yet!
+					Global.nextZone = load("res://Scene/Zones/RidiculeRootAct1.tscn") # Replace me! I don't exist yet!
 				#2: # Chunk Zone Act 1
 				#	Global.nextZone = load("res://Scene/Zones/ChunkZone.tscn")
 			

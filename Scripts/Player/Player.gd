@@ -235,6 +235,11 @@ var generate_bubbles = true # for stopping air bubbles from generating when near
 # Enemy related
 signal enemy_bounced
 
+#Time Travel
+var timeWarp = ""
+var warpTime = 300
+var warping = false
+
 func _ready():
 	super()
 	# Disable and enable states
@@ -793,37 +798,6 @@ func _physics_process(delta):
 			# change to center offset if the center position is different
 			$HitBox.position = centerReference.position
 	
-	##old Water system
-	#if Global.waterLevel != null and currentState != STATES.DIE:
-		## Enter water
-		#if global_position.y > Global.waterLevel and !water:
-			#water = true
-			#switch_physics()
-			#movement.x *= 0.5
-			#movement.y *= 0.25
-			#if currentState != STATES.RESPAWN:
-				#sfx[17].play()
-				#var splash = Particle.instantiate()
-				#splash.behaviour = splash.TYPE.FOLLOW_WATER_SURFACE
-				#splash.global_position = Vector2(global_position.x,Global.waterLevel-16)
-				#splash.play("Splash")
-				#splash.z_index = sprite.z_index+10
-				#get_parent().add_child(splash)
-			#
-			## Elec shield/Fire shield logic is in HUD script (related to screen flashing)
-		## Exit water
-		#if global_position.y < Global.waterLevel and water:
-			#water = false
-			#switch_physics()
-			#movement.y *= 2
-			#sfx[17].play()
-			#var splash = Particle.instantiate()
-			#splash.behaviour = splash.TYPE.FOLLOW_WATER_SURFACE
-			#splash.global_position = Vector2(global_position.x,Global.waterLevel-16)
-			#splash.play("Splash")
-			#splash.z_index = sprite.z_index+10
-			#get_parent().add_child(splash)
-	
 	# We don't check for crushing if the player is in an invulnerable state (note that invulernable means immune to crushing/death by falling)
 	if !stateList[currentState].get_state_invulnerable():
 		var crushSensorLeft = $CrushSensorLeft
@@ -845,6 +819,36 @@ func _physics_process(delta):
 		if (crushSensorUp.get_overlapping_areas() + crushSensorUp.get_overlapping_bodies()).size() > 0 and \
 			(crushSensorDown.get_overlapping_areas() + crushSensorDown.get_overlapping_bodies()).size() > 0 and (!translate or visible):
 			kill()
+	
+	#Time Travel
+	if playerControl == 1: #trigger starting the countdown
+		if ground and abs(movement.x) >= 6*60 and timeWarp != "":
+			warping = true
+		elif ground and abs(movement.x) < 6*60 and timeWarp != "":
+			loose_time_warp()
+	
+	if warping: #countdown to time travel
+		warpTime -= 1
+		supTime = 0.1
+		if warpTime <= 120 and get_parent().hud.timePlate.animation == "Past":
+			get_parent().hud.timePlate.play("PastFade")
+		elif warpTime <= 120 and get_parent().hud.timePlate.animation == "Future":
+			get_parent().hud.timePlate.play("FutureFade")
+		
+	if warpTime <= 0: #sucessfully time travel
+		get_parent().TimeTravel(timeWarp)
+		sfx[31].play()
+		warping = false
+		timeWarp = ""
+		warpTime = 300
+		get_parent().hud.timePlate.play("Empty")
+
+func loose_time_warp():
+	warping = false
+	if warpTime <= 120:
+		timeWarp = ""
+		get_parent().hud.timePlate.play("Empty")
+	warpTime = 300
 
 # Input buttons
 func set_inputs():
@@ -1239,6 +1243,14 @@ func _on_SparkleTimer_timeout():
 		sparkle.global_position = global_position
 		sparkle.play("Super")
 		get_parent().add_child(sparkle)
+
+func _on_warp_sparkle_timer_timeout() -> void:
+	if warping:
+		var part = Particle.instantiate()
+		part.global_position = global_position
+		part.z_index = 10
+		part.play("TimeStar")
+		get_parent().add_child(part)
 
 func on_position_changed():
 	cam_update(true)

@@ -3,6 +3,8 @@ extends Node2D
 @export var music = preload("res://Audio/Soundtrack/6. SWD_TLZa1.ogg")
 @export var nextZone = load("res://Scene/Zones/BaseZone.tscn")
 
+@export_enum("Present", "Past", "Bad Future", "Good Future") var Timezone = 0
+
 @export_enum("Bird", "Squirrel", "Rabbit", "Chicken", "Penguin", "Seal", "Pig", "Eagle", "Mouse", "Monkey", "Turtle", "Bear")var animal1 = 0
 @export_enum("Bird", "Squirrel", "Rabbit", "Chicken", "Penguin", "Seal", "Pig", "Eagle", "Mouse", "Monkey", "Turtle", "Bear")var animal2 = 1
 
@@ -17,8 +19,17 @@ extends Node2D
 @export var setDefaultBottom = true
 @export var defaultBottomBoundry = 100000000
 
+@onready var Present = $Present
+@onready var Past = $Past
+@onready var GFuture = $GoodFuture
+@onready var BFuture = $BadFuture
+
+@onready var hud = $HUD
+
 # was loaded is used for room loading, this can prevent overwriting global information, see Global.gd for more information on scene loading
 var wasLoaded = false
+
+var gotTimeStone = false
 
 func _ready():
 	# debuging
@@ -38,6 +49,10 @@ func _ready():
 		Global.hardBorderBottom  = defaultBottomBoundry
 	
 	level_reset_data(false)
+	
+	remove_child(Past)
+	remove_child(GFuture)
+	remove_child(BFuture)
 	
 	wasLoaded = true
 
@@ -64,3 +79,32 @@ func level_reset_data(playCard = true):
 	# if global hud and play card, run hud ready script
 	if playCard and is_instance_valid(Global.hud):
 		$HUD._ready()
+
+func TimeTravel(TimePeriod):
+	Global.main.fader.play("TimeWarp")
+	await Global.main.fader.animation_finished
+	if TimePeriod == "Past" and has_node("Present"):
+		remove_child(Present)
+		add_child(Past)
+		hud.lifeIcon.frame = 5
+	elif TimePeriod == "Past" and has_node("BadFuture"):
+		remove_child(BFuture)
+		add_child(Present)
+		hud.lifeIcon.frame = Global.PlayerChar1-1
+	elif TimePeriod == "Past" and has_node("GoodFuture"):
+		remove_child(GFuture)
+		add_child(Present)
+		hud.lifeIcon.frame = Global.PlayerChar1-1
+	elif TimePeriod == "Future" and has_node("Past"):
+		remove_child(Past)
+		add_child(Present)
+		hud.lifeIcon.frame = Global.PlayerChar1-1
+	elif TimePeriod == "Future" and has_node("Present") and !gotTimeStone:
+		remove_child(Present)
+		add_child(BFuture)
+		hud.lifeIcon.frame = 6
+	elif TimePeriod == "Future" and has_node("Present") and gotTimeStone:
+		remove_child(Present)
+		add_child(GFuture)
+		hud.lifeIcon.frame = 6
+	Global.main.fader.play_backwards("TimeWarp")

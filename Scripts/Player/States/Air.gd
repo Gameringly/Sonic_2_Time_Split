@@ -236,6 +236,7 @@ func _physics_process(delta):
 	
 	#wall jump
 	if parent.character == Global.CHARACTERS.SONIC and parent.horizontalSensor.is_colliding() and parent.animator.current_animation == "roll" or parent.animator.current_animation == "wallJump":
+		parent.loose_time_warp() #loose time warp for hitting wall, unrelated to wall jummp
 		var getDir = sign(parent.horizontalSensor.target_position.x)
 		if sign(parent.movement.x) == -sign(parent.horizontalSensor.target_position.x):
 			parent.animator.play("wallCling")

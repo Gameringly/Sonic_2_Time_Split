@@ -1,4 +1,4 @@
-[gd_scene load_steps=198 format=3 uid="uid://cioq5saowvqxj"]
+[gd_scene load_steps=199 format=3 uid="uid://cioq5saowvqxj"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://d1e4muavtnun6" path="res://Graphics/Players/PlayerAnimations/Sonic.tscn" id="2"]
@@ -66,6 +66,7 @@
 [ext_resource type="AudioStream" uid="uid://c2agly02ferrw" path="res://Audio/SFX/Player/WaterRun.wav" id="63_k1lus"]
 [ext_resource type="Texture2D" uid="uid://b1k615l251fu5" path="res://Graphics/Misc/WaterSurfaceSplash.png" id="64_ovmgw"]
 [ext_resource type="AudioStream" uid="uid://buu4anko53vx2" path="res://Audio/SFX/Objects/ChemJump.wav" id="65_7v2sx"]
+[ext_resource type="AudioStream" uid="uid://b7h8xfxu78cm0" path="res://Audio/SFX/Misc/TimeWarp.wav" id="66_5owx2"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 resource_local_to_scene = true
@@ -1292,6 +1293,10 @@ script = ExtResource("4")
 wait_time = 0.25
 autostart = true
 
+[node name="WarpSparkleTimer" type="Timer" parent="."]
+wait_time = 0.1
+autostart = true
+
 [node name="BubbleTimer" type="Timer" parent="."]
 autostart = true
 
@@ -1509,6 +1514,10 @@ stream = ExtResource("65_7v2sx")
 volume_db = 15.0
 bus = &"SFX"
 
+[node name="TimeTravel" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("66_5owx2")
+bus = &"SFX"
+
 [node name="CrushSensorLeft" type="Area2D" parent="."]
 position = Vector2(-8, 0)
 collision_layer = 0
@@ -1580,6 +1589,7 @@ shape = SubResource("RectangleShape2D_4rbs3")
 [connection signal="timeout" from="SkidDustTimer" to="States/Normal" method="_on_SkidDustTimer_timeout"]
 [connection signal="timeout" from="SkidDustTimer" to="States/Glide" method="_on_SkidDustTimer_timeout"]
 [connection signal="timeout" from="SparkleTimer" to="." method="_on_SparkleTimer_timeout"]
+[connection signal="timeout" from="WarpSparkleTimer" to="." method="_on_warp_sparkle_timer_timeout"]
 [connection signal="timeout" from="BubbleTimer" to="." method="_on_BubbleTimer_timeout"]
 [connection signal="frame_changed" from="Shields" to="Shields" method="_on_Shields_frame_changed"]
 [connection signal="timeout" from="Shields/ShieldTimer" to="States/Jump" method="_on_ShieldTimer_timeout"]

@@ -8,12 +8,15 @@ extends CanvasLayer
 @onready var timeText = $Counters/Text/TimeNumbers
 @onready var ringText = $Counters/Text/RingCount
 @onready var lifeText = $LifeCounter/Icon/LifeText
+@onready var lifeIcon = $LifeCounter/Icon
+@onready var timePlate = $LifeCounter/TimePlate
 
 # play level card, if true will play the level card animator and use the zone name and zone text with the act
 @export var playLevelCard = true
 @export var zoneName = "Base"
 @export var zone = "Zone"
 @export var act = 1
+
 
 # used for flashing ui elements (rings, time)
 var flashTimer = 0
@@ -44,7 +47,7 @@ func _ready():
 	Global.timerActive = false
 	Global.hud = self
 	# Set character Icon
-	$LifeCounter/Icon.frame = Global.PlayerChar1-1
+	lifeIcon.frame = Global.PlayerChar1-1
 	
 	# play level card routine if level card is true
 	if playLevelCard:
@@ -268,4 +271,3 @@ func _on_CounterCount_timeout():
 	$LevelClear/Tally/ScoreNumber.text = scoreText.text
 	$LevelClear/Tally/TimeNumbers.text = "%6d" % timeBonus
 	$LevelClear/Tally/RingNumbers.text = "%6d" % ringBonus
-	
