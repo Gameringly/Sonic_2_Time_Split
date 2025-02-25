@@ -1,7 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://4q0hpddgto2k"]
+[gd_scene load_steps=11 format=3 uid="uid://4q0hpddgto2k"]
 
 [ext_resource type="Texture2D" uid="uid://c7218f78hwl8o" path="res://Graphics/Gimmicks/springs_yellow.png" id="1"]
 [ext_resource type="Script" path="res://Scripts/Gimmicks/Spring.gd" id="2"]
+[ext_resource type="AudioStream" uid="uid://b3ieb8ay5vc2" path="res://Audio/SFX/Gimmicks/Springs.wav" id="2_pjj00"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 size = Vector2(32, 16)
@@ -149,11 +150,15 @@ disabled = true
 [node name="Spring" type="Sprite2D" parent="."]
 texture = ExtResource("1")
 region_enabled = true
-region_rect = Rect2(0, 32, 32, 16)
+region_rect = Rect2(0, 16, 32, 16)
 
 [node name="SpringAnimator" type="AnimationPlayer" parent="."]
 libraries = {
 "": SubResource("AnimationLibrary_3avuf")
 }
+
+[node name="Sproing" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_pjj00")
+bus = &"SFX"
 
 [connection signal="body_entered" from="DiagonalHitBox" to="." method="_on_Diagonal_body_entered"]

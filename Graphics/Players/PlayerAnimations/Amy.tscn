@@ -1,4 +1,4 @@
-[gd_scene load_steps=63 format=3 uid="uid://d3vtvdbdn6g8v"]
+[gd_scene load_steps=64 format=3 uid="uid://d3vtvdbdn6g8v"]
 
 [ext_resource type="Material" uid="uid://bveqi5m5ihsgj" path="res://Shaders/PlayerPalette.tres" id="1_sk1gs"]
 [ext_resource type="Texture2D" uid="uid://bfesqgvh63scg" path="res://Graphics/Players/Amy.png" id="2_vki44"]
@@ -42,6 +42,18 @@ tracks/2/keys = {
 "transitions": PackedFloat32Array(1),
 "update": 0,
 "values": [Vector2(0, 0)]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath("Amy/Sprite2D:frame")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
 }
 
 [sub_resource type="Animation" id="108"]
@@ -229,8 +241,7 @@ tracks/0/keys = {
 
 [sub_resource type="Animation" id="107"]
 resource_name = "dropDash"
-length = 0.4
-loop_mode = 1
+length = 0.5
 step = 0.05
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -239,10 +250,10 @@ tracks/0/path = NodePath("Amy/Sprite2D:frame")
 tracks/0/interp = 1
 tracks/0/loop_wrap = true
 tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35),
-"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1),
+"times": PackedFloat32Array(0, 0.05, 0.1, 0.15, 0.2, 0.25, 0.3, 0.35, 0.4),
+"transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
-"values": [240, 241, 242, 243, 244, 245, 246, 247]
+"values": [240, 241, 242, 243, 244, 245, 246, 247, 237]
 }
 tracks/1/type = "value"
 tracks/1/imported = false
@@ -1044,6 +1055,23 @@ tracks/0/keys = {
 "values": [256, 267, 266, 265, 264, 263, 262, 261, 260, 259, 258, 257]
 }
 
+[sub_resource type="Animation" id="Animation_f2436"]
+resource_name = "fall"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Amy/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [69, 70, 71]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_36uej"]
 _data = {
 "RESET": SubResource("86"),
@@ -1060,6 +1088,7 @@ _data = {
 "edge1": SubResource("104"),
 "edge2": SubResource("105"),
 "edge3": SubResource("106"),
+"fall": SubResource("Animation_f2436"),
 "grabVerticalBar": SubResource("123"),
 "grabVerticalBarOffset": SubResource("124"),
 "hammerSwing": SubResource("Animation_eeuda"),
@@ -1220,7 +1249,7 @@ autoplay = "idle"
 z_index = 5
 material = ExtResource("1_sk1gs")
 texture = ExtResource("2_vki44")
-offset = Vector2(0, -6)
+offset = Vector2(0, -7)
 hframes = 16
 vframes = 18
 

@@ -2,7 +2,7 @@ extends PhysicsObject
 const HITBOXESSONIC = {NORMAL = Vector2(9,19)*2, ROLL = Vector2(7,14)*2, CROUCH = Vector2(9,11)*2, GLIDE = Vector2(10,10)*2, HORIZONTAL = Vector2(22,9)*2}
 const HITBOXESTAILS = {NORMAL = Vector2(9,15)*2, ROLL = Vector2(7,14)*2, CROUCH = Vector2(9,9.5)*2, GLIDE = Vector2(10,10)*2, HORIZONTAL = Vector2(22,9)*2}
 const HITBOXESKNUCKLES = {NORMAL = Vector2(9,19)*2, ROLL = Vector2(7,14)*2, CROUCH = Vector2(9,11)*2, GLIDE = Vector2(10,10)*2, HORIZONTAL = Vector2(22,9)*2}
-const HITBOXESAMY = {NORMAL = Vector2(9,15)*2, ROLL = Vector2(7,11)*2, CROUCH = Vector2(9,9.5)*2, GLIDE = Vector2(10,10)*2, HORIZONTAL = Vector2(22,9)*2}
+const HITBOXESAMY = {NORMAL = Vector2(9,14)*2, ROLL = Vector2(7,14)*2, CROUCH = Vector2(9,8.5)*2, GLIDE = Vector2(10,10)*2, HORIZONTAL = Vector2(22,9)*2}
 var currentHitbox = HITBOXESSONIC
 
 #Sonic's Speed constants
@@ -813,11 +813,11 @@ func _physics_process(delta):
 		
 		# crusher deaths NOTE: the translate and visibility is used for stuff like the sky sanctuary teleporters, visibility check is for stuff like the carnival night barrels
 		if (crushSensorLeft.get_overlapping_areas() + crushSensorLeft.get_overlapping_bodies()).size() > 0 and \
-			(crushSensorRight.get_overlapping_areas() + crushSensorRight.get_overlapping_bodies()).size() > 0 and (!translate or visible):
+			(crushSensorRight.get_overlapping_areas() + crushSensorRight.get_overlapping_bodies()).size() > 0 and (!translate or visible) and ground:
 			kill()
 
 		if (crushSensorUp.get_overlapping_areas() + crushSensorUp.get_overlapping_bodies()).size() > 0 and \
-			(crushSensorDown.get_overlapping_areas() + crushSensorDown.get_overlapping_bodies()).size() > 0 and (!translate or visible):
+			(crushSensorDown.get_overlapping_areas() + crushSensorDown.get_overlapping_bodies()).size() > 0 and (!translate or visible) and ground:
 			kill()
 	
 	#Time Travel
@@ -952,7 +952,7 @@ func set_state(newState, forceMask = Vector2.ZERO):
 	
 	var forcePoseChange = Vector2.ZERO
 	
-	if (forceMask == Vector2.ZERO):
+	if (forceMask == Vector2.ZERO) and character != Global.CHARACTERS.AMY:
 		match(newState):
 			STATES.JUMP, STATES.ROLL:
 				# adjust y position
@@ -964,6 +964,20 @@ func set_state(newState, forceMask = Vector2.ZERO):
 				# change hitbox size
 				$HitBox.shape.size = currentHitbox.CROUCH
 				
+			_:
+				# adjust y position
+				forcePoseChange = ((currentHitbox.NORMAL-$HitBox.shape.size)*Vector2.UP).rotated(rotation)*0.5
+				
+				# change hitbox size
+				$HitBox.shape.size = currentHitbox.NORMAL
+	elif (forceMask == Vector2.ZERO) and character == Global.CHARACTERS.AMY:
+		match(newState):
+			STATES.ROLL:
+				# adjust y position
+				forcePoseChange = ((currentHitbox.ROLL-$HitBox.shape.size)*Vector2.UP).rotated(rotation)*0.5
+				
+				# change hitbox size
+				#$HitBox.shape.size = currentHitbox.ROLL
 			_:
 				# adjust y position
 				forcePoseChange = ((currentHitbox.NORMAL-$HitBox.shape.size)*Vector2.UP).rotated(rotation)*0.5
@@ -1379,6 +1393,8 @@ func action_jump(animation = "roll", airJumpControl = true, playSound=true):
 			movement.x = sign(movement.x) * (5*60)
 			wall_jump = false
 		else:
+			if character == Global.CHARACTERS.AMY:
+				animation = "spring"
 			animator.play(animation)
 			animator.advance(0)
 			movement.y = -jmp
@@ -1430,7 +1446,10 @@ func handle_animation_speed(gSpeed = groundSpeed):
 		"spinDash": #animate at 60fps (fps were animated at 0.1 seconds)
 			animator.speed_scale = 60.0/10.0
 		"dropDash":
-			animator.speed_scale = 20.0/10.0
+			if character == Global.CHARACTERS.AMY:
+				animator.speed_scale = 1
+			else:
+				animator.speed_scale = 20.0/10.0
 		"climb":
 			animator.speed_scale = -movement.y/(40.0*(1.0+float(isSuper)))
 		_:

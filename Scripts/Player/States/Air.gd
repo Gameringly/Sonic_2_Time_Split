@@ -11,6 +11,8 @@ var dropTimer = 0
 
 var lockDir = false
 
+var stored_speed = 0 #used for amy's wall bounce
+
 func _ready():
 	if isJump: # we only want to connect it once so only apply this to the jump variation
 		parent.connect("enemy_bounced",Callable(self,"bounce"))
@@ -19,110 +21,113 @@ func _ready():
 func _process(_delta):
 	if parent.playerControl != 0 or (parent.inputs[parent.INPUTS.YINPUT] < 0 and parent.character == Global.CHARACTERS.TAILS):
 		# Super
-		if parent.inputs[parent.INPUTS.SUPER] == 1 and !parent.isSuper and isJump:
+		if parent.inputs[parent.INPUTS.SUPER] == 1 and !parent.isSuper:
 			# Global emeralds use a bit flag, 127 would mean all 7 are 1, see bitwise operations for more info
-			if parent.rings >= 50 and Global.emeralds >= 127:
+			if parent.rings >= 50 and Global.emeralds >= 127 and isJump:
 				parent.set_state(parent.STATES.SUPER)
 		# Shield actions
-		elif ((parent.inputs[parent.INPUTS.ACTION] == 1 or parent.inputs[parent.INPUTS.ACTION2] == 1 or parent.inputs[parent.INPUTS.ACTION3] == 1) and !parent.abilityUsed and isJump):
+		elif ((parent.inputs[parent.INPUTS.ACTION] == 1 or parent.inputs[parent.INPUTS.ACTION2] == 1 or parent.inputs[parent.INPUTS.ACTION3] == 1) and !parent.abilityUsed):
 			#wall jump
-			if parent.character == Global.CHARACTERS.SONIC and parent.animator.current_animation == "wallCling":
+			if parent.character == Global.CHARACTERS.SONIC and parent.animator.current_animation == "wallCling" and isJump:
 				parent.wall_jump = true
 				parent.action_jump()
 			# Super actions
-			elif parent.isSuper and (parent.character == Global.CHARACTERS.SONIC or parent.character == Global.CHARACTERS.AMY):
+			elif parent.isSuper and (parent.character == Global.CHARACTERS.SONIC or parent.character == Global.CHARACTERS.AMY) and isJump:
 				parent.abilityUsed = true # has to be set to true for drop dash (Sonic and amy only)
 			# Normal actions
 			else:
 				match (parent.character):
 					Global.CHARACTERS.SONIC:
-						# set ability used to true to prevent multiple uses
-						parent.abilityUsed = true
-						# check that the invincibility barrier isn't visible
-						if !$"../../InvincibilityBarrier".visible:
-							match (parent.shield):
-								# insta shield
-								parent.SHIELDS.NONE:
-									parent.sfx[16].play()
-									parent.shieldSprite.play("Insta")
-									parent.shieldSprite.frame = 0
-									parent.shieldSprite.visible = true
-									# enable insta shield hitbox
-									parent.shieldSprite.get_node("InstaShieldHitbox/HitBox").disabled = false
-									# wait for animation for the shield to finish
-									await parent.shieldSprite.animation_finished
-									# check shields hasn't changed
-									if (parent.shield == parent.SHIELDS.NONE):
-										parent.shieldSprite.visible = false
-										parent.shieldSprite.stop()
-									# disable insta shield
-									parent.shieldSprite.get_node("InstaShieldHitbox/HitBox").disabled = true
-								
-								# elec shield action
-								parent.SHIELDS.ELEC:
-									parent.sfx[13].play()
-									# set movement upwards
-									parent.movement.y = -5.5*60.0
-									# generate 4 electric particles and send them out diagonally (rotated for each iteration of i to 4)
-									for i in range(4):
-										var part = elecPart.instantiate()
-										part.global_position = parent.global_position
-										part.direction = Vector2(1,1).rotated(deg_to_rad(90*i))
-										parent.get_parent().add_child(part)
-								
-								# fire shield action
-								parent.SHIELDS.FIRE:
-									# partner check (so you don't flame boost when you're trying to fly with tails
-									if !(parent.inputs[parent.INPUTS.YINPUT] < 0 and parent.partner != null):
-										parent.sfx[14].play()
-										parent.movement = Vector2(8*60*parent.direction,0)
-										parent.shieldSprite.play("FireAction")
-										# set timer for animation related resets
-										var getTimer = parent.shieldSprite.get_node_or_null("ShieldTimer")
-										# Start fire dash timer
-										if getTimer != null:
-											getTimer.start(0.5)
-										# change orientation to match the movement
-										parent.shieldSprite.flip_h = (parent.direction < 0)
-										# lock camera for a short time
-										parent.lock_camera(16.0/60.0)
-								
-								# bubble shield actions
-								parent.SHIELDS.BUBBLE:
-									# check animation isn't already bouncing
-									if parent.shieldSprite.animation != "BubbleBounce":
-										parent.sfx[15].play()
-										# set movement and bounce reaction
-										parent.movement = Vector2(0,8*60)
-										parent.bounceReaction = 7.5
-										parent.shieldSprite.play("BubbleAction")
-										# set timer for animation related resets
-										var getTimer = parent.shieldSprite.get_node_or_null("ShieldTimer")
-										# Start bubble timer
-										if getTimer != null:
-											getTimer.start(0.25)
-									else:
-										parent.abilityUsed = false
+						if isJump:
+							# set ability used to true to prevent multiple uses
+							parent.abilityUsed = true
+							# check that the invincibility barrier isn't visible
+							if !$"../../InvincibilityBarrier".visible:
+								match (parent.shield):
+									# insta shield
+									parent.SHIELDS.NONE:
+										parent.sfx[16].play()
+										parent.shieldSprite.play("Insta")
+										parent.shieldSprite.frame = 0
+										parent.shieldSprite.visible = true
+										# enable insta shield hitbox
+										parent.shieldSprite.get_node("InstaShieldHitbox/HitBox").disabled = false
+										# wait for animation for the shield to finish
+										await parent.shieldSprite.animation_finished
+										# check shields hasn't changed
+										if (parent.shield == parent.SHIELDS.NONE):
+											parent.shieldSprite.visible = false
+											parent.shieldSprite.stop()
+										# disable insta shield
+										parent.shieldSprite.get_node("InstaShieldHitbox/HitBox").disabled = true
+									
+									# elec shield action
+									parent.SHIELDS.ELEC:
+										parent.sfx[13].play()
+										# set movement upwards
+										parent.movement.y = -5.5*60.0
+										# generate 4 electric particles and send them out diagonally (rotated for each iteration of i to 4)
+										for i in range(4):
+											var part = elecPart.instantiate()
+											part.global_position = parent.global_position
+											part.direction = Vector2(1,1).rotated(deg_to_rad(90*i))
+											parent.get_parent().add_child(part)
+									
+									# fire shield action
+									parent.SHIELDS.FIRE:
+										# partner check (so you don't flame boost when you're trying to fly with tails
+										if !(parent.inputs[parent.INPUTS.YINPUT] < 0 and parent.partner != null):
+											parent.sfx[14].play()
+											parent.movement = Vector2(8*60*parent.direction,0)
+											parent.shieldSprite.play("FireAction")
+											# set timer for animation related resets
+											var getTimer = parent.shieldSprite.get_node_or_null("ShieldTimer")
+											# Start fire dash timer
+											if getTimer != null:
+												getTimer.start(0.5)
+											# change orientation to match the movement
+											parent.shieldSprite.flip_h = (parent.direction < 0)
+											# lock camera for a short time
+											parent.lock_camera(16.0/60.0)
+									
+									# bubble shield actions
+									parent.SHIELDS.BUBBLE:
+										# check animation isn't already bouncing
+										if parent.shieldSprite.animation != "BubbleBounce":
+											parent.sfx[15].play()
+											# set movement and bounce reaction
+											parent.movement = Vector2(0,8*60)
+											parent.bounceReaction = 7.5
+											parent.shieldSprite.play("BubbleAction")
+											# set timer for animation related resets
+											var getTimer = parent.shieldSprite.get_node_or_null("ShieldTimer")
+											# Start bubble timer
+											if getTimer != null:
+												getTimer.start(0.25)
+										else:
+											parent.abilityUsed = false
 					# Tails flight
 					Global.CHARACTERS.TAILS:
 						# prevent double tap flight (aka super jumps)
-						if not parent.any_action_held():
+						if not parent.any_action_held() and isJump:
 							parent.set_state(parent.STATES.FLY)
 					# Knuckles gliding
 					Global.CHARACTERS.KNUCKLES:
-						# set initial movement
-						parent.movement = Vector2(parent.direction*4*60,max(parent.movement.y,0))
-						parent.set_state(parent.STATES.GLIDE,parent.currentHitbox.GLIDE)
+						if isJump:
+							# set initial movement
+							parent.movement = Vector2(parent.direction*4*60,max(parent.movement.y,0))
+							parent.set_state(parent.STATES.GLIDE,parent.currentHitbox.GLIDE)
 					# Amy hammer drop dash
 					Global.CHARACTERS.AMY:
-						# set ability used to true to prevent multiple uses
-						parent.abilityUsed = true
-						# enable insta shield hitbox if hammer drop dashing
-						parent.shieldSprite.get_node("InstaShieldHitbox/HitBox").disabled = (parent.animator.current_animation == "dropDash")
-						# play hammer sound
-						parent.sfx[30].play()
-						# play dropDash sound
-						parent.animator.play("dropDash")
+						if parent.animator.current_animation != "dropDash":
+							# enable insta shield hitbox if hammer drop dashing
+							parent.shieldSprite.get_node("InstaShieldHitbox/HitBox").disabled = (parent.animator.current_animation == "dropDash")
+							# play hammer sound
+							parent.sfx[30].play()
+							# play dropDash sound
+							stored_speed = parent.movement.x
+							parent.animator.play("dropDash")
+							parent.animator.queue("fall")
 						
 	#disable water run effects
 	parent.waterRun = false
@@ -149,8 +154,8 @@ func _physics_process(delta):
 				parent.movement.y = -2*60
 			else:
 				parent.movement.y = -parent.releaseJmp*60
-		# Drop dash (for sonic / amy)
-		if parent.character == Global.CHARACTERS.SONIC or parent.character == Global.CHARACTERS.AMY:
+		# Drop dash (for sonic)
+		if parent.character == Global.CHARACTERS.SONIC:
 			
 			if parent.any_action_held_or_pressed() and parent.abilityUsed and (parent.shield <= parent.SHIELDS.NORMAL or parent.isSuper or $"../../InvincibilityBarrier".visible or parent.character == Global.CHARACTERS.AMY):
 				if dropTimer < 1:
@@ -160,7 +165,7 @@ func _physics_process(delta):
 				else:
 					if parent.animator.current_animation != "dropDash":
 						parent.animator.play("dropDash")
-			# Drop dash reset (if sonic, hammer keeps swinging for amy)
+			# Drop dash reset 
 			elif !parent.any_action_held_or_pressed() and dropTimer > 0:
 				dropTimer = 0
 				if parent.animator.current_animation == "dropDash" and parent.character == Global.CHARACTERS.SONIC:
@@ -180,69 +185,75 @@ func _physics_process(delta):
 	
 	# Reset state if on ground
 	if (parent.ground):
-		#Restore Air Control when landing
-		#(Needed if Rolling control lock is enabled in Roll.gd)
-		parent.airControl = true
-		# Check bounce reaction first
-		if !bounce():
-			# reset animations (this is for shared animations like the corkscrews)
-			parent.animator.play("RESET")
-			# return to normal state
-			parent.set_state(parent.STATES.NORMAL)
-			
-			# Drop dash release (for sonic / amy)
-			if dropTimer >= 1 and (parent.character == Global.CHARACTERS.SONIC or parent.character == Global.CHARACTERS.AMY):
-				# Check if moving forward or back
-				# Forward landing
-				if sign(parent.movement.x) == sign(parent.direction) or parent.movement.x == 0:
-					# Calculate landing and limit to top speed
-					parent.movement.x = clamp((parent.movement.x/4) + (dropSpeed[int(parent.isSuper)]*60*parent.direction), -dropMax[int(parent.isSuper)]*60,dropMax[int(parent.isSuper)]*60)
-				# Backwards landing
-				else:
-					# if floor angle is flat then just set to drop speed
-					if is_equal_approx(parent.angle,parent.gravityAngle):
-						parent.movement.x = dropSpeed[int(parent.isSuper)]*60*parent.direction
-					# else calculate landing
+		#Amy Hammer bounce
+		if parent.character == Global.CHARACTERS.AMY and parent.animator.current_animation == "dropDash":
+			parent.movement.y = -parent.movement.y + (1*30)
+			parent.sfx[32].play()
+		else:
+			#Restore Air Control when landing
+			#(Needed if Rolling control lock is enabled in Roll.gd)
+			parent.airControl = true
+			# Check bounce reaction first
+			if !bounce():
+				# reset animations (this is for shared animations like the corkscrews)
+				parent.animator.play("RESET")
+				# return to normal state
+				parent.set_state(parent.STATES.NORMAL)
+				
+				# Drop dash release (for sonic / amy)
+				if dropTimer >= 1 and (parent.character == Global.CHARACTERS.SONIC or parent.character == Global.CHARACTERS.AMY):
+					# Check if moving forward or back
+					# Forward landing
+					if sign(parent.movement.x) == sign(parent.direction) or parent.movement.x == 0:
+						# Calculate landing and limit to top speed
+						parent.movement.x = clamp((parent.movement.x/4) + (dropSpeed[int(parent.isSuper)]*60*parent.direction), -dropMax[int(parent.isSuper)]*60,dropMax[int(parent.isSuper)]*60)
+					# Backwards landing
 					else:
-						parent.movement.x = clamp((parent.movement.x/2) + (dropSpeed[int(parent.isSuper)]*60*parent.direction), -dropMax[int(parent.isSuper)]*60,dropMax[int(parent.isSuper)]*60)
-				# Sonics drop dash handle
-				if parent.character == Global.CHARACTERS.SONIC:
-					# stop vertical movement downard
-					parent.movement.y = min(0,parent.movement.y)
-					parent.set_state(parent.STATES.ROLL)
-					parent.animator.play("roll")
-					parent.sfx[20].stop()
-					parent.sfx[3].play()
-					# Lag camera
-					parent.lock_camera(16.0/60.0)
-					
-					# drop dash dust
-					var dust = parent.Particle.instantiate()
-					dust.play("DropDash")
-					dust.global_position = parent.global_position+Vector2(0,2).rotated(parent.rotation)
-					dust.scale.x = parent.direction
-					parent.get_parent().add_child(dust)
-				# Amys drop dash handle
-				elif parent.character == Global.CHARACTERS.AMY:
-					# stop vertical movement downard
-					parent.movement.y = min(0,parent.movement.y)
-					parent.set_state(parent.STATES.AMYHAMMER)
-					parent.animator.play("hammerSwing")
-					parent.sfx[20].stop()
-					parent.sfx[3].play()
+						# if floor angle is flat then just set to drop speed
+						if is_equal_approx(parent.angle,parent.gravityAngle):
+							parent.movement.x = dropSpeed[int(parent.isSuper)]*60*parent.direction
+						# else calculate landing
+						else:
+							parent.movement.x = clamp((parent.movement.x/2) + (dropSpeed[int(parent.isSuper)]*60*parent.direction), -dropMax[int(parent.isSuper)]*60,dropMax[int(parent.isSuper)]*60)
+					# Sonics drop dash handle
+					if parent.character == Global.CHARACTERS.SONIC:
+						# stop vertical movement downard
+						parent.movement.y = min(0,parent.movement.y)
+						parent.set_state(parent.STATES.ROLL)
+						parent.animator.play("roll")
+						parent.sfx[20].stop()
+						parent.sfx[3].play()
+						# Lag camera
+						parent.lock_camera(16.0/60.0)
+						
+						# drop dash dust
+						var dust = parent.Particle.instantiate()
+						dust.play("DropDash")
+						dust.global_position = parent.global_position+Vector2(0,2).rotated(parent.rotation)
+						dust.scale.x = parent.direction
+						parent.get_parent().add_child(dust)
+					# Amys drop dash handle
+
 	# if velocity going up reset bounce reaction
 	elif parent.movement.y < 0:
 		parent.bounceReaction = 0
 	
-	#wall jump
+	if parent.character == Global.CHARACTERS.AMY and parent.movement.y >= 0 and parent.animator.current_animation == "spring":
+		parent.animator.play("fall")
+	
+	#Sonic wall jump
 	if parent.character == Global.CHARACTERS.SONIC and parent.horizontalSensor.is_colliding() and parent.animator.current_animation == "roll" or parent.animator.current_animation == "wallJump":
 		parent.loose_time_warp() #loose time warp for hitting wall, unrelated to wall jummp
-		var getDir = sign(parent.horizontalSensor.target_position.x)
 		if sign(parent.movement.x) == -sign(parent.horizontalSensor.target_position.x):
 			parent.animator.play("wallCling")
 			parent.animator.queue("roll")
 	
-
+	#Amy wall bounce
+	if parent.character == Global.CHARACTERS.AMY and parent.horizontalSensor.is_colliding() and parent.animator.current_animation == "dropDash" and sign(parent.movement.x) == sign(parent.horizontalSensor.target_position.x) and abs(stored_speed) >= 1*60:
+		parent.sfx[32].play()
+		parent.movement.x = -stored_speed
+		stored_speed = 0
+	
 # Shield timer timeouts (used to reset animations)
 func _on_ShieldTimer_timeout():
 	match(parent.shieldSprite.animation):

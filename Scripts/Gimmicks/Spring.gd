@@ -12,7 +12,7 @@ var speed = [10,16]
 
 var springTextures = [preload("res://Graphics/Gimmicks/springs_yellow.png"),preload("res://Graphics/Gimmicks/springs_red.png")]
 
-@export var springSound = preload("res://Audio/SFX/Gimmicks/Springs.wav")
+@onready var sproing = $Sproing
 
 func _ready():
 	set_spring()
@@ -67,6 +67,12 @@ func physics_collision(body, hitVector):
 	if hitVector == -hitDirection:
 		# do a Rock launch HAUGH!!!
 		var setMove = hitDirection.rotated(rotation).rotated(-body.rotation).round()*speed[type]*60
+		#amy hammer stronger springs
+		if body.character == Global.CHARACTERS.AMY and body.animator.current_animation == "dropDash":
+			setMove *= 1.5
+			sproing.pitch_scale = 1.35
+		else:
+			sproing.pitch_scale = 1
 		# vertical movement
 		if setMove.y != 0:
 			# figure out the animation based on the players current animation
@@ -80,7 +86,10 @@ func physics_collision(body, hitVector):
 						curAnim = "run"
 			# play player animation
 			body.animator.play("spring")
-			body.animator.queue(curAnim)
+			if body.character == Global.CHARACTERS.AMY:
+				body.animator.queue("fall")
+			else:
+				body.animator.queue(curAnim)
 			# set vertical speed
 			body.movement.y = setMove.y
 			if setMove.y < 0:
@@ -99,7 +108,7 @@ func physics_collision(body, hitVector):
 			body.horizontalLockTimer = (15.0/60.0) # lock for 15 frames
 			body.direction = sign(setMove.x)
 		$SpringAnimator.play(animList[animID])
-		Global.play_sound(springSound)
+		sproing.play()
 		
 		#Restore Air Control
 		body.airControl = true
@@ -110,7 +119,13 @@ func physics_collision(body, hitVector):
 
 func _on_Diagonal_body_entered(body):
 	# diagonal springs are pretty straightforward
-	body.movement = hitDirection.rotated(rotation).rotated(-body.rotation)*speed[type]*60
+	#amy hammer stronger springs
+	if body.character == Global.CHARACTERS.AMY and body.animator.current_animation == "dropDash":
+		body.movement = (hitDirection.rotated(rotation).rotated(-body.rotation)*speed[type]*60) * 1.5
+		sproing.pitch_scale = 1.35
+	else:
+		body.movement = hitDirection.rotated(rotation).rotated(-body.rotation)*speed[type]*60
+		sproing.pitch_scale = 1
 	$SpringAnimator.play(animList[animID])
 	if (hitDirection.y < 0):
 		body.set_state(body.STATES.AIR)
@@ -125,7 +140,10 @@ func _on_Diagonal_body_entered(body):
 					curAnim = "run"
 		# play player animation
 		body.animator.play("springScrew")
-		body.animator.queue(curAnim)
-	Global.play_sound(springSound)
+		if body.character == Global.CHARACTERS.AMY:
+			body.animator.queue("fall")
+		else:
+			body.animator.queue(curAnim)
+	sproing.play()
 	# Disable pole grabs
 	body.poleGrabID = self

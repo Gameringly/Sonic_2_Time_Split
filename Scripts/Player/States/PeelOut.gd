@@ -3,6 +3,10 @@ extends PlayerState
 var dashPower = 12
 
 func _process(delta):
+	if parent.character == Global.CHARACTERS.AMY:
+		dashPower = 10
+	else:
+		dashPower = 12
 	# dust sprite
 	var dash = parent.sprite.get_node("DashDust")
 	dash.visible = true

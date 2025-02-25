@@ -1,7 +1,7 @@
 extends PlayerState
 
 # tails flight
-var flightTime = 8*60
+var flightTime = 4*60
 var flyGrav = 0.03125
 var actionPressed = true
 
@@ -15,7 +15,7 @@ func _ready():
 	carryBox = parent.get_node("TailsCarryBox")
 
 func state_activated():
-	flightTime = 8
+	flightTime = 4
 	flyGrav = 0.03125
 	flyHitBox.disabled = false
 	carryHitBox.disabled = false
@@ -122,10 +122,16 @@ func _physics_process(delta):
 	# Button press
 	if parent.movement.y >= -1*60 and flightTime > 0 and !parent.roof and parent.position.y >= parent.limitTop+16:
 		if parent.any_action_held_or_pressed() and (!actionPressed or parent.get_y_input() < 0) and (carryBox.get_player_contacting_count() == 0 or !parent.water):
-			flyGrav = -0.125
+			flyGrav = -1.5
 	# return gravity to normal after velocity is less then -1
 	else:
 		flyGrav = 0.03125
+	
+	#Flight Cancel
+	if parent.get_y_input() > 0 and parent.any_action_pressed() and parent.animator.current_animation != "roll":
+		state_exit()
+		parent.animator.play("roll")
+		parent.set_state(parent.STATES.AIR)
 	
 	if parent.position.y < parent.limitTop+16:
 		parent.movement.y = max(0,parent.movement.y)
@@ -136,6 +142,13 @@ func _physics_process(delta):
 	# Reset state if on ground
 	if (parent.ground):
 		parent.set_state(parent.STATES.NORMAL)
+	
+	#Time Travel
+	if parent.playerControl == 1: #trigger starting the countdown
+		if abs(parent.movement.x) >= 6*60 and parent.timeWarp != "":
+			parent.warping = true
+		elif abs(parent.movement.x) < 6*60 and parent.timeWarp != "":
+			parent.loose_time_warp()
 
 
 func _on_FlyBugStop_timeout():
