@@ -841,7 +841,8 @@ func _physics_process(delta):
 	
 	if warping: #countdown to time travel
 		warpTime -= 1
-		supTime = 0.1
+		if supTime <= 0:
+			supTime = 0.1
 		if warpTime <= 120 and get_parent().hud.timePlate.animation == "Past":
 			get_parent().hud.timePlate.play("PastFade")
 		elif warpTime <= 120 and get_parent().hud.timePlate.animation == "Future":
