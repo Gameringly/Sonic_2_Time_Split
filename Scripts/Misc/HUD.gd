@@ -10,12 +10,19 @@ extends CanvasLayer
 @onready var lifeText = $LifeCounter/Icon/LifeText
 @onready var lifeIcon = $LifeCounter/Icon
 @onready var timePlate = $LifeCounter/TimePlate
+@onready var act1Bar = $LevelCard/Act1Bar
+@onready var act2Bar = $LevelCard/Act2Bar
+@onready var act3Bar = $LevelCard/Act3Bar
+@onready var charSilh = $LevelCard/LeftPattern/CharacterSilhouette
+@onready var objective = $LevelCard/Objective
+@onready var objectiveIcon = $LevelCard/Objective/ObjectiveIcon
 
 # play level card, if true will play the level card animator and use the zone name and zone text with the act
 @export var playLevelCard = true
-@export var zoneName = "Base"
-@export var zone = "Zone"
+@export var zoneName = preload("res://Graphics/HUD/LevelCards/RidiculeRoot.png")
+#@export var zone = "Zone"
 @export var act = 1
+@export_enum("Find", "Catch") var missionType = 0
 
 
 # used for flashing ui elements (rings, time)
@@ -54,14 +61,47 @@ func _ready():
 		# set level card
 		$LevelCard.visible = true
 		# set level name strings
-		$LevelCard/Banner/LevelName.text = zoneName
-		$LevelCard/Banner/Zone.text = zone
+#		$LevelCard/Banner/LevelName.text = zoneName
+#		$LevelCard/Banner/Zone.text = zone
 		# set act graphic
-		$LevelCard/Banner/Act.frame = act-1
+		$LevelCard/Round/ActGear.frame = act-1
+		#set the mission type - Uncomment when Icons are made
+		if missionType == 0:
+			objective.texture = load("res://Graphics/HUD/LevelCards/Find.png")
+			#if Global.PlayerChar1 == Global.CHARACTERS.AMY:
+				#objectiveIcon = "insert Metal Sonic projector icon here"
+			#else:
+				#objectiveIcon = load("res://Graphics/HUD/LevelCards/TimeStoneIcon.png")
+		elif missionType == 1:
+			objective.texture = load("res://Graphics/HUD/LevelCards/Catch.png")
+			#if Global.PlayerChar1 == Global.CHARACTERS.AMY:
+				#objectiveIcon = "insert Metal Sonic icon here"
+			#else:
+				#objectiveIcon = "insert Eggman icon here"
+		#set act bar graphics
+		act1Bar.frame = 4
+		act2Bar.frame = 4
+		act3Bar.frame = 4
+		var bar
+		if act == 1:
+			bar = act1Bar
+		elif act == 2:
+			bar = act2Bar
+		elif act == 3:
+			bar = act3Bar
+		#set all character specific parts
+		if Global.PlayerChar1 == Global.CHARACTERS.SONIC:
+			bar.frame = 0
+		elif Global.PlayerChar1 == Global.CHARACTERS.TAILS:
+			bar.frame = 1
+		elif Global.PlayerChar1 == Global.CHARACTERS.AMY:
+			bar.frame = 2
+		elif Global.PlayerChar1 == Global.CHARACTERS.KNUCKLES:
+			bar.frame = 3
 		# make visible if act isn't 0 (0 will just be zone)
-		$LevelCard/Banner/Act.visible = (act > 0)
+		$LevelCard/Round/ActGear.visible = (act > 0)
 		# make sure level card isn't paused so it can keep playing
-		$LevelCard/CardPlayer.process_mode = PROCESS_MODE_ALWAYS
+		$LevelCard.process_mode = PROCESS_MODE_ALWAYS
 		# temporarily let music play during pauses
 		if Global.musicParent != null:
 			Global.musicParent.process_mode = PROCESS_MODE_ALWAYS
@@ -69,10 +109,11 @@ func _ready():
 		get_tree().paused = true
 		# play card animations
 		$LevelCard/CardPlayer.play("Start")
-		$LevelCard/CardMover.play("Slider")
+		$LevelCard/CardMover.play("SlideIn")
 		# wait for card to finish it's entrance animation, then play the end
 		await $LevelCard/CardPlayer.animation_finished
 		$LevelCard/CardPlayer.play("End")
+		$LevelCard/CardMover.play_backwards("SlideIn")
 		# unpause the game and set previous pause mode nodes to stop on pause
 		get_tree().paused = false
 		Global.musicParent.process_mode = PROCESS_MODE_PAUSABLE
