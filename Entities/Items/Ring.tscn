@@ -50,6 +50,8 @@ shape = SubResource("1")
 [node name="FloorCheck" type="RayCast2D" parent="."]
 target_position = Vector2(0, 8)
 
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+
 [connection signal="area_shape_entered" from="Hitbox" to="." method="_on_Hitbox_area_shape_entered"]
 [connection signal="body_entered" from="Hitbox" to="." method="_on_Hitbox_body_entered"]
 [connection signal="body_exited" from="Hitbox" to="." method="_on_Hitbox_body_exited"]

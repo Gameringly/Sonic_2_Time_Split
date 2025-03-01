@@ -18,7 +18,7 @@ func _on_body_entered(body):
 				body.switch_physics()
 				body.movement.x *= 0.5
 				body.movement.y *= 0.25
-				if body.currentState != body.STATES.RESPAWN:
+				if body.currentState != body.STATES.RESPAWN and body.movement.y != 0:
 					body.sfx[17].play()
 					var splash = Particle.instantiate()
 					splash.behaviour = splash.TYPE.FOLLOW_WATER_SURFACE

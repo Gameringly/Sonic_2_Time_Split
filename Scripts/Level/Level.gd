@@ -3,7 +3,7 @@ extends Node2D
 @export var music = preload("res://Audio/Soundtrack/6. SWD_TLZa1.ogg")
 @export var nextZone = load("res://Scene/Zones/BaseZone.tscn")
 
-@export_enum("Present", "Past", "Bad Future", "Good Future") var Timezone = 0
+#@export_enum("Present", "Past", "Bad Future", "Good Future") var Timezone = 0
 
 @export_enum("Bird", "Squirrel", "Rabbit", "Chicken", "Penguin", "Seal", "Pig", "Eagle", "Mouse", "Monkey", "Turtle", "Bear")var animal1 = 0
 @export_enum("Bird", "Squirrel", "Rabbit", "Chicken", "Penguin", "Seal", "Pig", "Eagle", "Mouse", "Monkey", "Turtle", "Bear")var animal2 = 1

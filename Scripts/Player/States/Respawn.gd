@@ -44,7 +44,8 @@ func _physics_process(delta):
 		parent.movement.y = 0
 		# move to player y position
 		parent.global_position.y = move_toward(parent.global_position.y,targetPoint.y,delta*60)
-		
+		#Block Tails from going out of bounds, in case Sonic is dead. 
+		parent.global_position.y = min(parent.global_position.y,parent.limitBottom-16)
 		var distance = targetPoint.x-parent.global_position.x
 		# if far then fly by distance
 		if distance < 192:

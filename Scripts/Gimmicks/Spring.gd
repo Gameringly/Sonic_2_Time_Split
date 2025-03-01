@@ -119,6 +119,7 @@ func physics_collision(body, hitVector):
 
 func _on_Diagonal_body_entered(body):
 	# diagonal springs are pretty straightforward
+	body.angle = body.gravityAngle
 	#amy hammer stronger springs
 	if body.character == Global.CHARACTERS.AMY and body.animator.current_animation == "dropDash":
 		body.movement = (hitDirection.rotated(rotation).rotated(-body.rotation)*speed[type]*60) * 1.5

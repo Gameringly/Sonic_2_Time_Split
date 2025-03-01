@@ -6,8 +6,8 @@ var grv = 0.21875
 var yspeed = 0
 var playerTouch = null
 var isActive = true
-@export_enum("Ring", "Speed Shoes", "Invincibility", "Shield", "Elec Shield", "Fire Shield",
-"Bubble Shield", "Super", "Blue Ring", "Boost", "1up") var item = 0
+@export_enum("Ring", "1up", "Invincibility", "Shield", "Elec Shield", "Fire Shield",
+"Bubble Shield", "Super", "Blue Ring", "Boost", "Speed Shoes") var item = 0
 var Explosion = preload("res://Entities/Misc/BadnickSmoke.tscn")
 
 
@@ -49,13 +49,11 @@ func destroy():
 		0: # Rings
 			playerTouch.rings += 10
 			$SFX/Ring.play()
-		1: # Speed Shoes
-			if !playerTouch.get("isSuper"):
-				playerTouch.shoeTime = 20
-				playerTouch.switch_physics()
-				Global.currentTheme = 1
-				Global.effectTheme.stream = Global.themes[Global.currentTheme]
-				Global.effectTheme.play()
+		1: # 1up
+			Global.life.play()
+			Global.lives += 1
+			Global.effectTheme.volume_db = -100
+			Global.music.volume_db = -100
 		2: # Invincibility
 			if !playerTouch.get("isSuper"):
 				playerTouch.supTime = 20
@@ -76,11 +74,13 @@ func destroy():
 			playerTouch.rings += 50
 			if !playerTouch.get("isSuper"):
 				playerTouch.set_state(playerTouch.STATES.SUPER)
-		10: # 1up
-			Global.life.play()
-			Global.lives += 1
-			Global.effectTheme.volume_db = -100
-			Global.music.volume_db = -100
+		10: # speed Shoes
+			if !playerTouch.get("isSuper"):
+				playerTouch.shoeTime = 20
+				playerTouch.switch_physics()
+				Global.currentTheme = 1
+				Global.effectTheme.stream = Global.themes[Global.currentTheme]
+				Global.effectTheme.play()
 
 func _physics_process(delta):
 	if !Engine.is_editor_hint():
@@ -112,7 +112,7 @@ func physics_collision(body, hitVector):
 				body.movement.x = 0
 		# check if player is not an ai or spindashing
 		# if they are then destroy
-		if body.playerControl == 1 and body.currentState != body.STATES.SPINDASH:
+		elif body.playerControl == 1 and body.currentState != body.STATES.SPINDASH:
 			body.movement.y = -abs(body.movement.y)
 			
 			if body.currentState == body.STATES.ROLL:

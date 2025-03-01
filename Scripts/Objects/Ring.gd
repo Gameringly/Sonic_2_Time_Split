@@ -8,11 +8,16 @@ var magnet = null
 var magnetShape = null
 var ringacceleration = [0.75,0.1875]
 var Particle = preload("res://Entities/Misc/GenericParticle.tscn")
+@onready var wr = weakref($VisibleOnScreenEnabler2D) #get as a weak refrence
 
 
 func _process(delta):
+	#sync animations
+	$RingSprite.frame = floor(Global.ring_frame)
 	# scattered logic
 	if (scattered):
+		if wr.get_ref(): #Delete the onscreen enabler when scattered so they can despawn offscreen
+			wr.get_ref().queue_free()
 		z_index = 7
 		$RingSprite.speed_scale = lifetime / MAX_LIFETIME + 1
 		if (lifetime > 0):
@@ -39,6 +44,8 @@ func _physics_process(delta):
 		if ($FloorCheck.is_colliding() and velocity.y > 0):
 			velocity.y *= -0.75
 	elif (magnet):
+		if wr.get_ref(): #Delete the onscreenenabler when magnetised so they can follow off screen
+			wr.get_ref().queue_free()
 		#relative positions
 		var sx = sign(magnet.global_position.x - global_position.x)
 		var sy = sign(magnet.global_position.y - global_position.y)

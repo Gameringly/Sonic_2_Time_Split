@@ -102,7 +102,10 @@ func _input(event):
 						get_window().mode = Window.MODE_EXCLUSIVE_FULLSCREEN if (!((get_window().mode == Window.MODE_EXCLUSIVE_FULLSCREEN) or (get_window().mode == Window.MODE_FULLSCREEN))) else Window.MODE_WINDOWED
 						$PauseMenu/VBoxContainer.get_child(option+1).get_child(0).text = update_text(option+1)
 						if get_window().mode == Window.MODE_WINDOWED: #and Global.zoomSize == 1:
-							get_window().set_size(get_viewport().get_visible_rect().size*Global.zoomSize)
+							var window = get_window()
+							var newSize = Vector2i((get_viewport().get_visible_rect().size*Global.zoomSize).round())
+							window.set_position(window.get_position()+(window.size-newSize)/2)
+							window.set_size(newSize)
 						else:
 							Global.zoomSize = 2
 							print(Global.zoomSize)
@@ -179,7 +182,10 @@ func set_audio_busses(inputDir):
 		2: # Scale
 			if Input.is_action_just_pressed("gm_left") or Input.is_action_just_pressed("gm_right"):
 				Global.zoomSize = clamp(Global.zoomSize+inputDir,zoomClamp[0],zoomClamp[1])
-				get_window().set_size(get_viewport().get_visible_rect().size*Global.zoomSize)
+				var window = get_window()
+				var newSize = Vector2i((get_viewport().get_visible_rect().size*Global.zoomSize).round())
+				window.set_position(window.get_position()+(window.size-newSize)/2)
+				window.set_size(newSize)
 	$PauseMenu/VBoxContainer.get_child(option+1).get_child(0).text = update_text(option+1)
 
 
