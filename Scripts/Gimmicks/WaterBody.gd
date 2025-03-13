@@ -50,7 +50,7 @@ func _on_body_exited(body):
 					splash.global_position = Vector2(body.global_position.x,body.global_position.y - (body.movement.y/60)) #this is close enough, could be improved
 				splash.play("Splash")
 				splash.z_index = body.sprite.z_index+10
-				get_parent().add_child(splash)
+				get_parent().add_child.call_deferred(splash)
 
 
 func _on_area_exited(area: Area2D) -> void:

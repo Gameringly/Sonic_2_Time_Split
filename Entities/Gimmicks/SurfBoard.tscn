@@ -1,51 +1,37 @@
-[gd_scene load_steps=6 format=3 uid="uid://dahvxunmy0alg"]
+[gd_scene load_steps=5 format=3 uid="uid://ku2pnjpisgba"]
 
 [ext_resource type="Script" path="res://Scripts/Gimmicks/SurfBoard.gd" id="1_sk5dw"]
-[ext_resource type="Texture2D" uid="uid://dlrc7uhvrbmkg" path="res://Graphics/Gimmicks/surf_board.png" id="2_iiekx"]
+[ext_resource type="Texture2D" uid="uid://chsl3s1e84eau" path="res://Graphics/Gimmicks/Surfboard.png" id="2_mmap0"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_os3sj"]
-size = Vector2(43, 5)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_4xy3a"]
+size = Vector2(43, 4)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_wo4ta"]
-size = Vector2(43, 12)
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_g46aq"]
+size = Vector2(43, 8)
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_awmh1"]
-size = Vector2(43, 5)
-
-[node name="SurfBoard" type="Node2D"]
-script = ExtResource("1_sk5dw")
-
-[node name="Board" type="Area2D" parent="."]
-collision_layer = 8193
-collision_mask = 4096
-
-[node name="Sprite2D" type="Sprite2D" parent="Board"]
-position = Vector2(0, 4)
-texture = ExtResource("2_iiekx")
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Board"]
-position = Vector2(0, -0.5)
-shape = SubResource("RectangleShape2D_os3sj")
-debug_color = Color(0.427451, 1, 0, 0.501961)
-
-[node name="Discard" type="Area2D" parent="."]
-collision_layer = 0
-collision_mask = 4095
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Discard"]
-shape = SubResource("RectangleShape2D_wo4ta")
-debug_color = Color(1, 1, 0.615686, 0.501961)
-
-[node name="DetectWater" type="Area2D" parent="."]
-position = Vector2(0, 8)
+[node name="SurfBoard" type="CharacterBody2D"]
 collision_layer = 0
 collision_mask = 4194304
+motion_mode = 1
+floor_stop_on_slope = false
+floor_block_on_wall = false
+script = ExtResource("1_sk5dw")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectWater"]
-position = Vector2(0.5, -0.5)
-shape = SubResource("RectangleShape2D_awmh1")
-debug_color = Color(0.32549, 1, 1, 0.501961)
+[node name="HitBox" type="CollisionShape2D" parent="."]
+position = Vector2(0.5, 0)
+shape = SubResource("RectangleShape2D_4xy3a")
 
-[connection signal="body_entered" from="Board" to="." method="_on_board_body_entered"]
-[connection signal="body_entered" from="Discard" to="." method="_on_discard_body_entered"]
-[connection signal="body_entered" from="DetectWater" to="." method="_on_detect_water_body_entered"]
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 16
+texture = ExtResource("2_mmap0")
+
+[node name="DetectPlayer" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4096
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="DetectPlayer"]
+position = Vector2(0.5, -2)
+shape = SubResource("RectangleShape2D_g46aq")
+debug_color = Color(0.517647, 1, 1, 0.501961)
+
+[connection signal="body_entered" from="DetectPlayer" to="." method="_on_detect_player_body_entered"]

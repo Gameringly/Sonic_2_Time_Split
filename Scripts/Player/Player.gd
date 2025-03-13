@@ -110,7 +110,7 @@ var airControl = true
 
 # States
 enum STATES {NORMAL, AIR, JUMP, ROLL, SPINDASH, PEELOUT, ANIMATION, HIT, DIE, CORKSCREW, JUMPCANCEL,
-SUPER, FLY, RESPAWN, HANG, GLIDE, WALLCLIMB, AMYHAMMER}
+SUPER, FLY, RESPAWN, HANG, GLIDE, WALLCLIMB, AMYHAMMER, SURFING}
 var currentState = STATES.AIR
 @onready var hitBoxOffset = {normal = $HitBox.position, crouch = $HitBox.position}
 @onready var defaultHitBoxPos = $HitBox.position
@@ -841,7 +841,7 @@ func _physics_process(delta):
 	
 	if warping: #countdown to time travel
 		warpTime -= 1
-		if supTime <= 0:
+		if supTime <= 0: #prevent cancelling out other forms of invincibiltiy
 			supTime = 0.1
 		if warpTime <= 120 and get_parent().hud.timePlate.animation == "Past":
 			get_parent().hud.timePlate.play("PastFade")
@@ -855,6 +855,17 @@ func _physics_process(delta):
 		timeWarp = ""
 		warpTime = 300
 		get_parent().hud.timePlate.play("Empty")
+	
+	#bonk on walls when surfing, this is kinda a patchwork solution cus I dont know why jumping into walls doesn't bonk when in the surfing state
+	horizontalSensor.force_raycast_update()
+	if animator.current_animation == "surfing" and horizontalSensor.is_colliding():
+		sfx[29].stop()
+		sfx[6].play()
+		movement.x = -2*60#-sign(movement.x)*2*60
+		movement.y = -4*60
+		z_index = 0
+		set_state(STATES.AIR)
+		set_state(STATES.HIT)
 
 func loose_time_warp():
 	warping = false
@@ -1435,9 +1446,9 @@ func action_water_run_handle():
 	var colCheck = move_and_collide(Vector2.DOWN.rotated(rotation),true)
 	if colCheck:
 		touchWater = colCheck.get_collider().get_collision_layer_value(23)
-	if waterRun and abs(movement.x) < 10*60:
+	if waterRun and abs(movement.x) < 10*60 and animator.current_animation != "surfing":
 		waterRun = false
-	if waterRun or (get_collision_mask_value(23) and touchWater) and ground:
+	if (abs(movement.x) >= 10*60 and (get_collision_mask_value(23) and touchWater)) or (currentState == STATES.SURFING) and ground:
 		# enable dash dust if touching water
 		dash.visible = true
 		dash.scale.x = sign(movement.x)
@@ -1477,7 +1488,7 @@ func handle_animation_speed(gSpeed = groundSpeed):
 
 
 func _on_check_water_surface_body_entered(body: Node2D) -> void:
-	if ground and abs(movement.x) >= 10*60 and !water:
+	if ground and (abs(movement.x) >= 10*60 and !water) or animator.current_animation == "surfing":
 		waterRun = true
 	else:
 		waterRun = false
@@ -1486,6 +1497,8 @@ func _on_check_water_surface_body_entered(body: Node2D) -> void:
 func _on_check_ground_surface_body_entered(body: Node2D) -> void:
 	if waterRun:
 		waterRun = false
+	if currentState == STATES.SURFING and !ground:
+		set_state(STATES.NORMAL)
 
 
 func _on_generate_bubbles_body_entered(body: Node2D) -> void:

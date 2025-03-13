@@ -7,7 +7,7 @@ var yspeed = 0
 var playerTouch = null
 var isActive = true
 @export_enum("Ring", "1up", "Invincibility", "Shield", "Elec Shield", "Fire Shield",
-"Bubble Shield", "Super", "Blue Ring", "Boost", "Speed Shoes") var item = 0
+"Bubble Shield", "Super", "Blue Ring", "Boost", "Speed Shoes", "Eggman") var item = 0
 var Explosion = preload("res://Entities/Misc/BadnickSmoke.tscn")
 
 
@@ -17,12 +17,16 @@ func _ready():
 	# Life Icon (life icons are a special case)
 	if item == 10 and !Engine.is_editor_hint():
 		$Item.frame = item+1+Global.PlayerChar1
+	elif item == 11:
+		$Item.frame = 17
 	
 
 func _process(_delta):
 	# update for editor
 	if (Engine.is_editor_hint()):
 		$Item.frame = item+2
+		if item == 11:
+			$Item.frame = 17
 
 func destroy():
 	# skip if not activated
@@ -81,6 +85,9 @@ func destroy():
 				Global.currentTheme = 1
 				Global.effectTheme.stream = Global.themes[Global.currentTheme]
 				Global.effectTheme.play()
+		11: #Eggman
+			if !playerTouch.get("isSuper"):
+				playerTouch.hit_player(global_position,0)
 
 func _physics_process(delta):
 	if !Engine.is_editor_hint():

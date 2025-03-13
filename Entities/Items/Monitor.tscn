@@ -243,7 +243,8 @@ frame = 2
 position = Vector2(0, -1)
 sprite_frames = SubResource("6")
 autoplay = "default"
-frame = 1
+frame = 4
+frame_progress = 0.264543
 
 [node name="Animator" type="AnimationPlayer" parent="."]
 libraries = {

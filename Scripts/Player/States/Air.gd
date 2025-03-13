@@ -146,14 +146,21 @@ func _physics_process(delta):
 	if (parent.movement.y < 0 and parent.movement.y > -parent.releaseJmp*60):
 		parent.movement.x -= ((parent.movement.x / 0.125) / 256)*60*delta
 	
+	if parent.character == Global.CHARACTERS.AMY:
+		parent.shieldSprite.get_node("InstaShieldHitbox/HitBox").disabled = !(parent.animator.current_animation == "fall")
+	
 	# Mechanics if jumping
 	if (isJump):
 		# Cut vertical movement if jump released
 		if !parent.any_action_held_or_pressed() and (parent.movement.y < -parent.releaseJmp*60 or (parent.water and parent.movement.y < -2*60)):
-			if parent.water:
-				parent.movement.y = -2*60
+			#dont cut upwards speed when hammer bouncing with amy
+			if parent.character == Global.CHARACTERS.AMY and (parent.animator.current_animation == "dropDash" or parent.animator.current_animation == "fall"):
+				pass
 			else:
-				parent.movement.y = -parent.releaseJmp*60
+				if parent.water:
+					parent.movement.y = -2*60
+				else:
+					parent.movement.y = -parent.releaseJmp*60
 		# Drop dash (for sonic)
 		if parent.character == Global.CHARACTERS.SONIC:
 			
@@ -186,9 +193,9 @@ func _physics_process(delta):
 	# Reset state if on ground
 	if (parent.ground):
 		#Amy Hammer bounce
-		if parent.character == Global.CHARACTERS.AMY and parent.animator.current_animation == "dropDash":
-			parent.movement.y = -parent.movement.y + (1*30)
-			parent.sfx[32].play()
+		if parent.character == Global.CHARACTERS.AMY and parent.animator.current_animation == "dropDash" and parent.movement.y > 2*60:
+				parent.movement.y = -parent.movement.y + (1*30)
+				parent.sfx[32].play()
 		else:
 			#Restore Air Control when landing
 			#(Needed if Rolling control lock is enabled in Roll.gd)

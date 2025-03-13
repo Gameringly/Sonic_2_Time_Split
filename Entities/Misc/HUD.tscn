@@ -1,4 +1,4 @@
-[gd_scene load_steps=50 format=3 uid="uid://c30uceea18q1w"]
+[gd_scene load_steps=46 format=3 uid="uid://c30uceea18q1w"]
 
 [ext_resource type="Texture2D" uid="uid://dloxtqer7p78l" path="res://Graphics/HUD/hud_lives.png" id="2_cfvjc"]
 [ext_resource type="Material" uid="uid://bveqi5m5ihsgj" path="res://Shaders/PlayerPalette.tres" id="2_xy7bp"]
@@ -7,13 +7,9 @@
 [ext_resource type="Texture2D" uid="uid://c7d6313minexh" path="res://Graphics/HUD/hud_text.png" id="5_kre34"]
 [ext_resource type="Script" path="res://Scripts/Misc/HUD.gd" id="6"]
 [ext_resource type="FontFile" uid="uid://cticydrc4dda2" path="res://Graphics/HUD/hud_numerals.png" id="6_synv7"]
-[ext_resource type="Texture2D" uid="uid://gswo6rq3uyy8" path="res://Graphics/HUD/LevelCards/Banner.png" id="7_ccygi"]
-[ext_resource type="FontFile" uid="uid://v4hx32xo1ema" path="res://Graphics/HUD/LevelCards/font/largefont4.png" id="7_uj3el"]
 [ext_resource type="Texture2D" uid="uid://c7a17v25ap4ow" path="res://Graphics/HUD/LevelCards/ActCards.png" id="9_3i4aq"]
 [ext_resource type="FontFile" uid="uid://qan4ss21y5gp" path="res://Graphics/HUD/LevelCards/font/smallfont3.png" id="10_8dyi8"]
 [ext_resource type="Texture2D" uid="uid://bn4id4yr1lron" path="res://Graphics/HUD/hud_results_text.png" id="10_ddlv5"]
-[ext_resource type="FontFile" uid="uid://ml62eqfe7avn" path="res://Graphics/Fonts/small_font.png" id="10_efex4"]
-[ext_resource type="Texture2D" uid="uid://bbm5bncrd1o4k" path="res://Graphics/HUD/LevelCards/EdgePattern.png" id="10_xpi0a"]
 [ext_resource type="Material" uid="uid://uh2c8jbp8qwd" path="res://Shaders/WaterPalette.tres" id="13_1ly2g"]
 [ext_resource type="Texture2D" uid="uid://b611c5qfkjh5b" path="res://Graphics/HUD/LevelCards/BluePattern.png" id="13_ufeq8"]
 [ext_resource type="Texture2D" uid="uid://dxnwmukkmh8rn" path="res://Graphics/HUD/LevelCards/YellowPattern.png" id="14_h435o"]
@@ -130,7 +126,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(0),
 "transitions": PackedFloat32Array(1),
 "update": 0,
-"values": [Vector2(-60, 157)]
+"values": [Vector2(-60, 148)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -243,7 +239,7 @@ tracks/2/keys = {
 "times": PackedFloat32Array(2, 2.5),
 "transitions": PackedFloat32Array(1, 1),
 "update": 0,
-"values": [Vector2(-60, 157), Vector2(8, 157)]
+"values": [Vector2(-60, 148), Vector2(8, 148)]
 }
 tracks/3/type = "value"
 tracks/3/imported = false
@@ -716,8 +712,8 @@ vframes = 7
 [node name="LifeText" type="Label" parent="LifeCounter/Icon"]
 offset_left = 32.0
 offset_top = 8.0
-offset_right = 32.0
-offset_bottom = 8.0
+offset_right = 40.0
+offset_bottom = 23.0
 theme_override_fonts/font = ExtResource("3_eauoj")
 text = "0"
 
@@ -739,26 +735,27 @@ offset_bottom = 48.0
 texture = ExtResource("5_kre34")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 40, 48)
+region_rect = Rect2(0, 0, 55, 48)
 
 [node name="ScoreNumber" type="Label" parent="Counters/Text"]
-offset_left = 48.0
-offset_right = 48.0
+offset_left = 61.0
+offset_right = 69.0
+offset_bottom = 16.0
 theme_override_fonts/font = ExtResource("6_synv7")
 text = "0"
 
 [node name="TimeNumbers" type="Label" parent="Counters/Text"]
-offset_left = 32.0
+offset_left = 45.0
 offset_top = 16.0
-offset_right = 40.0
+offset_right = 85.0
 offset_bottom = 35.0
 theme_override_fonts/font = ExtResource("6_synv7")
 text = "00:00"
 
 [node name="RingCount" type="Label" parent="Counters/Text"]
-offset_left = 48.0
+offset_left = 61.0
 offset_top = 32.0
-offset_right = 56.0
+offset_right = 69.0
 offset_bottom = 51.0
 theme_override_fonts/font = ExtResource("6_synv7")
 text = "0"
@@ -769,7 +766,7 @@ position = Vector2(0, 16)
 texture = ExtResource("5_kre34")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 48, 40, 16)
+region_rect = Rect2(0, 48, 55, 16)
 
 [node name="Rings" type="Sprite2D" parent="Counters/Text"]
 visible = false
@@ -777,7 +774,7 @@ position = Vector2(0, 32)
 texture = ExtResource("5_kre34")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 64, 40, 16)
+region_rect = Rect2(0, 64, 55, 16)
 
 [node name="BlueRings" type="Sprite2D" parent="Counters/Text"]
 visible = false
@@ -785,121 +782,7 @@ position = Vector2(0, 32)
 texture = ExtResource("5_kre34")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 80, 40, 16)
-
-[node name="LevelCardold" type="Control" parent="."]
-process_mode = 3
-visible = false
-layout_mode = 3
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-size_flags_horizontal = 2
-size_flags_vertical = 2
-
-[node name="Cover" type="ColorRect" parent="LevelCardold"]
-layout_mode = 0
-anchor_right = 1.0
-anchor_bottom = 1.0
-color = Color(0, 0, 0, 1)
-
-[node name="Banner" type="TextureRect" parent="LevelCardold"]
-layout_mode = 0
-anchor_left = 0.5
-anchor_right = 0.5
-offset_left = -93.0
-offset_right = 96.0
-offset_bottom = 203.0
-size_flags_stretch_ratio = 0.0
-texture = ExtResource("7_ccygi")
-stretch_mode = 2
-
-[node name="LevelName" type="Label" parent="LevelCardold/Banner"]
-layout_mode = 0
-offset_left = 32.0
-offset_top = 64.0
-offset_right = 156.0
-offset_bottom = 107.0
-theme_override_fonts/font = ExtResource("7_uj3el")
-text = "BASE"
-uppercase = true
-
-[node name="Zone" type="Label" parent="LevelCardold/Banner"]
-layout_mode = 0
-offset_left = 32.0
-offset_top = 108.0
-offset_right = 156.0
-offset_bottom = 154.0
-theme_override_fonts/font = ExtResource("7_uj3el")
-text = "ZONE"
-uppercase = true
-
-[node name="Zone2" type="Label" parent="LevelCardold/Banner"]
-layout_mode = 0
-offset_left = 33.0
-offset_top = 166.0
-offset_right = 157.0
-offset_bottom = 212.0
-theme_override_fonts/font = ExtResource("10_efex4")
-text = "Mission
-
-Find"
-uppercase = true
-
-[node name="Act" type="Sprite2D" parent="LevelCardold/Banner"]
-position = Vector2(133, 168)
-texture = ExtResource("9_3i4aq")
-centered = false
-hframes = 2
-vframes = 2
-
-[node name="PatternLeft" type="Control" parent="LevelCardold"]
-anchors_preset = 0
-anchor_bottom = 1.0
-offset_top = -32.0
-offset_bottom = 14784.0
-
-[node name="PatternLeft" type="TextureRect" parent="LevelCardold/PatternLeft"]
-layout_mode = 1
-anchors_preset = -1
-offset_left = -32.0
-offset_right = 32.0
-offset_bottom = 256.0
-grow_vertical = 2
-texture = ExtResource("10_xpi0a")
-stretch_mode = 1
-
-[node name="RightRatio" type="Control" parent="LevelCardold"]
-anchors_preset = 0
-anchor_left = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-
-[node name="PatternRight" type="Control" parent="LevelCardold/RightRatio"]
-anchors_preset = 0
-anchor_left = 0.5
-anchor_right = 0.5
-anchor_bottom = 1.0
-offset_top = -32.0
-offset_bottom = 14528.0
-
-[node name="PatternRight" type="TextureRect" parent="LevelCardold/RightRatio/PatternRight"]
-layout_mode = 1
-anchors_preset = -1
-anchor_left = 1.0
-anchor_top = 0.003
-anchor_right = 1.0
-anchor_bottom = 0.003
-offset_left = -32.0
-offset_top = -12.352
-offset_right = 4416.0
-offset_bottom = 243.648
-grow_horizontal = 0
-grow_vertical = 2
-texture = ExtResource("10_xpi0a")
-stretch_mode = 1
+region_rect = Rect2(0, 80, 55, 16)
 
 [node name="LevelCard" type="Control" parent="."]
 process_mode = 3
@@ -964,14 +847,14 @@ stretch_mode = 2
 [node name="Round" type="TextureRect" parent="LevelCard"]
 layout_mode = 0
 offset_left = -60.0
-offset_top = 157.0
+offset_top = 148.0
 offset_right = -20.0
-offset_bottom = 211.0
+offset_bottom = 213.0
 texture = ExtResource("19_67lvl")
 stretch_mode = 2
 
 [node name="ActGear" type="Sprite2D" parent="LevelCard/Round"]
-position = Vector2(32, 27)
+position = Vector2(33, 32)
 texture = ExtResource("17_nhkm4")
 hframes = 4
 
@@ -1089,7 +972,7 @@ position = Vector2(-256, 112)
 texture = ExtResource("10_ddlv5")
 centered = false
 region_enabled = true
-region_rect = Rect2(0, 0, 80, 32)
+region_rect = Rect2(0, 0, 97, 32)
 
 [node name="ScoreText" type="Sprite2D" parent="LevelClear/Tally"]
 position = Vector2(0, 48)
