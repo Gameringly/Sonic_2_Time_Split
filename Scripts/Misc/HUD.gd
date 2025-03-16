@@ -10,6 +10,7 @@ extends CanvasLayer
 @onready var lifeText = $LifeCounter/Icon/LifeText
 @onready var lifeIcon = $LifeCounter/Icon
 @onready var timePlate = $LifeCounter/TimePlate
+@onready var zone = $LevelCard/LeftPattern/ZoneName
 @onready var act1Bar = $LevelCard/Act1Bar
 @onready var act2Bar = $LevelCard/Act2Bar
 @onready var act3Bar = $LevelCard/Act3Bar
@@ -62,6 +63,7 @@ func _ready():
 		$LevelCard.visible = true
 		# set level name strings
 #		$LevelCard/Banner/LevelName.text = zoneName
+		zone.texture = zoneName
 #		$LevelCard/Banner/Zone.text = zone
 		# set act graphic
 		$LevelCard/Round/ActGear.frame = act-1

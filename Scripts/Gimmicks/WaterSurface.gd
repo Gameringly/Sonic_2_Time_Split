@@ -1,6 +1,6 @@
 extends Node2D
 
-@export var waterSurface = [preload("res://Graphics/Gimmicks/WaterSurface1.png"),preload("res://Graphics/Gimmicks/WaterSurface2.png")]
+@export var waterSurface = [preload("res://Graphics/Gimmicks/WaterSurface1.png"),preload("res://Graphics/Gimmicks/WaterSurface2.png"),preload("res://Graphics/Gimmicks/WaterSurface3.png")]
 
 var frame = 0
 @export var animSpeed = 8

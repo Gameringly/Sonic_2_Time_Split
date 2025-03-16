@@ -9,7 +9,7 @@ func _physics_process(delta: float) -> void:
 	#air movement
 	if !parent.ground:
 		parent.movement.y += parent.grv/GlobalFunctions.div_by_delta(delta)
-		parent.horizontalLockTimer = 1
+		parent.horizontalLockTimer = 0.1
 	#grounded movement
 	elif parent.ground:
 		parent.movement.x = 10*60

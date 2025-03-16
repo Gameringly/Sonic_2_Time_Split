@@ -809,6 +809,7 @@ offset_bottom = 224.0
 texture = ExtResource("13_ufeq8")
 
 [node name="ZoneName" type="TextureRect" parent="LevelCard/LeftPattern"]
+z_index = 1
 layout_mode = 0
 offset_left = 8.0
 offset_top = 3.0

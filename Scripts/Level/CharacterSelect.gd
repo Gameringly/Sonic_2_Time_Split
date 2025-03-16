@@ -8,7 +8,7 @@ var selected = false
 # character labels, the amount of labels in here determines the total amount of options, see the set character option at the end for settings
 var characterLabels = ["Sonic and Tails", "Sonic", "Tails", "Knuckles", "Amy"]
 # level labels, the amount of labels in here determines the total amount of options, see set level option at the end for settings
-var levelLabels = ["Base Zone Act 1", "Ridicule Root Zone Act 1"]#, "Chunk Zone Act 1"]
+var levelLabels = ["Base Zone Act 1", "SurfTest", "Ridicule Root Zone Act 1"]#, "Chunk Zone Act 1"]
 # character id lines up with characterLabels
 enum CHARACTER_ID { SONIC_AND_TAILS, SONIC, TAILS, KNUCKLES, AMY }
 var characterID = CHARACTER_ID.SONIC_AND_TAILS
@@ -86,9 +86,9 @@ func _input(event):
 			match(levelID):
 				0: # Base Zone Act 1
 					Global.nextZone = load("res://Scene/Zones/BaseZone.tscn") # unnecessary since it's arleady set
-				1: # Base Zone Act 2
-					Global.nextZone = load("res://Scene/Zones/RidiculeRootAct1.tscn") # Replace me! I don't exist yet!
-				#2: # Chunk Zone Act 1
-				#	Global.nextZone = load("res://Scene/Zones/ChunkZone.tscn")
+				1: # SurfTest
+					Global.nextZone = load("res://Scene/Zones/SurfTest.tscn")
+				2: # Ridicule Root Act 1
+					Global.nextZone = load("res://Scene/Zones/RidiculeRootAct1.tscn")
 			
 			Global.main.change_scene_to_file(Global.nextZone,"FadeOut","FadeOut",1)

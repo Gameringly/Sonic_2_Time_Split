@@ -1,0 +1,26 @@
+[gd_scene load_steps=5 format=3 uid="uid://dudftqvk5vk5c"]
+
+[ext_resource type="Script" path="res://Scripts/Gimmicks/TrickWave.gd" id="1_vrqgv"]
+[ext_resource type="AudioStream" uid="uid://cnt1uf2ivhk" path="res://Audio/SFX/Gimmicks/TrickWaveFail.wav" id="2_gph2o"]
+[ext_resource type="AudioStream" uid="uid://cl4lja1p0ju8k" path="res://Audio/SFX/Gimmicks/TrickWaveHit.wav" id="3_ocrwm"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_7uxmt"]
+
+[node name="TrickWave" type="Area2D"]
+collision_layer = 0
+collision_mask = 4096
+script = ExtResource("1_vrqgv")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_7uxmt")
+
+[node name="TrickFail" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_gph2o")
+bus = &"SFX"
+
+[node name="TrickHit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_ocrwm")
+bus = &"SFX"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]
