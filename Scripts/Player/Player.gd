@@ -1420,8 +1420,12 @@ func action_jump(animation = "roll", airJumpControl = true, playSound=true):
 		if wall_jump == true:
 			animator.play("wallJump")
 			animator.queue("roll")
-			movement.y = -5*60
-			movement.x = sign(movement.x) * (5*60)
+			if water:
+				movement.y = -2.5*60
+				movement.x = sign(movement.x) * (2.5*60)
+			else:
+				movement.y = -5*60
+				movement.x = sign(movement.x) * (5*60)
 			wall_jump = false
 		else:
 			if character == Global.CHARACTERS.AMY:

@@ -25,20 +25,25 @@ func _process(_delta):
 			# Global emeralds use a bit flag, 127 would mean all 7 are 1, see bitwise operations for more info
 			if parent.rings >= 50 and Global.emeralds >= 127 and isJump:
 				parent.set_state(parent.STATES.SUPER)
-		# Shield actions
-		elif ((parent.inputs[parent.INPUTS.ACTION] == 1 or parent.inputs[parent.INPUTS.ACTION2] == 1 or parent.inputs[parent.INPUTS.ACTION3] == 1) and !parent.abilityUsed):
-			#wall jump
-			if parent.character == Global.CHARACTERS.SONIC and parent.animator.current_animation == "wallCling" and isJump:
+		#wall jump
+		if parent.any_action_pressed() and parent.character == Global.CHARACTERS.SONIC and parent.animator.current_animation == "wallCling":# and isJump:
 				parent.wall_jump = true
 				parent.action_jump()
-			# Super actions
-			elif parent.isSuper and (parent.character == Global.CHARACTERS.SONIC or parent.character == Global.CHARACTERS.AMY) and isJump:
-				parent.abilityUsed = true # has to be set to true for drop dash (Sonic and amy only)
-			# Normal actions
-			else:
-				match (parent.character):
-					Global.CHARACTERS.SONIC:
-						if isJump:
+		# Shield actions
+		elif ((parent.inputs[parent.INPUTS.ACTION] == 1 or parent.inputs[parent.INPUTS.ACTION2] == 1 or parent.inputs[parent.INPUTS.ACTION3] == 1)):
+			if parent.character == Global.CHARACTERS.SONIC:
+				parent.animator.play("roll")
+			if !parent.abilityUsed:
+			
+				# Super actions
+				if parent.isSuper and (parent.character == Global.CHARACTERS.SONIC or parent.character == Global.CHARACTERS.AMY) and isJump:
+					parent.abilityUsed = true # has to be set to true for drop dash (Sonic and amy only)
+				# Normal actions
+				else:
+					match (parent.character):
+						Global.CHARACTERS.SONIC:
+							#if isJump:
+							
 							# set ability used to true to prevent multiple uses
 							parent.abilityUsed = true
 							# check that the invincibility barrier isn't visible
@@ -106,29 +111,29 @@ func _process(_delta):
 												getTimer.start(0.25)
 										else:
 											parent.abilityUsed = false
-					# Tails flight
-					Global.CHARACTERS.TAILS:
-						# prevent double tap flight (aka super jumps)
-						if not parent.any_action_held() and isJump:
-							parent.set_state(parent.STATES.FLY)
-					# Knuckles gliding
-					Global.CHARACTERS.KNUCKLES:
-						if isJump:
-							# set initial movement
-							parent.movement = Vector2(parent.direction*4*60,max(parent.movement.y,0))
-							parent.set_state(parent.STATES.GLIDE,parent.currentHitbox.GLIDE)
-					# Amy hammer drop dash
-					Global.CHARACTERS.AMY:
-						if parent.animator.current_animation != "dropDash":
-							# enable insta shield hitbox if hammer drop dashing
-							parent.shieldSprite.get_node("InstaShieldHitbox/HitBox").disabled = (parent.animator.current_animation == "dropDash")
-							# play hammer sound
-							parent.sfx[30].play()
-							# play dropDash sound
-							stored_speed = parent.movement.x
-							parent.animator.play("dropDash")
-							parent.animator.queue("fall")
-						
+						# Tails flight
+						Global.CHARACTERS.TAILS:
+							# prevent double tap flight (aka super jumps)
+							if not parent.any_action_held() and isJump:
+								parent.set_state(parent.STATES.FLY)
+						# Knuckles gliding
+						Global.CHARACTERS.KNUCKLES:
+							if isJump:
+								# set initial movement
+								parent.movement = Vector2(parent.direction*4*60,max(parent.movement.y,0))
+								parent.set_state(parent.STATES.GLIDE,parent.currentHitbox.GLIDE)
+						# Amy hammer drop dash
+						Global.CHARACTERS.AMY:
+							if parent.animator.current_animation != "dropDash":
+								# enable insta shield hitbox if hammer drop dashing
+								parent.shieldSprite.get_node("InstaShieldHitbox/HitBox").disabled = (parent.animator.current_animation == "dropDash")
+								# play hammer sound
+								parent.sfx[30].play()
+								# play dropDash sound
+								stored_speed = parent.movement.x
+								parent.animator.play("dropDash")
+								parent.animator.queue("fall")
+							
 	#disable water run effects
 	parent.waterRun = false
 	parent.action_water_run_handle()
@@ -161,23 +166,23 @@ func _physics_process(delta):
 					parent.movement.y = -2*60
 				else:
 					parent.movement.y = -parent.releaseJmp*60
-		# Drop dash (for sonic)
-		if parent.character == Global.CHARACTERS.SONIC:
-			
-			if parent.any_action_held_or_pressed() and parent.abilityUsed and (parent.shield <= parent.SHIELDS.NORMAL or parent.isSuper or $"../../InvincibilityBarrier".visible or parent.character == Global.CHARACTERS.AMY):
-				if dropTimer < 1:
-					dropTimer += (delta/20)*60 # should be ready in the equivelent of 20 frames at 60FPS
-					if dropTimer >= 1:
-						parent.sfx[20].play()
-				else:
-					if parent.animator.current_animation != "dropDash":
-						parent.animator.play("dropDash")
-			# Drop dash reset 
-			elif !parent.any_action_held_or_pressed() and dropTimer > 0:
-				dropTimer = 0
-				if parent.animator.current_animation == "dropDash" and parent.character == Global.CHARACTERS.SONIC:
-					parent.animator.play("roll")
-	
+	# Drop dash (for sonic)
+	if parent.character == Global.CHARACTERS.SONIC:
+		
+		if parent.any_action_held_or_pressed() and parent.abilityUsed and (parent.shield <= parent.SHIELDS.NORMAL or parent.isSuper or $"../../InvincibilityBarrier".visible or parent.character == Global.CHARACTERS.AMY):
+			if dropTimer < 1:
+				dropTimer += (delta/20)*60 # should be ready in the equivelent of 20 frames at 60FPS
+				if dropTimer >= 1:
+					parent.sfx[20].play()
+			else:
+				if parent.animator.current_animation != "dropDash":
+					parent.animator.play("dropDash")
+		# Drop dash reset 
+		elif !parent.any_action_held_or_pressed() and dropTimer > 0:
+			dropTimer = 0
+			if parent.animator.current_animation == "dropDash" and parent.character == Global.CHARACTERS.SONIC:
+				parent.animator.play("roll")
+
 		
 	# Change parent direction
 	# Check that lock direction isn't on

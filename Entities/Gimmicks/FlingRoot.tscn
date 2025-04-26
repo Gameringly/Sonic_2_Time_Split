@@ -1,0 +1,87 @@
+[gd_scene load_steps=7 format=3 uid="uid://cci7mvqumcp8f"]
+
+[ext_resource type="Script" path="res://Scripts/Gimmicks/FlingRoot.gd" id="1_t1o87"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j2q5r"]
+size = Vector2(32, 20)
+
+[sub_resource type="Curve2D" id="Curve2D_cbfba"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 16, 0, -15.3576, -5.99323, 15.3576, 5.99323, 24, 0, 0, 0, 0, 0, 40, 40, 0, 0, 0, 0, 40, -8)
+}
+point_count = 4
+
+[sub_resource type="Animation" id="Animation_vc7w3"]
+resource_name = "Fling"
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Path2D/PathFollow2D:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5, 1),
+"transitions": PackedFloat32Array(1, 2.82843, 1),
+"update": 0,
+"values": [0.0, 0.7, 1.0]
+}
+
+[sub_resource type="Animation" id="Animation_4r7rt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Path2D/PathFollow2D:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_82661"]
+_data = {
+"Fling": SubResource("Animation_vc7w3"),
+"RESET": SubResource("Animation_4r7rt")
+}
+
+[node name="FlingRoot" type="Area2D"]
+collision_layer = 0
+collision_mask = 4096
+script = ExtResource("1_t1o87")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(24, 0)
+shape = SubResource("RectangleShape2D_j2q5r")
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_cbfba")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(16, 0)
+rotates = false
+loop = false
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D"]
+update_rotation = false
+update_scale = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_82661")
+}
+
+[node name="InactiveTimer" type="Timer" parent="."]
+wait_time = 0.3
+one_shot = true
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+position = Vector2(28, 16)
+scale = Vector2(2.8, 3.2)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="timeout" from="InactiveTimer" to="." method="_on_inactive_timer_timeout"]
