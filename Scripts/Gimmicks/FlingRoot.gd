@@ -30,14 +30,15 @@ func _on_body_entered(body: Node2D) -> void:
 	body.animator.play("roll")
 	remote.remote_path = body.get_path()
 	animator.speed_scale = FlingHeight/5 + FlingDistance/5
+	$Grab.play()
 	animator.play("Fling")
+	$Root.play("Fling")
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 	if anim_name == "Fling":
 		stopHolding = true
-		# play player animation
-		player.animator.play("spring")
+		$Fling.play()
 		# figure out the animation based on the players current animation
 		var curAnim = "walk"
 		match(player.animator.current_animation):
