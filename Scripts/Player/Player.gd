@@ -239,6 +239,12 @@ signal enemy_bounced
 var timeWarp = ""
 var warpTime = 300
 var warping = false
+var checkWarpCollision = 0
+
+@onready var warpSpaceUp = $FindAir/Up
+@onready var warpSpaceDown = $FindAir/Down
+@onready var warpSpaceRight = $FindAir/Right
+@onready var warpSpaceLeft = $FindAir/Left
 
 func _ready():
 	super()
@@ -826,11 +832,21 @@ func _physics_process(delta):
 		# crusher deaths NOTE: the translate and visibility is used for stuff like the sky sanctuary teleporters, visibility check is for stuff like the carnival night barrels
 		if (crushSensorLeft.get_overlapping_areas() + crushSensorLeft.get_overlapping_bodies()).size() > 0 and \
 			(crushSensorRight.get_overlapping_areas() + crushSensorRight.get_overlapping_bodies()).size() > 0 and (!translate or visible) and ground:
-			kill()
+			#look for air when time travel puts you in a wall
+			if checkWarpCollision > 0:
+				check_warp_collision()
+				
+			else:
+				kill()
 
 		if (crushSensorUp.get_overlapping_areas() + crushSensorUp.get_overlapping_bodies()).size() > 0 and \
 			(crushSensorDown.get_overlapping_areas() + crushSensorDown.get_overlapping_bodies()).size() > 0 and (!translate or visible) and ground:
-			kill()
+			#look for air when time travel puts you in a wall
+			if checkWarpCollision > 0:
+				check_warp_collision()
+				
+			else:
+				kill()
 	
 	#Time Travel
 	if playerControl == 1: #trigger starting the countdown
@@ -849,12 +865,15 @@ func _physics_process(delta):
 			get_parent().hud.timePlate.play("FutureFade")
 		
 	if warpTime <= 0: #sucessfully time travel
+		checkWarpCollision = 60
 		get_parent().TimeTravel(timeWarp)
 		sfx[31].play()
 		warping = false
 		timeWarp = ""
 		warpTime = 300
 		get_parent().hud.timePlate.play("Empty")
+		if checkWarpCollision > 0:
+			checkWarpCollision -= 1
 	
 	#bonk on walls when surfing, this is kinda a patchwork solution cus I dont know why jumping into walls doesn't bonk when in the surfing state
 	horizontalSensor.force_raycast_update()
@@ -866,6 +885,36 @@ func _physics_process(delta):
 		z_index = 0
 		set_state(STATES.AIR)
 		set_state(STATES.HIT)
+
+func check_warp_collision():
+	var target
+	if !warpSpaceUp.is_colliding():
+		target = warpSpaceUp.target_position
+		position += target
+	elif !warpSpaceRight.is_colliding():
+		target = warpSpaceRight.target_position
+		position += target
+	elif !warpSpaceDown.is_colliding():
+		target = warpSpaceDown.target_position
+		position += target
+	elif !warpSpaceLeft.is_colliding():
+		target = warpSpaceLeft.target_position
+		position += target
+	else:
+		warpSpaceUp.position.y -= 10
+		warpSpaceUp.force_update_transform()
+		warpSpaceUp.force_raycast_update()
+		warpSpaceDown.position.y += 10
+		warpSpaceDown.force_update_transform()
+		warpSpaceDown.force_raycast_update()
+		warpSpaceRight.position.x += 10
+		warpSpaceRight.force_update_transform()
+		warpSpaceRight.force_raycast_update()
+		warpSpaceLeft.position.x -= 10
+		warpSpaceLeft.force_update_transform()
+		warpSpaceLeft.force_raycast_update()
+		check_warp_collision()
+
 
 func loose_time_warp():
 	warping = false
