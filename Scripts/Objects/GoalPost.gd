@@ -29,7 +29,7 @@ func _physics_process(_delta):
 		$GoalPost.play()
 		# set global stage clear phase to 1, 1 is used to stop the timer (see HUD script)
 		Global.stageClearPhase = 1
-		
+		Global.musicFade.play("FadeOut")
 		# wait for spinner to finish
 		await $Animator.animation_finished
 		# after finishing spin, set stage clear to 2 and disable the players controls,

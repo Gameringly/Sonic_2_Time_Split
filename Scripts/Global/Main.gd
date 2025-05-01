@@ -31,6 +31,7 @@ func _ready():
 	Global.effectTheme = get_node_or_null("Music/EffectTheme")
 	Global.drowning = get_node_or_null("Music/Drowning")
 	Global.life = get_node_or_null("Music/Life")
+	Global.musicFade = get_node_or_null("Music/FadeAudio")
 	# initialize game data using global reset (it's better then assigning variables twice)
 	Global.reset_values()
 

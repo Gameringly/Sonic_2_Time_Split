@@ -44,6 +44,7 @@ var bossMusic = null
 var effectTheme = null
 var drowning = null
 var life = null
+var musicFade = null
 # song themes to play for things like invincibility and speed shoes
 var themes = [preload("res://Audio/Soundtrack/1. SWD_Invincible.ogg"),preload("res://Audio/Soundtrack/2. SWD_SpeedUp.ogg"),preload("res://Audio/Soundtrack/Act Clear! (Sabre94).wav")]
 # index for current theme
@@ -177,6 +178,8 @@ func check_score_life(scoreAdd = 0):
 # use this to set the stage clear theme, only runs if stageClearPhase isn't 0
 func stage_clear():
 	if stageClearPhase == 0:
+		await musicFade.animation_finished
+		musicFade.play("RESET")
 		currentTheme = 2
 		music.stream = themes[currentTheme]
 		music.play()

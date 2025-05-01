@@ -36,7 +36,7 @@ func _on_body_entered(body: Node2D) -> void:
 
 
 func _on_animation_player_animation_finished(anim_name: StringName) -> void:
-	if anim_name == "Fling":
+	if anim_name == "Fling" and player != null:
 		stopHolding = true
 		$Fling.play()
 		# figure out the animation based on the players current animation
@@ -65,3 +65,12 @@ func _on_animation_player_animation_finished(anim_name: StringName) -> void:
 func _on_inactive_timer_timeout() -> void:
 	#collision.disabled = false
 	collision.set_deferred("disabled",false)
+
+
+func _on_tree_exited() -> void:
+	player = null
+	remote.remote_path = ""
+	collision.set_deferred("disabled",false)
+	animator.stop()
+	$Root.stop()
+	

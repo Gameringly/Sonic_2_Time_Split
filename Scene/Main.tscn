@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://byje3iiukvt4p"]
+[gd_scene load_steps=20 format=3 uid="uid://byje3iiukvt4p"]
 
 [ext_resource type="AudioStream" uid="uid://dec4ik84l88go" path="res://Audio/Soundtrack/2. SWD_SpeedUp.ogg" id="1"]
 [ext_resource type="Script" path="res://Scripts/Global/Main.gd" id="2"]
@@ -8,6 +8,43 @@
 [ext_resource type="PackedScene" uid="uid://b2xskcomtpo2x" path="res://Entities/Misc/ControllerMenu.tscn" id="6"]
 [ext_resource type="PackedScene" uid="uid://c1xhc4uh26inb" path="res://Entities/Misc/PauseMenu.tscn" id="7"]
 [ext_resource type="AudioStream" uid="uid://25oy5g80wsxu" path="res://Audio/Soundtrack/5. SWD_Boss.ogg" id="8"]
+
+[sub_resource type="Animation" id="Animation_cp1hv"]
+resource_name = "FadeOut"
+length = 3.0
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Music:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 3),
+"transitions": PackedFloat32Array(1, 1),
+"update": 0,
+"values": [0.0, -80.0]
+}
+
+[sub_resource type="Animation" id="Animation_l1nh7"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Music:volume_db")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1c26c"]
+_data = {
+"FadeOut": SubResource("Animation_cp1hv"),
+"RESET": SubResource("Animation_l1nh7")
+}
 
 [sub_resource type="CanvasItemMaterial" id="1"]
 
@@ -193,6 +230,11 @@ bus = &"Music"
 [node name="Life" type="AudioStreamPlayer" parent="Music"]
 stream = ExtResource("3")
 bus = &"Music"
+
+[node name="FadeAudio" type="AnimationPlayer" parent="Music"]
+libraries = {
+"": SubResource("AnimationLibrary_1c26c")
+}
 
 [node name="GUI" type="CanvasLayer" parent="."]
 process_mode = 3
