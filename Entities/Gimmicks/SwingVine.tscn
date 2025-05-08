@@ -1,0 +1,269 @@
+[gd_scene load_steps=25 format=3 uid="uid://cp2ftevkawx3e"]
+
+[ext_resource type="Script" path="res://Scripts/Gimmicks/SwingVine.gd" id="1_ifjxv"]
+[ext_resource type="Texture2D" uid="uid://j1i4g8w2xk3r" path="res://Graphics/Gimmicks/Swinging Vines/Vine-0001.png" id="2_et5au"]
+[ext_resource type="AudioStream" uid="uid://b3s80l5cibdq4" path="res://Audio/SFX/Gimmicks/boing.wav" id="3_62dtk"]
+[ext_resource type="Texture2D" uid="uid://b3hrkugystra4" path="res://Graphics/Gimmicks/Swinging Vines/Vine-0002.png" id="3_ftcry"]
+[ext_resource type="Texture2D" uid="uid://dmirvjxldp2nc" path="res://Graphics/Gimmicks/Swinging Vines/Vine-0003.png" id="4_k5bns"]
+[ext_resource type="AudioStream" uid="uid://bfba871gfmv0s" path="res://Audio/SFX/Player/Grab.wav" id="4_o1ai6"]
+[ext_resource type="Texture2D" uid="uid://bs0qpkjbfhrhs" path="res://Graphics/Gimmicks/Swinging Vines/Vine-0004.png" id="5_exxsi"]
+[ext_resource type="Texture2D" uid="uid://dmiu18e38dk4q" path="res://Graphics/Gimmicks/Swinging Vines/Vine-0005.png" id="6_njtxi"]
+[ext_resource type="Texture2D" uid="uid://5wewinacdobo" path="res://Graphics/Gimmicks/Swinging Vines/Vine-0006.png" id="7_aipj7"]
+[ext_resource type="Texture2D" uid="uid://b5406ujw4lse6" path="res://Graphics/Gimmicks/Swinging Vines/Vine-0007.png" id="8_hfvf2"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_iwqnt"]
+atlas = ExtResource("3_ftcry")
+region = Rect2(0, 0, 123, 162)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_hney4"]
+atlas = ExtResource("4_k5bns")
+region = Rect2(0, 0, 123, 162)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_n6mxx"]
+atlas = ExtResource("5_exxsi")
+region = Rect2(0, 0, 123, 162)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_jmeye"]
+atlas = ExtResource("6_njtxi")
+region = Rect2(0, 0, 123, 162)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_11h1n"]
+atlas = ExtResource("7_aipj7")
+region = Rect2(0, 0, 123, 162)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h7bof"]
+atlas = ExtResource("8_hfvf2")
+region = Rect2(0, 0, 123, 162)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_ja6bc"]
+atlas = ExtResource("2_et5au")
+region = Rect2(0, 0, 123, 162)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_lbukh"]
+atlas = ExtResource("2_et5au")
+region = Rect2(0, 0, 123, 162)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_6wivi"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iwqnt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hney4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n6mxx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jmeye")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_11h1n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h7bof")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h7bof")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h7bof")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_11h1n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_11h1n")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_jmeye")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_n6mxx")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_hney4")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_iwqnt")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_ja6bc")
+}],
+"loop": false,
+"name": &"Fling",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_lbukh")
+}],
+"loop": false,
+"name": &"RESET",
+"speed": 5.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_j2q5r"]
+size = Vector2(20, 162)
+
+[sub_resource type="Curve2D" id="Curve2D_cbfba"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 152, -33.565, 54.375, 0, 0, 103.835, 102.345)
+}
+point_count = 2
+
+[sub_resource type="Animation" id="Animation_vc7w3"]
+resource_name = "Fling"
+length = 2.0
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Path2D/PathFollow2D:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(0.5, 1.5, 1),
+"update": 0,
+"values": [0.0, 1.0, 0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath(".:FlingDistance")
+tracks/1/interp = 2
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0, 1, 2),
+"transitions": PackedFloat32Array(0.5, 1.5, 1),
+"update": 0,
+"values": [10.1, 0.1, -10.1]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:FlingHeight")
+tracks/2/interp = 2
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0, 1, 1.7, 2),
+"transitions": PackedFloat32Array(0.5, 1e-05, 1, 1),
+"update": 0,
+"values": [0.1, -10.1, 0.1, 0.1]
+}
+
+[sub_resource type="Animation" id="Animation_4r7rt"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Path2D/PathFollow2D:progress_ratio")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [0.0]
+}
+tracks/1/type = "value"
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/path = NodePath("Vine:playing")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [null]
+}
+tracks/2/type = "value"
+tracks/2/imported = false
+tracks/2/enabled = true
+tracks/2/path = NodePath(".:FlingDistance")
+tracks/2/interp = 1
+tracks/2/loop_wrap = true
+tracks/2/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [0]
+}
+tracks/3/type = "value"
+tracks/3/imported = false
+tracks/3/enabled = true
+tracks/3/path = NodePath(".:FlingHeight")
+tracks/3/interp = 1
+tracks/3/loop_wrap = true
+tracks/3/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [10]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_82661"]
+_data = {
+"Fling": SubResource("Animation_vc7w3"),
+"RESET": SubResource("Animation_4r7rt")
+}
+
+[node name="SwingVine" type="Area2D"]
+collision_layer = 0
+collision_mask = 4096
+script = ExtResource("1_ifjxv")
+FlingHeight = 10
+
+[node name="Vine" type="AnimatedSprite2D" parent="."]
+position = Vector2(50, 72)
+sprite_frames = SubResource("SpriteFrames_6wivi")
+animation = &"Fling"
+autoplay = "RESET"
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(0, 71)
+shape = SubResource("RectangleShape2D_j2q5r")
+
+[node name="Path2D" type="Path2D" parent="."]
+curve = SubResource("Curve2D_cbfba")
+
+[node name="PathFollow2D" type="PathFollow2D" parent="Path2D"]
+position = Vector2(0, 152)
+rotates = false
+loop = false
+
+[node name="RemoteTransform2D" type="RemoteTransform2D" parent="Path2D/PathFollow2D"]
+update_rotation = false
+update_scale = false
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_82661")
+}
+speed_scale = 2.0
+
+[node name="InactiveTimer" type="Timer" parent="."]
+wait_time = 0.6
+one_shot = true
+
+[node name="VisibleOnScreenEnabler2D" type="VisibleOnScreenEnabler2D" parent="."]
+position = Vector2(16, 72)
+scale = Vector2(10.4, 14.4)
+
+[node name="Fling" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_62dtk")
+volume_db = 10.0
+pitch_scale = 1.5
+bus = &"SFX"
+
+[node name="Grab" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_o1ai6")
+volume_db = -7.0
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="tree_exited" from="." to="." method="_on_tree_exited"]
+[connection signal="animation_finished" from="AnimationPlayer" to="." method="_on_animation_player_animation_finished"]
+[connection signal="timeout" from="InactiveTimer" to="." method="_on_inactive_timer_timeout"]

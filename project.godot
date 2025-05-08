@@ -14,7 +14,7 @@ warnings/check_invalid_track_paths=false
 
 [application]
 
-config/name="Sonic 2 Alternate"
+config/name="Sonic 2 Time Split"
 run/main_scene="res://Scene/Main.tscn"
 config/features=PackedStringArray("4.3")
 boot_splash/bg_color=Color(1, 1, 1, 1)
