@@ -149,7 +149,7 @@ func _process(delta):
 								parent.animator.play("edge3")
 							# far edge
 							elif !getMEdge:
-								parent.animator.play("edge2")
+								parent.animator.play("edge1")
 							# normal edge
 							else:
 								parent.animator.play("edge1")
