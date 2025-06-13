@@ -1,4 +1,4 @@
-[gd_scene load_steps=69 format=3 uid="uid://d1e4muavtnun6"]
+[gd_scene load_steps=70 format=3 uid="uid://d1e4muavtnun6"]
 
 [ext_resource type="Material" uid="uid://bveqi5m5ihsgj" path="res://Shaders/PlayerPalette.tres" id="1_bjmss"]
 [ext_resource type="Texture2D" uid="uid://4lhg0ovh1pe8" path="res://Graphics/Players/Sonic.png" id="2_6xy2a"]
@@ -1170,6 +1170,23 @@ tracks/0/keys = {
 "values": [256, 267, 266, 265, 264, 263, 262, 261, 260, 259, 258, 257]
 }
 
+[sub_resource type="Animation" id="Animation_oby1b"]
+resource_name = "dandelion"
+loop_mode = 1
+step = 0.1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sonic/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.5),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [268, 269]
+}
+
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_36uej"]
 _data = {
 "RESET": SubResource("86"),
@@ -1180,6 +1197,7 @@ _data = {
 "corkScrewOffset": SubResource("88"),
 "crouch": SubResource("77"),
 "current": SubResource("Animation_tn47m"),
+"dandelion": SubResource("Animation_oby1b"),
 "die": SubResource("98"),
 "dropDash": SubResource("107"),
 "drown": SubResource("99"),

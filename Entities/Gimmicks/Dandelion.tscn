@@ -1,9 +1,55 @@
-[gd_scene load_steps=3 format=3 uid="uid://dk83m4gharvd2"]
+[gd_scene load_steps=11 format=3 uid="uid://dk83m4gharvd2"]
 
 [ext_resource type="Script" path="res://Scripts/Gimmicks/Dandelion.gd" id="1_wvun1"]
+[ext_resource type="Texture2D" uid="uid://p4xsmlq2pjp0" path="res://Graphics/Gimmicks/dandelion.png" id="2_3pqwx"]
+[ext_resource type="Texture2D" uid="uid://d2ns1v5quw3rh" path="res://Graphics/Gimmicks/dandelionCover.png" id="3_b4s66"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h2dbx"]
 size = Vector2(8, 60)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_71flb"]
+atlas = ExtResource("2_3pqwx")
+region = Rect2(0, 0, 43, 84)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_im6ik"]
+atlas = ExtResource("2_3pqwx")
+region = Rect2(43, 0, 43, 84)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_alfsf"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_71flb")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_im6ik")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_h41p6"]
+atlas = ExtResource("3_b4s66")
+region = Rect2(0, 0, 51, 47)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_bpuqt"]
+atlas = ExtResource("3_b4s66")
+region = Rect2(51, 0, 51, 47)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_mp0jb"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_h41p6")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_bpuqt")
+}],
+"loop": true,
+"name": &"default",
+"speed": 1.0
+}]
 
 [node name="Dandelion" type="Area2D"]
 collision_layer = 0
@@ -13,6 +59,19 @@ script = ExtResource("1_wvun1")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 position = Vector2(0, -30)
 shape = SubResource("RectangleShape2D_h2dbx")
+
+[node name="Sprite2D" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_alfsf")
+autoplay = "default"
+frame_progress = 0.107693
+offset = Vector2(0, -42)
+
+[node name="Cover" type="AnimatedSprite2D" parent="."]
+position = Vector2(0, -62.465)
+sprite_frames = SubResource("SpriteFrames_mp0jb")
+autoplay = "default"
+frame = 1
+frame_progress = 0.63297
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 1.5
