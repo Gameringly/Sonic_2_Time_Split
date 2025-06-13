@@ -1,0 +1,11 @@
+[gd_scene load_steps=3 format=3 uid="uid://ci80ve2kx22ds"]
+
+[ext_resource type="Script" path="res://Scripts/Misc/DebugCursorgd.gd" id="1_52hns"]
+[ext_resource type="Texture2D" uid="uid://csoc5oj6qsv2n" path="res://Graphics/Items/Rings/Ring1.png" id="2_qcprr"]
+
+[node name="DebugCursor" type="Node2D"]
+script = ExtResource("1_52hns")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+z_index = 500
+texture = ExtResource("2_qcprr")

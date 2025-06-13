@@ -246,6 +246,10 @@ var checkWarpCollision = 0
 @onready var warpSpaceRight = $FindAir/Right
 @onready var warpSpaceLeft = $FindAir/Left
 
+#debug
+var debug_cursor
+var in_debug_mode = false
+
 func _ready():
 	super()
 	# Disable and enable states
@@ -652,6 +656,29 @@ func _process(delta):
 	
 	# Set player inputs
 	set_inputs()
+	
+	#debug mode
+	if Input.is_action_just_pressed("debug") and !in_debug_mode:
+		debug_cursor = preload("res://Entities/MainObjects/DebugCursor.tscn").instantiate()
+		add_child(debug_cursor)
+		debug_cursor.global_position = global_position
+		set_state(STATES.ANIMATION)
+		in_debug_mode = true
+		set_physics_process(false)
+	
+	elif Input.is_action_just_pressed("debug") and in_debug_mode:
+		if debug_cursor:
+			debug_cursor.queue_free()
+		global_position = debug_cursor.global_position
+		movement.x = 0
+		movement.y = 0
+		set_physics_process(true)
+		set_state(STATES.AIR)
+		in_debug_mode = false
+		
+	if in_debug_mode:
+		cam_update(true)
+
 
 func _physics_process(delta):
 	super(delta)
@@ -1376,7 +1403,11 @@ func cam_update(forceMove = false):
 
 	# Camera lock
 	# remove round() if you are not making a pixel perfect game
-	var getPos = (global_position+Vector2(0,camLookOff)+camAdjust).round()
+	var getPos
+	if !in_debug_mode:
+		getPos = (global_position+Vector2(0,camLookOff)+camAdjust).round()
+	else:
+		getPos = (debug_cursor.global_position+Vector2(0,camLookOff)+camAdjust).round()
 	if camLockTime <= 0 and (forceMove or camera.global_position.distance_to(getPos) <= 16):
 		# limit_length speed camera
 		#Sonic CD camera extension

@@ -63,7 +63,7 @@ shape = SubResource("RectangleShape2D_h2dbx")
 [node name="Sprite2D" type="AnimatedSprite2D" parent="."]
 sprite_frames = SubResource("SpriteFrames_alfsf")
 autoplay = "default"
-frame_progress = 0.107693
+frame_progress = 0.937136
 offset = Vector2(0, -42)
 
 [node name="Cover" type="AnimatedSprite2D" parent="."]
