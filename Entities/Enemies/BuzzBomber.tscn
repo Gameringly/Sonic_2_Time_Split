@@ -87,16 +87,16 @@ shape = SubResource("1")
 
 [node name="Sprite2D" type="Node2D" parent="."]
 
+[node name="BuzzBomber" type="Sprite2D" parent="Sprite2D"]
+texture = ExtResource("1")
+hframes = 2
+vframes = 3
+
 [node name="Wings" type="AnimatedSprite2D" parent="Sprite2D"]
 sprite_frames = SubResource("7")
 animation = &"wing"
 autoplay = "wing"
 frame_progress = 0.24432
-
-[node name="BuzzBomber" type="Sprite2D" parent="Sprite2D"]
-texture = ExtResource("1")
-hframes = 2
-vframes = 3
 
 [node name="Fire" type="AnimatedSprite2D" parent="Sprite2D"]
 sprite_frames = SubResource("7")
