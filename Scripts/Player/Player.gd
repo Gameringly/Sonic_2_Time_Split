@@ -902,6 +902,27 @@ func _physics_process(delta):
 		if checkWarpCollision > 0:
 			checkWarpCollision -= 1
 	
+	#debug time travel
+	if Input.is_action_just_pressed("debug_past"):
+		timeWarp = "Past"
+		checkWarpCollision = 60
+		get_parent().TimeTravel(timeWarp)
+		sfx[31].play()
+		warping = false
+		timeWarp = ""
+		warpTime = 300
+		get_parent().hud.timePlate.play("Empty")
+	
+	elif Input.is_action_just_pressed("debug_future"):
+		timeWarp = "Future"
+		checkWarpCollision = 60
+		get_parent().TimeTravel(timeWarp)
+		sfx[31].play()
+		warping = false
+		timeWarp = ""
+		warpTime = 300
+		get_parent().hud.timePlate.play("Empty")
+	
 	#bonk on walls when surfing, this is kinda a patchwork solution cus I dont know why jumping into walls doesn't bonk when in the surfing state
 	horizontalSensor.force_raycast_update()
 	if animator.current_animation == "surfing" and horizontalSensor.is_colliding():

@@ -220,6 +220,7 @@ script = ExtResource("3")
 shape = SubResource("1")
 
 [node name="Monitor" type="AnimatedSprite2D" parent="."]
+z_index = 1
 sprite_frames = SubResource("6")
 autoplay = "default"
 
