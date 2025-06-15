@@ -101,7 +101,6 @@ frame_progress = 0.24432
 [node name="Fire" type="AnimatedSprite2D" parent="Sprite2D"]
 sprite_frames = SubResource("7")
 autoplay = "default"
-frame_progress = 0.33304
 
 [node name="PlayerCheck" type="Area2D" parent="Sprite2D"]
 z_index = -1

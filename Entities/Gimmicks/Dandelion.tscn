@@ -1,8 +1,15 @@
-[gd_scene load_steps=11 format=3 uid="uid://dk83m4gharvd2"]
+[gd_scene load_steps=19 format=3 uid="uid://dk83m4gharvd2"]
 
 [ext_resource type="Script" path="res://Scripts/Gimmicks/Dandelion.gd" id="1_wvun1"]
 [ext_resource type="Texture2D" uid="uid://p4xsmlq2pjp0" path="res://Graphics/Gimmicks/dandelion.png" id="2_3pqwx"]
 [ext_resource type="Texture2D" uid="uid://d2ns1v5quw3rh" path="res://Graphics/Gimmicks/dandelionCover.png" id="3_b4s66"]
+[ext_resource type="Texture2D" uid="uid://db507fkup1e2p" path="res://Graphics/Gimmicks/Dandelion Seeds/DND_SEED1.png" id="4_cwy8d"]
+[ext_resource type="Texture2D" uid="uid://dvsh8sk21b027" path="res://Graphics/Gimmicks/Dandelion Seeds/DND_SEED2.png" id="5_gct6q"]
+[ext_resource type="Texture2D" uid="uid://non0uv6a3wlr" path="res://Graphics/Gimmicks/Dandelion Seeds/DND_SEED3.png" id="6_cruj3"]
+[ext_resource type="Texture2D" uid="uid://b6xpstlcc5d78" path="res://Graphics/Gimmicks/Dandelion Seeds/DND_SEED4.png" id="7_4q5mq"]
+[ext_resource type="Texture2D" uid="uid://rlmeyi3ko7v6" path="res://Graphics/Gimmicks/Dandelion Seeds/DND_SEED5.png" id="8_c5dg1"]
+[ext_resource type="Texture2D" uid="uid://c8khkpv5t20ag" path="res://Graphics/Gimmicks/Dandelion Seeds/DND_SEED6.png" id="9_2j2n7"]
+[ext_resource type="Texture2D" uid="uid://0d2wmtu1whcb" path="res://Graphics/Gimmicks/Dandelion Seeds/DND_SEED7.png" id="10_3w8cf"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_h2dbx"]
 size = Vector2(8, 60)
@@ -51,6 +58,35 @@ animations = [{
 "speed": 1.0
 }]
 
+[sub_resource type="SpriteFrames" id="SpriteFrames_gxn4n"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": ExtResource("4_cwy8d")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_gct6q")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_cruj3")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_4q5mq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_c5dg1")
+}, {
+"duration": 1.0,
+"texture": ExtResource("9_2j2n7")
+}, {
+"duration": 1.0,
+"texture": ExtResource("10_3w8cf")
+}],
+"loop": true,
+"name": &"default",
+"speed": 5.0
+}]
+
 [node name="Dandelion" type="Area2D"]
 collision_layer = 0
 collision_mask = 4111
@@ -76,6 +112,23 @@ frame_progress = 0.63297
 [node name="Timer" type="Timer" parent="."]
 wait_time = 1.5
 one_shot = true
+
+[node name="Particles" type="CPUParticles2D" parent="."]
+z_index = -1
+position = Vector2(0, -63.135)
+emitting = false
+amount = 5
+lifetime = 1.5
+texture = ExtResource("4_cwy8d")
+direction = Vector2(0, -1)
+gravity = Vector2(0, 50)
+initial_velocity_min = 13.4
+initial_velocity_max = 131.31
+
+[node name="SeedFrames" type="AnimatedSprite2D" parent="."]
+visible = false
+sprite_frames = SubResource("SpriteFrames_gxn4n")
+autoplay = "default"
 
 [connection signal="body_entered" from="." to="." method="_on_body_entered"]
 [connection signal="timeout" from="Timer" to="." method="_on_timer_timeout"]

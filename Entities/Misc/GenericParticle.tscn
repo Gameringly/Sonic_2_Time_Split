@@ -1,13 +1,20 @@
-[gd_scene load_steps=94 format=3 uid="uid://dmrtm7r6hfbfr"]
+[gd_scene load_steps=101 format=3 uid="uid://dmrtm7r6hfbfr"]
 
 [ext_resource type="Texture2D" uid="uid://bihgasvpr4jyb" path="res://Graphics/Items/invincible_stars.png" id="1"]
 [ext_resource type="Script" path="res://Scripts/Misc/FreeOnAnimationCompletion.gd" id="2"]
+[ext_resource type="Texture2D" uid="uid://db507fkup1e2p" path="res://Graphics/Gimmicks/Dandelion Seeds/DND_SEED1.png" id="2_8q2wq"]
 [ext_resource type="Texture2D" uid="uid://bu6a2evw5s7ne" path="res://Graphics/Misc/water_splash.png" id="3"]
+[ext_resource type="Texture2D" uid="uid://dvsh8sk21b027" path="res://Graphics/Gimmicks/Dandelion Seeds/DND_SEED2.png" id="3_lt33a"]
 [ext_resource type="Texture2D" uid="uid://bu207ncbrfjm3" path="res://Graphics/Misc/skid_dust.png" id="4"]
+[ext_resource type="Texture2D" uid="uid://non0uv6a3wlr" path="res://Graphics/Gimmicks/Dandelion Seeds/DND_SEED3.png" id="4_gx31o"]
 [ext_resource type="Texture2D" uid="uid://bcighbbtky5cp" path="res://Graphics/Misc/DropDashDust.png" id="5"]
+[ext_resource type="Texture2D" uid="uid://b6xpstlcc5d78" path="res://Graphics/Gimmicks/Dandelion Seeds/DND_SEED4.png" id="5_ajgw4"]
 [ext_resource type="Texture2D" uid="uid://7hwanyy5pso6" path="res://Graphics/Misc/SuperSparkles.png" id="6"]
+[ext_resource type="Texture2D" uid="uid://rlmeyi3ko7v6" path="res://Graphics/Gimmicks/Dandelion Seeds/DND_SEED5.png" id="6_j5xws"]
 [ext_resource type="Texture2D" uid="uid://c3em2xm0y2fip" path="res://Graphics/Items/Rings/RingSparkle.png" id="7"]
+[ext_resource type="Texture2D" uid="uid://c8khkpv5t20ag" path="res://Graphics/Gimmicks/Dandelion Seeds/DND_SEED6.png" id="7_lwyis"]
 [ext_resource type="Texture2D" uid="uid://cciqyn4fgs3st" path="res://Graphics/Enemies/MotobugSmoke.png" id="8"]
+[ext_resource type="Texture2D" uid="uid://0d2wmtu1whcb" path="res://Graphics/Gimmicks/Dandelion Seeds/DND_SEED7.png" id="8_glo0b"]
 [ext_resource type="Texture2D" uid="uid://ckc0rilx6w0dq" path="res://Graphics/Misc/explosion3.png" id="9"]
 [ext_resource type="Texture2D" uid="uid://c1wql13bws0sc" path="res://Graphics/Items/time_warp_stars.png" id="9_30aiu"]
 
@@ -366,6 +373,32 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": ExtResource("2_8q2wq")
+}, {
+"duration": 1.0,
+"texture": ExtResource("3_lt33a")
+}, {
+"duration": 1.0,
+"texture": ExtResource("4_gx31o")
+}, {
+"duration": 1.0,
+"texture": ExtResource("5_ajgw4")
+}, {
+"duration": 1.0,
+"texture": ExtResource("6_j5xws")
+}, {
+"duration": 1.0,
+"texture": ExtResource("7_lwyis")
+}, {
+"duration": 1.0,
+"texture": ExtResource("8_glo0b")
+}],
+"loop": false,
+"name": &"Dandelion",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("170")
 }, {
 "duration": 1.0,
@@ -665,7 +698,7 @@ animations = [{
 
 [node name="GenericParticle" type="AnimatedSprite2D"]
 sprite_frames = SubResource("157")
-animation = &"Super"
+animation = &"Dandelion"
 script = ExtResource("2")
 
 [connection signal="animation_finished" from="." to="." method="_on_animation_finished"]
