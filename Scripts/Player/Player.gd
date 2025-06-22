@@ -658,7 +658,7 @@ func _process(delta):
 	set_inputs()
 	
 	#debug mode
-	if Input.is_action_just_pressed("debug") and !in_debug_mode:
+	if Input.is_action_just_pressed("debug") and !in_debug_mode and playerControl == 1:
 		debug_cursor = preload("res://Entities/MainObjects/DebugCursor.tscn").instantiate()
 		add_child(debug_cursor)
 		debug_cursor.global_position = global_position
@@ -666,7 +666,7 @@ func _process(delta):
 		in_debug_mode = true
 		set_physics_process(false)
 	
-	elif Input.is_action_just_pressed("debug") and in_debug_mode:
+	elif Input.is_action_just_pressed("debug") and in_debug_mode and playerControl == 1:
 		if debug_cursor:
 			debug_cursor.queue_free()
 		global_position = debug_cursor.global_position
@@ -901,27 +901,47 @@ func _physics_process(delta):
 		get_parent().hud.timePlate.play("Empty")
 		if checkWarpCollision > 0:
 			checkWarpCollision -= 1
+		else:
+			warpSpaceUp.position = 0
+			warpSpaceDown.position = 0
+			warpSpaceRight.position = 0
+			warpSpaceLeft.position = 0
 	
 	#debug time travel
-	if Input.is_action_just_pressed("debug_past"):
-		timeWarp = "Past"
-		checkWarpCollision = 60
-		get_parent().TimeTravel(timeWarp)
-		sfx[31].play()
-		warping = false
-		timeWarp = ""
-		warpTime = 300
-		get_parent().hud.timePlate.play("Empty")
-	
-	elif Input.is_action_just_pressed("debug_future"):
-		timeWarp = "Future"
-		checkWarpCollision = 60
-		get_parent().TimeTravel(timeWarp)
-		sfx[31].play()
-		warping = false
-		timeWarp = ""
-		warpTime = 300
-		get_parent().hud.timePlate.play("Empty")
+	if playerControl == 1:
+		if Input.is_action_just_pressed("debug_past"):
+			timeWarp = "Past"
+			checkWarpCollision = 60
+			get_parent().TimeTravel(timeWarp)
+			sfx[31].play()
+			warping = false
+			timeWarp = ""
+			warpTime = 300
+			get_parent().hud.timePlate.play("Empty")
+			if checkWarpCollision > 0:
+				checkWarpCollision -= 1
+			else:
+				warpSpaceUp.position = 0
+				warpSpaceDown.position = 0
+				warpSpaceRight.position = 0
+				warpSpaceLeft.position = 0
+		
+		elif Input.is_action_just_pressed("debug_future"):
+			timeWarp = "Future"
+			checkWarpCollision = 60
+			get_parent().TimeTravel(timeWarp)
+			sfx[31].play()
+			warping = false
+			timeWarp = ""
+			warpTime = 300
+			get_parent().hud.timePlate.play("Empty")
+			if checkWarpCollision > 0:
+				checkWarpCollision -= 1
+			else:
+				warpSpaceUp.position = 0
+				warpSpaceDown.position = 0
+				warpSpaceRight.position = 0
+				warpSpaceLeft.position = 0
 	
 	#bonk on walls when surfing, this is kinda a patchwork solution cus I dont know why jumping into walls doesn't bonk when in the surfing state
 	horizontalSensor.force_raycast_update()
@@ -962,6 +982,10 @@ func check_warp_collision():
 		warpSpaceLeft.force_update_transform()
 		warpSpaceLeft.force_raycast_update()
 		check_warp_collision()
+	warpSpaceUp.position.y = 0
+	warpSpaceDown.position.y = 0
+	warpSpaceRight.position.x = 0
+	warpSpaceLeft.position.x = 0
 
 
 func loose_time_warp():
