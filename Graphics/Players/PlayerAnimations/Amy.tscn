@@ -335,6 +335,23 @@ tracks/0/keys = {
 "values": [96, 97, 98, 99]
 }
 
+[sub_resource type="Animation" id="Animation_f2436"]
+resource_name = "fall"
+length = 0.2
+step = 0.05
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Amy/Sprite2D:frame")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.1, 0.2),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [69, 70, 71]
+}
+
 [sub_resource type="Animation" id="123"]
 resource_name = "grabVerticalBar"
 length = 0.166667
@@ -687,7 +704,7 @@ tracks/0/keys = {
 "times": PackedFloat32Array(0, 0.1, 0.2, 0.3),
 "transitions": PackedFloat32Array(1, 1, 1, 1),
 "update": 1,
-"values": [24, 25, 26, 27]
+"values": [28, 29, 30, 31]
 }
 
 [sub_resource type="Animation" id="100"]
@@ -986,7 +1003,7 @@ tracks/2/keys = {
 
 [sub_resource type="Animation" id="85"]
 resource_name = "walk"
-length = 0.8
+length = 0.6
 loop_mode = 1
 tracks/0/type = "value"
 tracks/0/imported = false
@@ -1053,23 +1070,6 @@ tracks/0/keys = {
 "transitions": PackedFloat32Array(1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1),
 "update": 1,
 "values": [256, 267, 266, 265, 264, 263, 262, 261, 260, 259, 258, 257]
-}
-
-[sub_resource type="Animation" id="Animation_f2436"]
-resource_name = "fall"
-length = 0.2
-step = 0.05
-tracks/0/type = "value"
-tracks/0/imported = false
-tracks/0/enabled = true
-tracks/0/path = NodePath("Amy/Sprite2D:frame")
-tracks/0/interp = 1
-tracks/0/loop_wrap = true
-tracks/0/keys = {
-"times": PackedFloat32Array(0, 0.1, 0.2),
-"transitions": PackedFloat32Array(1, 1, 1),
-"update": 1,
-"values": [69, 70, 71]
 }
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_36uej"]
@@ -1252,6 +1252,7 @@ texture = ExtResource("2_vki44")
 offset = Vector2(0, -7)
 hframes = 16
 vframes = 18
+frame = 16
 
 [node name="DashDust" type="AnimatedSprite2D" parent="Sprite2D"]
 visible = false

@@ -1,4 +1,4 @@
-[gd_scene load_steps=201 format=3 uid="uid://cioq5saowvqxj"]
+[gd_scene load_steps=208 format=3 uid="uid://cioq5saowvqxj"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://d1e4muavtnun6" path="res://Graphics/Players/PlayerAnimations/Sonic.tscn" id="2"]
@@ -69,6 +69,7 @@
 [ext_resource type="AudioStream" uid="uid://buu4anko53vx2" path="res://Audio/SFX/Objects/ChemJump.wav" id="65_7v2sx"]
 [ext_resource type="AudioStream" uid="uid://b7h8xfxu78cm0" path="res://Audio/SFX/Misc/TimeWarp.wav" id="66_5owx2"]
 [ext_resource type="AudioStream" uid="uid://0mr47ufvnjuw" path="res://Audio/SFX/Player/Piko.wav" id="67_dkfef"]
+[ext_resource type="Texture2D" uid="uid://8f2i5eltpkf7" path="res://Graphics/Items/time_warp_aura.png" id="70_l8nxx"]
 
 [sub_resource type="RectangleShape2D" id="1"]
 resource_local_to_scene = true
@@ -1203,6 +1204,62 @@ size = Vector2(42, 3)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_4rbs3"]
 size = Vector2(18, 37)
 
+[sub_resource type="AtlasTexture" id="AtlasTexture_rypsp"]
+atlas = ExtResource("70_l8nxx")
+region = Rect2(40, 0, 40, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_dm1j0"]
+atlas = ExtResource("70_l8nxx")
+region = Rect2(80, 0, 40, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_fma1d"]
+atlas = ExtResource("70_l8nxx")
+region = Rect2(80, 0, 40, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_qmdht"]
+atlas = ExtResource("70_l8nxx")
+region = Rect2(0, 0, 40, 56)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_emp13"]
+atlas = ExtResource("70_l8nxx")
+region = Rect2(40, 0, 40, 56)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_7u0o0"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_rypsp")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_dm1j0")
+}],
+"loop": true,
+"name": &"close",
+"speed": 15.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_fma1d")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"end",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_qmdht")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_emp13")
+}],
+"loop": true,
+"name": &"start",
+"speed": 15.0
+}]
+
 [node name="Player" type="CharacterBody2D"]
 collision_layer = 4096
 collision_mask = 8192
@@ -1613,6 +1670,12 @@ collision_mask = 4095
 [node name="Left" type="RayCast2D" parent="FindAir"]
 target_position = Vector2(-30, 0)
 collision_mask = 4095
+
+[node name="TimeWarpAura" type="AnimatedSprite2D" parent="."]
+z_index = 100
+position = Vector2(4, 0)
+sprite_frames = SubResource("SpriteFrames_7u0o0")
+animation = &"close"
 
 [connection signal="timeout" from="States/Fly/FlyBugStop" to="States/Fly" method="_on_FlyBugStop_timeout"]
 [connection signal="timeout" from="SkidDustTimer" to="States/Normal" method="_on_SkidDustTimer_timeout"]
