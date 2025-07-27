@@ -246,6 +246,8 @@ var checkWarpCollision = 0
 @onready var warpSpaceRight = $FindAir/Right
 @onready var warpSpaceLeft = $FindAir/Left
 
+@onready var timeWarpAura = $TimeWarpAura
+
 #debug
 var debug_cursor
 var in_debug_mode = false
@@ -886,12 +888,42 @@ func _physics_process(delta):
 		warpTime -= 1
 		if supTime <= 0: #prevent cancelling out other forms of invincibiltiy
 			supTime = 0.1
+			#Make the time plate start blinking
 		if warpTime <= 120 and get_parent().hud.timePlate.animation == "Past":
 			get_parent().hud.timePlate.play("PastFade")
 		elif warpTime <= 120 and get_parent().hud.timePlate.animation == "Future":
 			get_parent().hud.timePlate.play("FutureFade")
+	
+		#Show the aura around the player
+		if warpTime <= 120 and warpTime > 60:
+			timeWarpAura.visible = true
+			timeWarpAura.play("start")
+		elif warpTime <= 60:
+			timeWarpAura.play("close")
+
+		#Rotate the time aura to face the direction the player is going
+		if timeWarpAura.visible:
+			timeWarpAura.rotation = deg_to_rad(spriteRotation-90)-rotation-gravityAngle
+			if abs(movement.x) > abs(movement.y):
+				timeWarpAura.position.y = 0
+				if animator.current_animation == "peelOut" and character == Global.CHARACTERS.SONIC:
+					timeWarpAura.position.x = 6 * sign(movement.x)
+				else:
+					timeWarpAura.position.x = 4 * sign(movement.x)
+				timeWarpAura.scale.x = sign(movement.x)
+			else:
+				timeWarpAura.rotation = (deg_to_rad(90)-rotation-gravityAngle) * sign(movement.y)
+				timeWarpAura.position.x = 0
+				timeWarpAura.position.y = 4 * sign(movement.y)
+				timeWarpAura.scale.y = sign(movement.y)
+	else:
+		if timeWarpAura.visible:
+			timeWarpAura.visible = false
 		
-	if warpTime <= 0: #sucessfully time travel
+	#sucessfully time travel
+	if warpTime <= 0: 
+		timeWarpAura.play("end")
+		timeWarpAura.visible = false
 		checkWarpCollision = 60
 		get_parent().TimeTravel(timeWarp)
 		sfx[31].play()
@@ -906,6 +938,7 @@ func _physics_process(delta):
 			warpSpaceDown.position = 0
 			warpSpaceRight.position = 0
 			warpSpaceLeft.position = 0
+	
 	
 	#debug time travel
 	if playerControl == 1:
@@ -1554,7 +1587,7 @@ func action_jump(animation = "roll", airJumpControl = true, playSound=true):
 			wall_jump = false
 		else:
 			if character == Global.CHARACTERS.AMY:
-				animation = "spring"
+				animation = "jump"
 			animator.play(animation)
 			animator.advance(0)
 			movement.y = -jmp

@@ -250,7 +250,7 @@ func _physics_process(delta):
 	elif parent.movement.y < 0:
 		parent.bounceReaction = 0
 	
-	if parent.character == Global.CHARACTERS.AMY and parent.movement.y >= 0 and parent.animator.current_animation == "spring":
+	if parent.character == Global.CHARACTERS.AMY and parent.movement.y >= 0 and parent.animator.current_animation == "jump":
 		parent.animator.play("fall")
 	
 	#Sonic wall jump
