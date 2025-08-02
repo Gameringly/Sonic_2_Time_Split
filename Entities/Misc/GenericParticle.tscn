@@ -1,4 +1,4 @@
-[gd_scene load_steps=101 format=3 uid="uid://dmrtm7r6hfbfr"]
+[gd_scene load_steps=106 format=3 uid="uid://dmrtm7r6hfbfr"]
 
 [ext_resource type="Texture2D" uid="uid://bihgasvpr4jyb" path="res://Graphics/Items/invincible_stars.png" id="1"]
 [ext_resource type="Script" path="res://Scripts/Misc/FreeOnAnimationCompletion.gd" id="2"]
@@ -17,6 +17,7 @@
 [ext_resource type="Texture2D" uid="uid://0d2wmtu1whcb" path="res://Graphics/Gimmicks/Dandelion Seeds/DND_SEED7.png" id="8_glo0b"]
 [ext_resource type="Texture2D" uid="uid://ckc0rilx6w0dq" path="res://Graphics/Misc/explosion3.png" id="9"]
 [ext_resource type="Texture2D" uid="uid://c1wql13bws0sc" path="res://Graphics/Items/time_warp_stars.png" id="9_30aiu"]
+[ext_resource type="Texture2D" uid="uid://cs7qoofvi72mn" path="res://Graphics/Items/time_warp_sparkles.png" id="16_qh22r"]
 
 [sub_resource type="AtlasTexture" id="189"]
 atlas = ExtResource("9")
@@ -293,6 +294,22 @@ region = Rect2(48, 0, 48, 48)
 [sub_resource type="AtlasTexture" id="59"]
 atlas = ExtResource("6")
 region = Rect2(96, 0, 48, 48)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_4xqo4"]
+atlas = ExtResource("16_qh22r")
+region = Rect2(0, 0, 88, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_xxieg"]
+atlas = ExtResource("16_qh22r")
+region = Rect2(0, 40, 88, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_q1fsk"]
+atlas = ExtResource("16_qh22r")
+region = Rect2(0, 80, 88, 40)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_y6n2m"]
+atlas = ExtResource("16_qh22r")
+region = Rect2(0, 120, 88, 40)
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_f1vbe"]
 atlas = ExtResource("9_30aiu")
@@ -648,6 +665,77 @@ animations = [{
 }, {
 "frames": [{
 "duration": 1.0,
+"texture": SubResource("AtlasTexture_4xqo4")
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4xqo4")
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_4xqo4")
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xxieg")
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xxieg")
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q1fsk")
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_q1fsk")
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xxieg")
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_xxieg")
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y6n2m")
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_y6n2m")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": false,
+"name": &"TimeDust",
+"speed": 20.0
+}, {
+"frames": [{
+"duration": 1.0,
 "texture": SubResource("AtlasTexture_f1vbe")
 }, {
 "duration": 1.0,
@@ -698,7 +786,9 @@ animations = [{
 
 [node name="GenericParticle" type="AnimatedSprite2D"]
 sprite_frames = SubResource("157")
-animation = &"Dandelion"
+animation = &"TimeDust"
+frame = 21
+frame_progress = 1.0
 script = ExtResource("2")
 
 [connection signal="animation_finished" from="." to="." method="_on_animation_finished"]

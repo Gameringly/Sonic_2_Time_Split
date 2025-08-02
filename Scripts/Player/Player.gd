@@ -923,6 +923,7 @@ func _physics_process(delta):
 	#sucessfully time travel
 	if warpTime <= 0: 
 		timeWarpAura.play("end")
+		visible = false
 		timeWarpAura.visible = false
 		checkWarpCollision = 60
 		get_parent().TimeTravel(timeWarp)

@@ -108,3 +108,11 @@ func TimeTravel(TimePeriod):
 		add_child(GFuture)
 		hud.lifeIcon.frame = 6
 	Global.main.fader.play_backwards("TimeWarp")
+	$Player.lock_camera(0.5)
+	$Player.visible = true
+	var part = $Player.Particle.instantiate()
+	part.global_position = $Player.global_position
+	part.z_index = 10
+	part.rotation = $Player.timeWarpAura.rotation
+	part.play("TimeDust")
+	add_child(part)
