@@ -3,12 +3,15 @@ extends Node2D
 @export var music = preload("res://Audio/Soundtrack/6. SWD_TLZa1.ogg")
 @export var nextZone = load("res://Scene/Zones/BaseZone.tscn")
 
+@export var gotTimeStone = false
+
 #@export_enum("Present", "Past", "Bad Future", "Good Future") var Timezone = 0
 
 @export_enum("Bird", "Squirrel", "Rabbit", "Chicken", "Penguin", "Seal", "Pig", "Eagle", "Mouse", "Monkey", "Turtle", "Bear")var animal1 = 0
 @export_enum("Bird", "Squirrel", "Rabbit", "Chicken", "Penguin", "Seal", "Pig", "Eagle", "Mouse", "Monkey", "Turtle", "Bear")var animal2 = 1
 
 # Boundries
+@export_category("Boundaries")
 @export var setDefaultLeft = true
 @export var defaultLeftBoundry  = -100000000
 @export var setDefaultTop = true
@@ -19,6 +22,8 @@ extends Node2D
 @export var setDefaultBottom = true
 @export var defaultBottomBoundry = 100000000
 
+
+
 @onready var Present = $Present
 @onready var Past = $Past
 @onready var GFuture = $GoodFuture
@@ -28,8 +33,6 @@ extends Node2D
 
 # was loaded is used for room loading, this can prevent overwriting global information, see Global.gd for more information on scene loading
 var wasLoaded = false
-
-var gotTimeStone = false
 
 func _ready():
 	# debuging

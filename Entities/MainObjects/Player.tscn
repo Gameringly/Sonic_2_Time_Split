@@ -1,4 +1,4 @@
-[gd_scene load_steps=208 format=3 uid="uid://cioq5saowvqxj"]
+[gd_scene load_steps=209 format=3 uid="uid://cioq5saowvqxj"]
 
 [ext_resource type="Script" path="res://Scripts/Player/Player.gd" id="1"]
 [ext_resource type="PackedScene" uid="uid://d1e4muavtnun6" path="res://Graphics/Players/PlayerAnimations/Sonic.tscn" id="2"]
@@ -69,6 +69,7 @@
 [ext_resource type="AudioStream" uid="uid://buu4anko53vx2" path="res://Audio/SFX/Objects/ChemJump.wav" id="65_7v2sx"]
 [ext_resource type="AudioStream" uid="uid://b7h8xfxu78cm0" path="res://Audio/SFX/Misc/TimeWarp.wav" id="66_5owx2"]
 [ext_resource type="AudioStream" uid="uid://0mr47ufvnjuw" path="res://Audio/SFX/Player/Piko.wav" id="67_dkfef"]
+[ext_resource type="AudioStream" uid="uid://dyndbw3vltebp" path="res://Audio/SFX/Misc/TimeStoneGet.wav" id="69_u1eb2"]
 [ext_resource type="Texture2D" uid="uid://8f2i5eltpkf7" path="res://Graphics/Items/time_warp_aura.png" id="70_l8nxx"]
 
 [sub_resource type="RectangleShape2D" id="1"]
@@ -1584,6 +1585,10 @@ bus = &"SFX"
 [node name="Piko" type="AudioStreamPlayer" parent="SFX"]
 stream = ExtResource("67_dkfef")
 volume_db = 5.0
+bus = &"SFX"
+
+[node name="TimeStoneGet" type="AudioStreamPlayer" parent="SFX"]
+stream = ExtResource("69_u1eb2")
 bus = &"SFX"
 
 [node name="CrushSensorLeft" type="Area2D" parent="."]

@@ -1,0 +1,164 @@
+[gd_scene load_steps=17 format=3 uid="uid://3e8gjuv61s8i"]
+
+[ext_resource type="Script" path="res://Scripts/Objects/TimeStoneShard.gd" id="1_wi2mg"]
+[ext_resource type="Texture2D" uid="uid://i3u1vy3qtvgw" path="res://Graphics/Items/TimeStoneShard.png" id="2_irxwd"]
+[ext_resource type="AudioStream" uid="uid://dyndbw3vltebp" path="res://Audio/SFX/Misc/TimeStoneGet.wav" id="3_0dht7"]
+[ext_resource type="Texture2D" uid="uid://bdkcu2i00wpsg" path="res://Graphics/Items/TimeStoneShardAura1.png" id="3_37rs6"]
+[ext_resource type="Texture2D" uid="uid://bocdhgoiook86" path="res://Graphics/Items/TimeStoneShardAura2.png" id="4_esno4"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_7wt4t"]
+atlas = ExtResource("2_irxwd")
+region = Rect2(0, 0, 22, 26)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_8l5tb"]
+atlas = ExtResource("2_irxwd")
+region = Rect2(0, 0, 22, 26)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_k4bad"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_7wt4t")
+}],
+"loop": true,
+"name": &"Past",
+"speed": 5.0
+}, {
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_8l5tb")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"Present",
+"speed": 30.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_naqmu"]
+atlas = ExtResource("3_37rs6")
+region = Rect2(0, 0, 85, 85)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_vae1s"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_naqmu")
+}, {
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_naqmu")
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"default",
+"speed": 30.0
+}]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_j0jxv"]
+atlas = ExtResource("4_esno4")
+region = Rect2(0, 0, 85, 85)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_3j011"]
+animations = [{
+"frames": [{
+"duration": 1.0,
+"texture": SubResource("AtlasTexture_j0jxv")
+}, {
+"duration": 1.0,
+"texture": null
+}, {
+"duration": 1.0,
+"texture": null
+}],
+"loop": true,
+"name": &"default",
+"speed": 30.0
+}]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_3x1in"]
+
+[sub_resource type="Animation" id="Animation_npxul"]
+resource_name = "default"
+length = 4.0
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.166667, 2, 2.1333, 4),
+"transitions": PackedFloat32Array(-1.46409, -1.46409, 2, 2, 2),
+"update": 0,
+"values": [Vector2(0, -5), Vector2(0, -5), Vector2(0, 5), Vector2(0, 5), Vector2(0, -5)]
+}
+
+[sub_resource type="Animation" id="Animation_cgh7j"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 0,
+"values": [Vector2(0, 0)]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_8pg0e"]
+_data = {
+"RESET": SubResource("Animation_cgh7j"),
+"default": SubResource("Animation_npxul")
+}
+
+[node name="TimeStoneShard" type="Node2D"]
+script = ExtResource("1_wi2mg")
+
+[node name="Sprite" type="AnimatedSprite2D" parent="."]
+sprite_frames = SubResource("SpriteFrames_k4bad")
+animation = &"Past"
+frame_progress = 0.559498
+
+[node name="Sparkles" type="AnimatedSprite2D" parent="Sprite"]
+sprite_frames = SubResource("SpriteFrames_vae1s")
+autoplay = "default"
+frame_progress = 0.99344
+
+[node name="Aura" type="AnimatedSprite2D" parent="Sprite"]
+z_index = -30
+sprite_frames = SubResource("SpriteFrames_vae1s")
+autoplay = "default"
+frame_progress = 0.99344
+
+[node name="Aura2" type="AnimatedSprite2D" parent="Sprite"]
+z_index = -20
+sprite_frames = SubResource("SpriteFrames_3j011")
+autoplay = "default"
+
+[node name="Hitbox" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 4096
+monitoring = false
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Hitbox"]
+visible = false
+shape = SubResource("RectangleShape2D_3x1in")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_8pg0e")
+}
+autoplay = "default"
+
+[node name="SFX" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_0dht7")
+bus = &"SFX"
+
+[connection signal="body_entered" from="Hitbox" to="." method="_on_hitbox_body_entered"]
